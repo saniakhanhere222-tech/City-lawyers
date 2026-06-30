@@ -1,0 +1,247 @@
+/* ========================================
+   BOOK-APPOINTMENT.CSS – book / reschedule appointment
+   Single container, two internal columns, no gap, background image
+======================================== */
+* {
+    border-radius: 0 !important;
+}
+
+/* Background image with opacity (same style as other pages) */
+.booking-container {
+    position: relative;
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+.booking-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('../assets/images/customerlogin1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: grayscale(100%) brightness(0.7);
+    opacity: 0.08;
+    z-index: -1;
+}
+/* Outer wrapper that looks like a single card */
+.booking-wrapper {
+    background: var(--primary-color);
+    border: 1px solid var(--border-color);
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 0;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+}
+/* Left panel (lawyer info) – inherits background from wrapper */
+.luxury-panel {
+    background: var(--primary-color);
+    padding: 30px;
+}
+/* Right panel (form) – white background */
+.form-panel {
+    background: var(--white);
+    padding: 30px;
+}
+/* Lawyer avatar – no border */
+.lawyer-avatar {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.lawyer-avatar i {
+    font-size: 55px;
+    color: rgba(255,255,255,0.8);
+}
+.lawyer-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.lawyer-name-panel {
+    text-align: center;
+    margin-bottom: 25px;
+}
+.lawyer-name-panel h2 {
+    font-size: 24px;
+    color: white;
+    margin-bottom: 5px;
+}
+.lawyer-name-panel p {
+    color: #aaa;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+.divider {
+    height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin: 20px 0;
+}
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    /* border-bottom: 1px solid rgba(255,255,255,0.08); */
+}
+.info-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    
+}
+.info-value {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.699);
+    font-weight: 500;
+    font-style:italic;
+}
+/* Dynamic date/time text – lighter and thinner */
+.info-value#displayDate,
+.info-value#displayTime {
+    font-weight: 300;
+    color: #d1c891;
+    letter-spacing: 0.3px;
+}
+.fee-value {
+    color: #d1c891;
+    font-weight: bold;
+    font-style:italic;
+}
+/* Form panel styles */
+.form-panel textarea.form-control {
+    min-height: 120px;
+}
+.form-title {
+    font-size: 28px;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 8px;
+}
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    background: var(--white);
+    font-size: 14px;
+}
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+.btn-book {
+    width: 100%;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 12px;
+    text-transform: uppercase;
+    cursor: pointer;
+   
+}
+.btn-book:hover {
+    background: #1e2a1e;
+}
+.alert-danger {
+    background: #f8f0f0;
+    color: #8b3a3a;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #e0c5c5;
+}
+/* Success modal (unchanged) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);  /* dark translucent background */
+    z-index: 99999;                  /* very high to stay on top of everything */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.success-card {
+    background: white;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    padding: 35px;
+    border: 1px solid var(--border-color);
+}
+.success-card i {
+    font-size: 60px;
+    color: #2e5b2e;
+    margin-bottom: 15px;
+}
+.success-card h3 {
+    font-size: 24px;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+.success-card p {
+    color: var(--text-light);
+    margin-bottom: 10px;
+}
+.success-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 20px;
+}
+.form-panel {
+    display: flex;
+    flex-direction: column;
+}
+.form-panel form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.btn-book {
+    margin-top: auto;
+}
+.btn-dashboard,
+.btn-home {
+    padding: 8px 20px;
+    font-size: 11px;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+.btn-dashboard {
+    background: var(--primary-color);
+    color: white;
+}
+.btn-home {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+}
+
+/* Responsive: stack columns on screens smaller than 800px */
+@media (max-width: 800px) {
+    .booking-wrapper {
+        grid-template-columns: 1fr;
+    }
+}

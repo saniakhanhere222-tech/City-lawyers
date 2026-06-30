@@ -1,0 +1,170 @@
+/* ========================================
+   TABLES.CSS – reusable dashboard table styles
+   (filter tabs, tables, status badges, action buttons, pagination)
+   All colors use CSS variables – define them in :root (global.css)
+======================================== */
+
+/* ----------------------------------------
+   FILTER TABS (used in admin pages)
+---------------------------------------- */
+.filter-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 25px;
+    border-bottom: 1px solid var(--border-color);
+}
+.filter-tab {
+    padding: 10px 20px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    transition: 0.3s;
+}
+.filter-tab:hover {
+    color: var(--primary-color);
+}
+.filter-tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+/* ----------------------------------------
+   TABLES
+---------------------------------------- */
+.table-wrap {
+    overflow-x: auto;
+}
+.dashboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+.dashboard-table th {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    padding: 14px 10px;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+    text-align: left;
+}
+.dashboard-table td {
+    padding: 16px 10px;
+    border-bottom: 1px solid #ece4d8;
+    font-size: 13px;
+    color: var(--text-dark);
+}
+
+/* ----------------------------------------
+   STATUS BADGES (for lawyer/ appointment status)
+---------------------------------------- */
+.status-badge {
+    padding: 4px 10px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: inline-block;
+}
+.status-pending {
+    background: var(--status-pending-bg);
+    color: var(--status-pending-text);
+}
+.status-approved {
+    background: var(--status-approved-bg);
+    color: var(--status-approved-text);
+}
+.status-rejected {
+    background: var(--status-rejected-bg);
+    color: var(--status-rejected-text);
+}
+.status-confirmed {
+    background: var(--status-confirmed-bg);
+    color: var(--status-confirmed-text);
+}
+.status-completed {
+    background: var(--status-completed-bg);
+    color: var(--status-completed-text);
+}
+.status-cancelled {
+    background: var(--status-cancelled-bg);
+    color: var(--status-cancelled-text);
+}
+
+/* ----------------------------------------
+   ACTION BUTTONS (approve, reject, delete, etc.)
+---------------------------------------- */
+.action-btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.action-btn {
+    display: block;
+    width: 100%;
+    padding: 5px 8px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.2s;
+    text-decoration: none;
+}
+.action-btn:hover {
+    opacity: 0.8;
+}
+.btn-approve {
+    background: var(--btn-approve-bg);
+    color: var(--btn-approve-text);
+}
+.btn-reject {
+    background: var(--btn-reject-bg);
+    color: var(--btn-reject-text);
+}
+.btn-delete {
+    background: var(--btn-delete-bg);
+    color: var(--btn-delete-text);
+}
+
+/* ----------------------------------------
+   PAGINATION
+---------------------------------------- */
+.pagination-wrap {
+    margin-top: 30px;
+    text-align: center;
+}
+.pagination-wrap .page-link {
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-dark);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    margin: 0 3px;
+    display: inline-block;
+    text-decoration: none;
+}
+.pagination-wrap .page-link:hover {
+    background: var(--primary-color);
+    color: white;
+}
+.pagination-wrap .page-link.active {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* ----------------------------------------
+   ADDITIONAL: lawyer image thumbnail (used in tables)
+---------------------------------------- */
+.lawyer-img-small {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    background: #ebe5db;
+}

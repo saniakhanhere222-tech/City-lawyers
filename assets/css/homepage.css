@@ -1,0 +1,451 @@
+/* =========================
+   HERO SECTION
+========================= */
+.hero-section {
+    background: var(--secondary-color);
+    min-height: auto;
+    display: flex;
+    align-items: center;
+    padding: 20px 0 40px;
+    overflow: hidden;
+}
+
+.hero-content {
+    max-width: 640px;
+    margin-bottom: 0;
+}
+
+.hero-tag {
+    letter-spacing: 3px;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.hero-title {
+    font-size: 5.2rem;
+    line-height: 0.92;
+    margin-bottom: 28px;
+    color: var(--primary-color);
+}
+
+.hero-title span {
+    font-style: italic;
+    color: #7d7d7d;
+    margin-left: 40px;
+}
+
+.hero-text {
+    color: var(--text-light);
+    line-height: 1.9;
+    max-width: 540px;
+    margin-bottom: 35px;
+    font-size: 15px;
+}
+
+.hero-buttons {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 720px;
+}
+
+.luxury-input {
+    height: 60px;
+    border-radius: 0 !important;
+    border: 1px solid var(--border-color);
+    background: #fff;
+    box-shadow: none !important;
+    padding: 0 18px;
+    font-size: 14px;
+    color: var(--text-dark);
+}
+
+.hero-buttons input {
+    border-right: none;
+}
+
+.hero-buttons select {
+    border-right: none;
+}
+
+.luxury-input:focus {
+    border-color: var(--border-color);
+}
+
+.btn-luxury {
+    height: 60px;
+    border: none;
+    padding: 0 34px;
+    background: var(--primary-color);
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+    border-radius: 0 !important;
+    transition: 0.4s;
+    white-space: nowrap;
+}
+
+.btn-luxury:hover {
+    background: #1f291f;
+    color: #fff;
+}
+
+.hero-image-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero-image {
+    width: 100%;
+    max-width: 470px;
+    height: 600px;
+    object-fit: cover;
+    border: 12px solid rgb(247, 240, 240);
+    filter: brightness(96%);
+}
+
+.quote-box {
+    position: absolute;
+    bottom: 35px;
+    right: -20px;
+    background: var(--primary-color);
+    color: #fff;
+    width: 240px;
+    padding: 28px;
+}
+
+.quote-box p {
+    margin: 0;
+    font-style: italic;
+    line-height: 1.7;
+    font-size: 15px;
+}
+
+/* =========================
+   STATS SECTION
+========================= */
+.stats-section {
+    background: var(--primary-color);
+    padding: 70px 0;
+}
+
+.stat-item {
+    text-align: center;
+    color: #fff;
+}
+
+.stat-item h2 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.stat-item p {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+/* =========================
+   SECTION TITLES
+========================= */
+.section-title {
+    font-size: 3.1rem;
+    color: var(--primary-color);
+    margin-bottom: 12px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.section-subtitle {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-light);
+}
+
+/* =========================
+   FEATURED LAWYERS SECTION
+========================= */
+.featured-section {
+    padding: 80px 0;
+    background: var(--secondary-color);
+}
+
+.lawyer-card-home {
+    background: transparent;
+    transition: 0.4s ease;
+}
+
+.lawyer-card-home:hover {
+    transform: translateY(-6px);
+}
+
+.lawyer-img-home {
+    width: 100%;
+    height: 240px;
+    overflow: hidden;
+    position: relative;
+    background: #ddd;
+    border: 10px solid rgba(245, 241, 235, 0.9);
+}
+
+.lawyer-img-home img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.5s ease;
+    filter: grayscale(100%);
+}
+
+.lawyer-card-home:hover .lawyer-img-home img {
+    transform: scale(1.03);
+    filter: grayscale(0%);
+}
+
+.lawyer-img-home i {
+    font-size: 65px;
+    color: var(--primary-color);
+    margin-top: 95px;
+    text-align: center;
+    width: 100%;
+}
+
+.lawyer-card-home h4 {
+    font-size: 22px;
+    color: var(--primary-color);
+    margin-top: 20px;
+    margin-bottom: 6px;
+    border-top: 1px solid var(--border-color);
+    padding-top: 15px;
+}
+
+.lawyer-card-home .specialization {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 14px;
+}
+
+.lawyer-card-home .fees {
+    font-size: 14px;
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.btn-view-profile {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: 0.4s;
+    background: var(--primary-color);
+    color: #fff;
+    border: 1px solid var(--border-color);
+}
+
+.btn-view-profile:hover {
+    color: var(--text-dark);
+    border: 1px solid var(--border-color);
+    background-color: var(--secondary-color);
+}
+
+.btn-view-all {
+    display: inline-block;
+    padding: 14px 34px;
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: 0.4s;
+}
+
+.btn-view-all:hover {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+/* =========================
+   CATEGORIES SECTION (Practice Domains)
+========================= */
+.categories-section {
+    padding: 80px 0;
+    background: var(--secondary-color);
+}
+
+.category-card {
+    display: block;
+    text-align: center;
+    padding: 35px 20px;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.06);
+    border-color: var(--primary-color);
+}
+
+.category-icon {
+    font-size: 42px;
+    margin-bottom: 18px;
+    display: block;
+    color: var(--primary-color);
+}
+
+.category-card h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    position: relative;
+    display: inline-block;
+}
+
+.category-card h4::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--primary-color);
+    transition: width 0.3s ease;
+}
+
+.category-card:hover h4::after {
+    width: 30px;
+}
+
+.category-card p {
+    font-size: 11px;
+    color: var(--text-light);
+    letter-spacing: 1.5px;
+    margin: 12px 0 0;
+}
+
+/* =========================
+   HOMEPAGE RESPONSIVE MEDIA QUERIES
+   (Only those that affect hero, stats, featured, categories)
+========================= */
+@media (max-width: 991px) {
+    .hero-section {
+        padding: 40px 0;
+    }
+
+    .hero-title {
+        font-size: 3rem;
+    }
+
+    .hero-title span {
+        margin-left: 0;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .hero-buttons input,
+    .hero-buttons select,
+    .hero-buttons button {
+        width: 100%;
+        border-right: 1px solid var(--border-color);
+    }
+
+    .hero-image-wrapper {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .hero-image {
+        width: 100%;
+        max-width: 470px;
+        height: auto;
+        display: block;
+    }
+
+    .quote-box {
+        position: absolute;
+        bottom: 30px;
+        right: -15px;
+        background: var(--primary-color);
+        color: #fff;
+        width: 240px;
+        padding: 28px;
+        z-index: 10;
+    }
+
+    .featured-section {
+        padding: 50px 20px;
+    }
+
+    .lawyer-img-home {
+        height: 200px;
+    }
+
+    .categories-section {
+        padding: 50px 20px;
+    }
+}
+
+@media (max-width: 767px) {
+    .hero-title {
+        font-size: 2.8rem;
+    }
+
+    .hero-text {
+        font-size: 14px;
+    }
+
+    .hero-image {
+        height: 300px;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .lawyer-card-home h4 {
+        font-size: 18px;
+    }
+
+    .category-card h4 {
+        font-size: 18px;
+    }
+
+    .category-icon {
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+
+    .hero-image {
+        height: 250px;
+    }
+
+    .btn-luxury {
+        padding: 0 20px;
+        font-size: 11px;
+    }
+}

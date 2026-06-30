@@ -1,0 +1,337 @@
+/* ========================================
+   DASHBOARD.CSS
+   - Desktop: CSS Grid layout (sidebar fixed width, main auto)
+   - Mobile: horizontal navigation strip
+   - Cards, stats grid, layout only (tables moved to tables.css)
+======================================== */
+
+/* Global reset for dashboard pages */
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+/* ========================================
+   LAYOUT WRAPPER - CSS GRID
+======================================== */
+.dashboard-wrapper {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    min-height: calc(100vh - 85px);
+    width: 100%;
+    padding: 0;
+}
+
+/* ========================================
+   SIDEBAR (DESKTOP VERSION)
+======================================== */
+.sidebar {
+    background: var(--primary-color);
+    display: flex;
+    flex-direction: column;
+    padding: 30px 20px;
+    z-index: 998;
+    overflow-y: auto;
+}
+
+.sidebar a {
+    color: #d7d7d7;
+    text-decoration: none;
+    padding: 13px 12px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-left: 2px solid transparent;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background: rgba(255,255,255,0.05);
+    border-left: 2px solid var(--secondary-color);
+    color: white;
+}
+
+.sidebar a.active {
+    background: rgba(255,255,255,0.08);
+    border-left: 2px solid var(--secondary-color);
+    color: white;
+}
+
+.sidebar a.logout {
+    margin-top: auto;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 18px;
+    color: #ffdddd;
+}
+
+/* ========================================
+   MAIN CONTENT
+======================================== */
+.main-content {
+    padding: 35px;
+    background: var(--secondary-color);
+    overflow-y: auto;
+}
+
+/* ========================================
+   DASHBOARD CARDS
+======================================== */
+.dashboard-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.04);
+}
+
+.dashboard-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.dashboard-subtitle {
+    font-size: 13px;
+    color: var(--text-light);
+    margin: 0;
+}
+
+/* ========================================
+   STATS GRID
+======================================== */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.stat-box {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    padding: 25px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.stat-box:hover {
+    border-color: #c6baaa;
+}
+
+.stat-box h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 34px;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+}
+
+.stat-box p {
+    margin: 0;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+}
+
+/* ========================================
+   NO DATA MESSAGE (simple, kept here)
+======================================== */
+.no-data {
+    color: var(--text-light);
+    margin-top: 15px;
+}
+
+/* ========================================
+   RESPONSIVE: MOBILE & TABLET
+======================================== */
+@media (max-width: 991px) {
+    .dashboard-wrapper {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    .sidebar {
+        overflow-x: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 12px 15px;
+        gap: 6px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .sidebar a {
+        display: inline-block;
+        padding: 8px 16px;
+        margin: 0;
+        border-left: none;
+        border-bottom: 2px solid transparent;
+        font-size: 12px;
+        white-space: nowrap;
+    }
+
+    .sidebar a:hover {
+        border-left: none;
+        border-bottom: 2px solid var(--secondary-color);
+        background: rgba(255,255,255,0.05);
+    }
+
+    .sidebar a.active {
+        border-left: none;
+        border-bottom: 2px solid var(--secondary-color);
+        background: rgba(255,255,255,0.08);
+    }
+
+    .sidebar a.logout {
+        margin-top: 0;
+        border-top: none;
+        border-bottom: 2px solid transparent;
+    }
+
+    .main-content {
+        padding: 20px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+/* Small mobile (max-width: 576px) */
+@media (max-width: 576px) {
+    .main-content {
+        padding: 15px;
+    }
+
+    .stats-grid {
+        gap: 12px;
+    }
+
+    .stat-box h3 {
+        font-size: 24px;
+    }
+
+    .dashboard-card {
+        padding: 18px;
+    }
+
+    .dashboard-title {
+        font-size: 28px;
+    }
+
+    .sidebar a {
+        padding: 6px 12px;
+        font-size: 11px;
+    }
+}
+
+/* ========================================
+   LAWYER: MANAGE SLOTS (keep - not table related)
+======================================== */
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 8px;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="time"],
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    background: var(--white);
+    font-size: 14px;
+    border-radius: 0;
+    box-shadow: none;
+}
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+.btn-submit {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+.btn-submit:hover {
+    background: #1f291f;
+}
+.slot-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    background: var(--white);
+    margin-bottom: 10px;
+}
+.slot-day {
+    font-weight: 600;
+    color: var(--primary-color);
+    min-width: 100px;
+}
+.slot-time {
+    color: var(--text-dark);
+    flex: 1;
+}
+.slot-actions a {
+    padding: 5px 12px;
+    font-size: 11px;
+    text-decoration: none;
+    margin-left: 8px;
+}
+.btn-delete {
+    background: #8b3a3a;
+    color: white;
+}
+.alert-success {
+    background: #dce9d7;
+    color: #2e5b2e;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #c5d4c5;
+}
+.alert-danger {
+    background: #f0e0e0;
+    color: #8b3a3a;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #d4c5c5;
+}
+.no-data {
+    color: var(--text-light);
+    text-align: center;
+    padding: 20px;
+}
+@media (max-width: 768px) {
+    .slot-item {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    .slot-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+    }
+}

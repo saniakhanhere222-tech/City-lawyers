@@ -1,0 +1,305 @@
+/* Profile page styles – no inline styles */
+.profile-container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+.profile-return-link {
+    text-align: start;
+    margin-left: 60px;
+}
+.profile-return-link a {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    text-decoration: none;
+}
+.profile-return-link a:hover {
+    color: var(--primary-color);
+}
+
+.profile-top-panel {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    margin-bottom: 30px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+.profile-avatar-large {
+    width: 150px;
+    background: #ebe5db;
+    border: 3px solid white;
+    outline: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    flex-shrink: 0;
+    filter: grayscale(100%);
+    transition: 0.4s;
+}
+.profile-top-panel:hover .profile-avatar-large {
+    filter: grayscale(0%);
+}
+.profile-avatar-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.profile-avatar-large i {
+    font-size: 55px;
+    color: var(--primary-color);
+}
+.profile-info {
+    flex: 1;
+}
+.profile-info h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+.profile-title {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 15px;
+}
+.profile-rating-badge {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+.profile-stars {
+    color: #c6a43f;
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+.profile-fee-badge {
+    background: var(--light-badge);
+    color: var(--dark-badge);
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.profile-contact-info {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+.profile-contact-info span {
+    font-size: 12px;
+    color: var(--text-light);
+}
+.profile-contact-info i {
+    color: var(--primary-color);
+    margin-right: 5px;
+}
+
+.profile-two-columns {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+}
+.profile-bio-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    padding: 30px;
+}
+.profile-bio-card h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+.profile-bio-content {
+    font-size: 14px;
+    line-height: 1.8;
+    color: var(--text-light);
+}
+.profile-bio-content p {
+    margin-bottom: 15px;
+}
+.profile-specialization-list {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+}
+.profile-specialization-list h3 {
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+}
+.profile-specialization-list ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.profile-specialization-list li {
+    background: var(--secondary-color);
+    padding: 6px 15px;
+    font-size: 12px;
+    color: var(--text-dark);
+}
+
+.profile-sidebar-card {
+    background: var(--primary-color);
+    margin-bottom: 30px;
+}
+.profile-sidebar-header {
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.9);
+    padding: 15px 20px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.profile-sidebar-body {
+    padding: 20px;
+}
+.profile-time-slots {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.profile-slot-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.profile-slot-day {
+    font-size: 12px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.8);
+}
+.profile-slot-time {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+}
+.profile-contact-detail {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.profile-contact-detail i {
+    width: 25px;
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+}
+.profile-contact-detail span {
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+}
+.profile-action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.profile-btn-book {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    text-align: center;
+    padding: 12px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.profile-btn-book:hover {
+    background: rgba(255,255,255,0.25);
+}
+.profile-btn-inquiry {
+    border: 1px solid rgba(255,255,255,0.2);
+    background: transparent;
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+    padding: 12px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: 0.3s;
+}
+.profile-btn-inquiry:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.profile-reviews-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    margin-top: 30px;
+}
+.profile-reviews-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 15px 20px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+.profile-review-item {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+}
+.profile-review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+.profile-review-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+.profile-review-date {
+    font-size: 10px;
+    color: var(--text-light);
+}
+.profile-review-stars {
+    margin-bottom: 8px;
+    color: #c6a43f;
+    font-size: 11px;
+}
+.profile-review-comment {
+    font-size: 12px;
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .profile-two-columns {
+        grid-template-columns: 1fr;
+    }
+}
+@media (max-width: 768px) {
+    .profile-top-panel {
+        flex-direction: column;
+        text-align: center;
+    }
+    .profile-contact-info {
+        justify-content: center;
+    }
+    .profile-rating-badge {
+        justify-content: center;
+    }
+}

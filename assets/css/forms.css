@@ -1,0 +1,36 @@
+/* =========================
+   FORMS.CSS – exact match to original input/button styles
+========================= */
+
+/* Inputs – no Bootstrap highlight, thin border */
+.form-control {
+    border-radius: 0;
+    border: 1px solid var(--border-color);
+    background: var(--white);
+    color: var(--text-dark);
+    font-size: 14px;
+    height: 42px;
+    box-shadow: none !important;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: none;
+}
+
+/* Button – luxury dark green */
+.btn-login {
+    background: var(--primary-color);
+    color: var(--white);
+    border: 1px solid var(--primary-color);
+    border-radius: 0;
+    padding: 10px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: 0.3s ease;
+}
+
+.btn-login:hover {
+    background: var(--accent-color);
+    color: var(--border-color);
+}
