@@ -1,6 +1,6 @@
 /* ========================================
    TABLES.CSS – reusable dashboard table styles
-   (filter tabs, tables, status badges, action buttons, pagination)
+   (filter tabs, tables, status badges, action buttons, pagination, filter rows)
    All colors use CSS variables – define them in :root (global.css)
 ======================================== */
 
@@ -32,6 +32,64 @@
 }
 
 /* ----------------------------------------
+   FILTER ROW (used in manage-content & manage-customers)
+---------------------------------------- */
+.filter-row {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.filter-group label {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 8px;
+}
+.filter-group select,
+.filter-group input {
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    background: var(--white);
+    font-size: 13px;
+    min-width: 150px;
+}
+.filter-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+.filter-btn:hover {
+    background: #1f291f;
+}
+.reset-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+    padding: 8px 20px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+}
+.reset-btn:hover {
+    background: #f0ebe4;
+}
+
+/* ----------------------------------------
    TABLES
 ---------------------------------------- */
 .table-wrap {
@@ -60,7 +118,7 @@
 }
 
 /* ----------------------------------------
-   STATUS BADGES (for lawyer/ appointment status)
+   STATUS BADGES (for lawyer/appointment status)
 ---------------------------------------- */
 .status-badge {
     padding: 4px 10px;
@@ -95,7 +153,7 @@
 }
 
 /* ----------------------------------------
-   ACTION BUTTONS (approve, reject, delete, etc.)
+   TEXT ACTION BUTTONS (legacy)
 ---------------------------------------- */
 .action-btn-group {
     display: flex;
@@ -132,6 +190,235 @@
 }
 
 /* ----------------------------------------
+   ICON ACTION BUTTONS (premium)
+---------------------------------------- */
+.action-icons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+}
+
+.action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: all .25s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    position: relative;
+}
+
+/* Tooltip on hover */
+.action-icon::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    background: var(--charcoal-black);
+    color: #fff;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .2s ease;
+}
+.action-icon:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+/* Approve / Confirm – Green */
+.action-icon.approve {
+    color: #2e7d32;
+}
+.action-icon.approve:hover {
+    background: rgba(46, 125, 50, 0.12);
+    transform: scale(1.1);
+    color: #1b5e20;
+}
+
+/* Reject / Cancel – Red */
+.action-icon.reject {
+    color: #c62828;
+}
+.action-icon.reject:hover {
+    background: rgba(198, 40, 40, 0.12);
+    transform: scale(1.1);
+    color: #b71c1c;
+}
+
+/* Delete – Gray */
+.action-icon.delete {
+    color: #6E766F;
+}
+.action-icon.delete:hover {
+    background: rgba(110, 118, 111, 0.12);
+    transform: scale(1.1);
+    color: #4a4f4a;
+}
+
+/* Complete – Blue */
+.action-icon.complete {
+    color: #1e4a6b;
+}
+.action-icon.complete:hover {
+    background: rgba(30, 74, 107, 0.12);
+    transform: scale(1.1);
+    color: #153a54;
+}
+
+/* Disabled / Inactive state */
+.action-icon.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* No action placeholder */
+.no-action {
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 300;
+    display: inline-block;
+    padding: 4px 8px;
+}
+
+/* ----------------------------------------
+   CHAT BUTTON – Text + Icon (Customer)
+---------------------------------------- */
+.btn-chat {
+    background: var(--accent-color);
+    border-radius: 100px;
+    box-shadow: rgba(105, 206, 47, 0.2) 0 -25px 18px -14px inset,
+                rgba(105, 206, 47, 0.15) 0 1px 2px,
+                rgba(105, 206, 47, 0.15) 0 2px 4px,
+                rgba(105, 206, 47, 0.15) 0 4px 8px,
+                rgba(105, 206, 47, 0.15) 0 8px 16px,
+                rgba(105, 206, 47, 0.15) 0 16px 32px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+}
+.btn-chat:hover {
+    box-shadow: rgba(105, 206, 47, 0.35) 0 -25px 18px -14px inset,
+                rgba(105, 206, 47, 0.25) 0 1px 2px,
+                rgba(105, 206, 47, 0.25) 0 2px 4px,
+                rgba(105, 206, 47, 0.25) 0 4px 8px,
+                rgba(105, 206, 47, 0.25) 0 8px 16px,
+                rgba(105, 206, 47, 0.25) 0 16px 32px;
+    transform: scale(1.05) rotate(-1deg);
+    color: white;
+}
+.btn-chat i {
+    font-size: 14px;
+}
+
+/* Mobile: Chat button – icon only */
+@media (max-width: 768px) {
+    .btn-chat .chat-text {
+        display: none;
+    }
+    .btn-chat {
+        padding: 10px;
+        min-width: 42px;
+        width: auto;
+        border-radius: 100px;
+        aspect-ratio: 1/1;
+        justify-content: center;
+    }
+    .btn-chat i {
+        font-size: 18px;
+        margin: 0;
+    }
+}
+@media (max-width: 480px) {
+    .btn-chat i {
+        font-size: 16px;
+    }
+    .btn-chat {
+        padding: 8px;
+        min-width: 38px;
+    }
+}
+
+/* ----------------------------------------
+   CHAT BUTTON – Icon Only (Lawyer)
+---------------------------------------- */
+.btn-chat-icon-only {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: transparent;
+    color: #69ce2f;
+    text-decoration: none;
+    transition: all .25s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    position: relative;
+}
+
+/* Tooltip on hover */
+.btn-chat-icon-only::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    background: var(--charcoal-black);
+    color: #fff;
+    font-size: 10px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .2s ease;
+}
+.btn-chat-icon-only:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+.btn-chat-icon-only:hover {
+    background: rgba(105, 206, 47, 0.12);
+    transform: scale(1.1);
+    color: #4fa822;
+}
+
+/* ----------------------------------------
    PAGINATION
 ---------------------------------------- */
 .pagination-wrap {
@@ -160,7 +447,7 @@
 }
 
 /* ----------------------------------------
-   ADDITIONAL: lawyer image thumbnail (used in tables)
+  Lawyer image thumbnail (used in tables)
 ---------------------------------------- */
 .lawyer-img-small {
     width: 40px;

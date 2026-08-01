@@ -6,7 +6,8 @@
  * for the logged‑in lawyer.
  */
 $page_title = 'Lawyer Dashboard';
-$dashboard_page = true; // triggers full‑width container in header.php
+$page_layout = 'fluid';
+$footer_css = 'dashboard';
 require_once '../includes/config.php';
 
 // ============================================================
@@ -95,62 +96,90 @@ $upcomingStmt->execute([':lawyer_id' => $lawyer_id]);
 $upcoming = $upcomingStmt->fetchAll(PDO::FETCH_ASSOC);
 
 // ============================================================
-// 6. Include header (global.css, dashboard.css, etc.)
+// 6. Include header
 // ============================================================
 include '../includes/header.php';
 ?>
 
-<<!-- DASHBOARD.CSS  Desktop: CSS Grid layout (sidebar fixed width, main auto)- 
- Mobile: horizontal navigation strip 
- - Cards, stats grid, layout only -->
-<link rel="stylesheet" href="<?php echo BASE_URL;?>assets/css/dashboard.css">
-<!---TABLES.CSS – reusable dashboard table styles
-   (filter tabs, tables, status badges, action buttons, pagination) -->
+<!-- ============================================================
+     CSS FILES
+     dashboard.css – layout + cards + stats grid
+     tables.css – table styles, badges
+     sidebar.css – collapsible sidebar
+     ============================================================ -->
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/dashboard.css">
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/tables.css">
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/sidebar.css">
 
 <div class="dashboard-wrapper">
 
     <!-- SIDEBAR -->
-    <div class="sidebar">
-        <a href="<?php echo BASE_URL; ?>">Home</a>
-        <a href="<?php echo BASE_URL; ?>lawyer/index.php" class="active">Dashboard</a>
-        <a href="<?php echo BASE_URL; ?>lawyer/appointments.php">My Appointments</a>
-        <a href="<?php echo BASE_URL; ?>lawyer/manage-slots.php">Manage Slots</a>
-        <a href="<?php echo BASE_URL; ?>lawyer/profile.php">Profile</a>
-        <a href="<?php echo BASE_URL; ?>logout.php" class="logout">Logout</a>
-    </div>
+    <?php include '../includes/dashboard-sidebar.php'; ?>
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
 
-        <!-- WELCOME CARD -->
+        <!-- ============================================================
+             WELCOME CARD
+             ============================================================ -->
         <div class="dashboard-card">
             <h2 class="dashboard-title">Welcome, Adv. <?php echo htmlspecialchars($lawyer_name); ?>!</h2>
             <p class="dashboard-subtitle">Manage your appointments and availability.</p>
         </div>
 
-        <!-- STATISTICS GRID -->
+        <!-- ============================================================
+             STATISTICS GRID – 4 columns with icons + trends
+             ============================================================ -->
         <div class="stats-grid">
+
+            <!-- Total Appointments -->
             <div class="stat-box">
+                <span class="stat-icon"><i class="fas fa-calendar-check"></i></span>
                 <h3><?php echo $total; ?></h3>
                 <p>Total Appointments</p>
+                <div class="stat-trend up">
+                    <i class="fas fa-arrow-up"></i> 12%
+                </div>
             </div>
+
+            <!-- Pending Appointments -->
             <div class="stat-box">
+                <span class="stat-icon"><i class="fas fa-clock"></i></span>
                 <h3><?php echo $pending; ?></h3>
                 <p>Pending</p>
+                <div class="stat-trend down">
+                    <i class="fas fa-arrow-down"></i> 5%
+                </div>
             </div>
+
+            <!-- Confirmed Appointments -->
             <div class="stat-box">
+                <span class="stat-icon"><i class="fas fa-check-circle"></i></span>
                 <h3><?php echo $confirmed; ?></h3>
                 <p>Confirmed</p>
+                <div class="stat-trend up">
+                    <i class="fas fa-arrow-up"></i> 8%
+                </div>
             </div>
+
+            <!-- Today's Earnings -->
             <div class="stat-box">
+                <span class="stat-icon"><i class="fas fa-money-bill-wave"></i></span>
                 <h3><?php echo number_format($today_earnings); ?> PKR</h3>
-                <p>Today's Earnings</p>
+                <p>Today's Earnings </p>
                 <div class="small">from completed appointments</div>
+                
+                <div class="stat-trend up">
+                    <i class="fas fa-arrow-up"></i> 15%
+                </div>
+                
             </div>
+
         </div>
 
-        <!-- TODAY'S APPOINTMENTS -->
+        <!-- ============================================================
+             TODAY'S APPOINTMENTS
+             ============================================================ -->
         <div class="dashboard-card">
             <h3 class="dashboard-title" style="font-size:28px;">Today's Appointments</h3>
 
@@ -177,9 +206,21 @@ include '../includes/header.php';
                                     </td>
                                     <td class="action-btn-group">
                                         <?php if ($row['status'] == 'pending'): ?>
-                                            <a href="appointments.php?confirm=<?php echo $row['id']; ?>" class="action-btn btn-approve" onclick="return confirm('Confirm this appointment?')">Confirm</a>
+                                             <!-- Confirm – Green checkmark -->
+                                             <a href="appointments.php?confirm=<?php echo $row['id']; ?>" 
+                                                class="action-icon approve" 
+                                                data-tooltip="Confirm"
+                                                onclick="return confirm('Confirm this appointment?')">
+                                                 <i class="fas fa-check-circle"></i>
+                                             </a>
                                         <?php elseif ($row['status'] == 'confirmed'): ?>
-                                            <a href="appointments.php?complete=<?php echo $row['id']; ?>" class="action-btn btn-approve" onclick="return confirm('Mark as completed?')">Complete</a>
+                                           <!-- Complete – Blue double-check -->
+                                             <a href="appointments.php?complete=<?php echo $row['id']; ?>" 
+                                                class="action-icon complete" 
+                                                data-tooltip="Complete"
+                                                onclick="return confirm('Mark as completed?')">
+                                                 <i class="fas fa-check-double"></i>
+                                             </a>
                                         <?php else: ?>
                                             —
                                         <?php endif; ?>
@@ -194,7 +235,9 @@ include '../includes/header.php';
             <?php endif; ?>
         </div>
 
-        <!-- UPCOMING APPOINTMENTS -->
+        <!-- ============================================================
+             UPCOMING APPOINTMENTS
+             ============================================================ -->
         <div class="dashboard-card">
             <h3 class="dashboard-title" style="font-size:28px;">Upcoming Appointments</h3>
 
@@ -221,15 +264,36 @@ include '../includes/header.php';
                                             <?php echo ucfirst($row['status']); ?>
                                         </span>
                                     </td>
-                                    <td class="action-btn-group">
-                                        <?php if ($row['status'] == 'pending'): ?>
-                                            <a href="appointments.php?confirm=<?php echo $row['id']; ?>" class="action-btn btn-approve" onclick="return confirm('Confirm this appointment?')">Confirm</a>
-                                        <?php elseif ($row['status'] == 'confirmed'): ?>
-                                            <a href="appointments.php?complete=<?php echo $row['id']; ?>" class="action-btn btn-approve" onclick="return confirm('Mark as completed?')">Complete</a>
-                                        <?php else: ?>
-                                            —
-                                        <?php endif; ?>
-                                    </td>
+                                    <td class="action-btn-group" >
+                                     <div class="action-icons ">
+                                         <?php if ($row['status'] == 'pending'): ?>
+                                             <!-- Confirm – Green checkmark -->
+                                             <a href="appointments.php?confirm=<?php echo $row['id']; ?>" 
+                                                class="action-icon approve" 
+                                                data-tooltip="Confirm"
+                                                onclick="return confirm('Confirm this appointment?')">
+                                                 <i class="fas fa-check-circle"></i>
+                                             </a>
+                                               <!-- Cancel – Red -->
+                                              <a href="appointments.php?cancel=<?php echo $row['id']; ?>" 
+                                                 class="action-icon reject" 
+                                                 data-tooltip="Cancel"
+                                                 onclick="return confirm('Cancel this appointment?')">
+                                                  <i class="fas fa-times-circle"></i>
+                                              </a>
+                                         <?php elseif ($row['status'] == 'confirmed'): ?>
+                                             <!-- Complete – Blue double-check -->
+                                             <a href="appointments.php?complete=<?php echo $row['id']; ?>" 
+                                                class="action-icon complete" 
+                                                data-tooltip="Complete"
+                                                onclick="return confirm('Mark as completed?')">
+                                                 <i class="fas fa-check-double"></i>
+                                             </a>
+                                         <?php else: ?>
+                                             <span class="no-action">—</span>
+                                         <?php endif; ?>
+                                     </div>
+                                 </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -240,7 +304,7 @@ include '../includes/header.php';
             <?php endif; ?>
         </div>
 
-    </div>
-</div>
+    </div><!-- /main-content -->
+</div><!-- /dashboard-wrapper -->
 
-<?php include '../includes/footer.php'; ?>
+<?php include '../includes/dashboard-footer.php'; ?>

@@ -3,7 +3,9 @@
 // Registration Page – Customer / Lawyer
 // ============================================================
 $page_title = 'Create Your Account';
+$footer_css = 'dashboard'; // loads specific dashboard-footer.php css (dasboard-footer.css)
 require_once 'includes/config.php';
+$page_layout= 'fluid';
 
 // ============================================================
 // Determine which form to show (customer or lawyer)
@@ -11,6 +13,19 @@ require_once 'includes/config.php';
 $show_form = $_GET['type'] ?? 'customer';
 $error = '';
 $success = '';
+
+// ============================================================
+// FETCH CATEGORIES FOR LAWYER REGISTRATION DROPDOWN
+// ============================================================
+$categories = [];
+$catStmt = $conn->prepare("SELECT name FROM categories WHERE status = 'active' ORDER BY order_by ASC, name ASC");
+$catStmt->execute();
+$categories = $catStmt->fetchAll(PDO::FETCH_COLUMN);
+
+// If no categories found, fallback to hardcoded list
+if (empty($categories)) {
+    $categories = ['Criminal', 'Divorce', 'Affidavit', 'Civil'];
+}
 
 // ============================================================
 // CUSTOMER REGISTRATION
@@ -91,8 +106,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['form_type'] == 'lawyer') {
             }
 
             if (!$error) {
-                $stmt = $conn->prepare("INSERT INTO lawyers (name, email, password, phone, city, specialization, gender, experience, fees, bio, profile_pic, core_specialization, academic_credentials, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', NOW())");
+                $stmt = $conn->prepare("INSERT INTO lawyers (name, email, password, phone, city, specialization, gender, experience, fees, bio, profile_pic, core_specialization, academic_credentials, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending', NOW())");
                 if ($stmt->execute([$name, $email, $hashed, $phone, $city, $specialization, $gender, $experience, $fees, $bio, $profile_pic, $core_specialization, $academic_credentials])) {
+                    
+                    // ✅ Send notification to ALL admins about new lawyer registration
+                    $adminStmt = $conn->prepare("SELECT id FROM admins");
+                    $adminStmt->execute();
+                    $admins = $adminStmt->fetchAll(PDO::FETCH_ASSOC);
+                    
+                    foreach ($admins as $admin) {
+                        addNotification(
+                            $admin['id'],
+                            'admin',
+                            'new_lawyer',
+                            'New Lawyer Registration',
+                            "New lawyer $name has registered and is pending approval.",
+                            'manage-lawyers.php',  // ✅ Relative to admin folder
+                            'fa-user-plus'
+                        );
+                    }
+                    
                     $success = "Registration successful! Awaiting admin approval.";
                 } else {
                     $error = "Registration failed. Please try again.";
@@ -108,93 +141,115 @@ include 'includes/header.php';
 <!-- Load register.css for this page only -->
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/register.css">
 
-<!-- Background layers (styled in register.css) -->
-<div class="register-bg"></div>
-<div class="register-overlay"></div>
+<div class="register-bg">
+    <div class="register-overlay">
+        <div class="register-wrapper">
+            <!-- Sidebar -->
+            <aside class="register-sidebar">
+                <div class="brand">
+                    <h2>Select Identity</h2>
+                    <p>Choose one below to create your account</p>
+                </div>
+                <div class="role-buttons">
+                    <a href="?type=customer"
+                       class="role-btn <?php echo ($show_form == 'customer') ? 'active' : ''; ?>">
+                        Client
+                    </a>
+                    <a href="?type=lawyer"
+                       class="role-btn <?php echo ($show_form == 'lawyer') ? 'active' : ''; ?>">
+                        Lawyer
+                    </a>
+                </div>
+            </aside>
+            <!-- End Sidebar -->
+            
+            <!-- Registration Form Area -->
+            <section class="register-form-area">
+                <div class="form-box">
+                    <h1 class="form-title">
+                        Create an Account
+                    </h1>
 
-<div class="register-wrapper">
+                    <?php if ($error): ?>
+                        <div class="alert alert-danger">
+                            <?php echo htmlspecialchars($error); ?>
+                        </div>
+                    <?php endif; ?>
 
-    <!-- Sidebar with role selection -->
-    <div class="register-sidebar">
-        <div class="brand">
-            <h2>Select Identity</h2>
-            <p>Choose one below to create account</p>
-            <div class="role-buttons">
-                <a href="?type=customer" class="role-btn <?php echo $show_form == 'customer' ? 'active' : ''; ?>">Client</a>
-                <a href="?type=lawyer" class="role-btn <?php echo $show_form == 'lawyer' ? 'active' : ''; ?>">Lawyer</a>
-            </div>
-        </div>
-    </div>
+                    <?php if ($success): ?>
+                        <div class="alert alert-success">
+                            <?php echo htmlspecialchars($success); ?>
+                        </div>
+                    <?php endif; ?>
 
-    <!-- Registration Form Area -->
-    <div class="register-form-area">
-        <div class="form-box">
+                    <?php if ($show_form == 'customer'): ?>
 
-            <div class="form-title">Create an Account</div>
+                        <!-- Customer Registration -->
+                        <form method="POST">
+                            <input type="hidden" name="form_type" value="customer">
 
-            <?php if ($error): ?>
-                <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
-            <?php endif; ?>
+                            <div class="form-grid">
+                                <input type="text" name="name" class="form-control" placeholder="Full Name" required>
+                                <input type="email" name="email" class="form-control" placeholder="Email" required>
+                                <input type="password" name="password" class="form-control" placeholder="Password" required>
+                                <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password" required>
+                                <input type="text" name="city" class="form-control" placeholder="City">
+                                <input type="text" name="phone" class="form-control" placeholder="Phone">
+                                <textarea name="address" class="form-control form-full" placeholder="Address"></textarea>
+                            </div>
 
-            <?php if ($success): ?>
-                <div class="alert alert-success"><?php echo htmlspecialchars($success); ?></div>
-            <?php endif; ?>
+                            <button type="submit" class="submit-btn">
+                                Create Account
+                            </button>
+                        </form>
 
-            <?php if ($show_form == 'customer'): ?>
-                <!-- Customer Registration Form -->
-                <form method="POST">
-                    <input type="hidden" name="form_type" value="customer">
-                    <div class="form-grid">
-                        <input type="text" name="name" class="form-control" placeholder="Full Name" required>
-                        <input type="email" name="email" class="form-control" placeholder="Email" required>
-                        <input type="password" name="password" class="form-control" placeholder="Password" required>
-                        <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password" required>
-                        <input type="text" name="city" class="form-control" placeholder="City">
-                        <input type="text" name="phone" class="form-control" placeholder="Phone">
-                        <textarea name="address" class="form-control form-full" placeholder="Address"></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Submit</button>
-                </form>
-            <?php else: ?>
-                <!-- Lawyer Registration Form (with file upload) -->
-<form method="POST" enctype="multipart/form-data">
-    <input type="hidden" name="form_type" value="lawyer">
-    <div class="form-grid">
-        <input type="text" name="name" class="form-control" placeholder="Full Name" required>
-        <input type="email" name="email" class="form-control" placeholder="Email" required>
-        <input type="password" name="password" class="form-control" placeholder="Password" required>
-        <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password" required>
-        <input type="text" name="city" class="form-control" placeholder="City">
-        <input type="text" name="phone" class="form-control" placeholder="Phone">
-        <select name="specialization" class="form-control" required>
-            <option value="Criminal">Criminal</option>
-            <option value="Divorce">Divorce</option>
-            <option value="Affidavit">Affidavit</option>
-            <option value="Civil">Civil</option>
-        </select>
-        <select name="gender" class="form-control">
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="other">Other</option>
-        </select>
-        <input type="number" name="experience" class="form-control" placeholder="Experience (years)">
-        <input type="number" name="fees" class="form-control" placeholder="Fees (PKR)">
-        <textarea name="bio" class="form-control form-full" placeholder="Bio / About yourself"></textarea>
+                    <?php else: ?>
 
-        <!-- NEW FIELDS for core specializations and academic credentials -->
-        <input type="text" name="core_specialization" class="form-control form-full" 
-               placeholder="Core Specializations (comma separated, e.g., Criminal Defense, Bail, Appeals)">
-        <textarea name="academic_credentials" class="form-control form-full" 
-                  placeholder="Academic Credentials (comma separated, e.g., LL.B from Punjab University, LL.M from Harvard)"></textarea>
+                        <!-- Lawyer Registration - DYNAMIC SPECIALIZATION DROPDOWN -->
+                        <form method="POST" enctype="multipart/form-data">
+                            <input type="hidden" name="form_type" value="lawyer">
 
-        <input type="file" name="profile_pic" class="form-control form-full" accept="image/*">
-    </div>
-    <button type="submit" class="submit-btn">Submit</button>
-</form>
-            <?php endif; ?>
+                            <div class="form-grid">
+                                <input type="text" name="name" class="form-control" placeholder="Full Name" required>
+                                <input type="email" name="email" class="form-control" placeholder="Email" required>
+                                <input type="password" name="password" class="form-control" placeholder="Password" required>
+                                <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password" required>
+                                <input type="text" name="city" class="form-control" placeholder="City">
+                                <input type="text" name="phone" class="form-control" placeholder="Phone">
+                                
+                                <!-- DYNAMIC SPECIALIZATION DROPDOWN -->
+                                <select name="specialization" class="form-control" required>
+                                    <option value="">Select Specialization</option> 
+                                    <?php foreach ($categories as $cat): ?>
+                                        <option value="<?php echo htmlspecialchars($cat); ?>">
+                                            <?php echo htmlspecialchars($cat); ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                                
+                                <select name="gender" class="form-control">
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <input type="number" name="experience" class="form-control" placeholder="Experience (years)">
+                                <input type="number" name="fees" class="form-control" placeholder="Fees (PKR)">
+                                <textarea name="bio" class="form-control form-full" placeholder="Bio / About yourself"></textarea>
+                                <input type="text" name="core_specialization" class="form-control form-full" placeholder="Core Specializations (comma separated)">
+                                <textarea name="academic_credentials" class="form-control form-full" placeholder="Academic Credentials (comma separated)"></textarea>
+                                <input type="file" name="profile_pic" class="form-control form-full" accept="image/*">
+                            </div>
 
-        </div>
-    </div>
-</div>
+                            <button type="submit" class="submit-btn">
+                                Create Account
+                            </button>
+                        </form>
 
-<?php include 'includes/footer.php'; ?>
+                    <?php endif; ?>
+                </div>
+            </section>
+        </div>  <!-- End wrapper -->
+    </div><!--end overlay-->
+</div><!--end bg -->
+
+<?php include 'includes/dashboard-footer.php'; ?>

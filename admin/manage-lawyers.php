@@ -4,7 +4,8 @@
 // Approve, reject, delete lawyer accounts
 // ============================================================
 $page_title = 'Manage Lawyers';
-$dashboard_page = true; // to dynamically change container class (used in header.php)
+$page_layout = 'fluid';
+$footer_css = 'dashboard';
 require_once '../includes/config.php';
 
 // Redirect if not logged in as admin
@@ -12,6 +13,11 @@ if (!isset($_SESSION['admin_id']) || $_SESSION['user_type'] != 'admin') {
     header("Location: login.php");
     exit();
 }
+
+// Set sidebar variables
+$user_type = 'admin';
+$user_name = $_SESSION['admin_name'];
+$dashboard_link = BASE_URL . 'admin/index.php';
 
 // ============================================================
 // 1. Handle Approve / Reject / Delete actions
@@ -28,10 +34,15 @@ if (isset($_GET['approve'])) {
     $nameStmt->execute([$lawyer_id]);
     $lawyer = $nameStmt->fetch(PDO::FETCH_ASSOC);
     if ($lawyer) {
-        $title   = "Profile Approved";
-        $message = "Dear " . $lawyer['name'] . ", your lawyer profile has been approved. You can now login and start accepting appointments.";
-        $notifStmt = $conn->prepare("INSERT INTO notifications (user_id, user_type, title, message, is_read, created_at) VALUES (?, 'lawyer', ?, ?, 0, NOW())");
-        $notifStmt->execute([$lawyer_id, $title, $message]);
+        addNotification(
+            $lawyer_id,
+            'lawyer',
+            'approved',
+            'Profile Approved',
+            "Dear " . $lawyer['name'] . ", your lawyer profile has been approved. You can now login and start accepting appointments.",
+            'profile.php',
+            'fa-check-circle'
+        );
     }
 
     header("Location: manage-lawyers.php");
@@ -49,10 +60,15 @@ if (isset($_GET['reject'])) {
     $nameStmt->execute([$lawyer_id]);
     $lawyer = $nameStmt->fetch(PDO::FETCH_ASSOC);
     if ($lawyer) {
-        $title   = "Profile Update Required";
-        $message = "Dear " . $lawyer['name'] . ", your lawyer profile requires changes. Please contact admin for more information.";
-        $notifStmt = $conn->prepare("INSERT INTO notifications (user_id, user_type, title, message, is_read, created_at) VALUES (?, 'lawyer', ?, ?, 0, NOW())");
-        $notifStmt->execute([$lawyer_id, $title, $message]);
+        addNotification(
+            $lawyer_id,
+            'lawyer',
+            'rejected',
+            'Profile Update Required',
+            "Dear " . $lawyer['name'] . ", your lawyer profile requires changes. Please contact admin for more information.",
+            'profile.php',
+            'fa-times-circle'
+        );
     }
 
     header("Location: manage-lawyers.php");
@@ -63,7 +79,7 @@ if (isset($_GET['reject'])) {
 if (isset($_GET['delete'])) {
     $lawyer_id = (int)$_GET['delete'];
 
-    // Get profile picture to delete file (FIXED path)
+    // Get profile picture to delete file
     $picStmt = $conn->prepare("SELECT profile_pic FROM lawyers WHERE id = ?");
     $picStmt->execute([$lawyer_id]);
     $lawyer = $picStmt->fetch(PDO::FETCH_ASSOC);
@@ -119,21 +135,16 @@ $lawyers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 include '../includes/header.php';
 ?>
 
+<!-- CSS: dashboard + tables + sidebar -->
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/dashboard.css">
-<!---TABLES.CSS – reusable dashboard table styles
-   (filter tabs, tables, status badges, action buttons, pagination) -->
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/tables.css">
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/sidebar.css">
+
+
 
 <div class="dashboard-wrapper">
 
-    <div class="sidebar">
-        <a href="<?php echo BASE_URL; ?>">Home</a>
-        <a href="<?php echo BASE_URL; ?>admin/index.php">Dashboard</a>
-        <a href="<?php echo BASE_URL; ?>admin/manage-lawyers.php" class="active">Manage Lawyers</a>
-        <a href="<?php echo BASE_URL; ?>admin/manage-appointments.php">Appointments</a>
-        <a href="<?php echo BASE_URL; ?>admin/manage-content.php">Homepage</a>
-        <a href="<?php echo BASE_URL; ?>logout.php" class="logout">Logout</a>
-    </div>
+    <?php include '../includes/dashboard-sidebar.php'; ?>
 
     <div class="main-content">
 
@@ -187,16 +198,50 @@ include '../includes/header.php';
                                         <?php echo ucfirst($row['status']); ?>
                                     </span>
                                 </td>
-                                <td class="action-btn-group">
-                                    <?php if ($row['status'] == 'pending'): ?>
-                                        <a href="?approve=<?php echo $row['id']; ?>" class="action-btn btn-approve" onclick="return confirm('Approve this lawyer?')">Approve</a>
-                                        <a href="?reject=<?php echo $row['id']; ?>" class="action-btn btn-reject" onclick="return confirm('Reject this lawyer?')">Reject</a>
-                                    <?php elseif ($row['status'] == 'approved'): ?>
-                                        <a href="?reject=<?php echo $row['id']; ?>" class="action-btn btn-reject" onclick="return confirm('Reject this lawyer?')">Reject</a>
-                                    <?php elseif ($row['status'] == 'rejected'): ?>
-                                        <a href="?approve=<?php echo $row['id']; ?>" class="action-btn btn-approve" onclick="return confirm('Approve this lawyer?')">Approve</a>
-                                    <?php endif; ?>
-                                    <a href="?delete=<?php echo $row['id']; ?>" class="action-btn btn-delete" onclick="return confirm('Delete this lawyer permanently?')">Delete</a>
+                                <td>
+                                    <div class="action-icons">
+                                        <?php if ($row['status'] == 'pending'): ?>
+                                            <!-- Approve + Reject for pending -->
+                                            <a href="?approve=<?php echo $row['id']; ?>" 
+                                               class="action-icon approve" 
+                                               data-tooltip="Approve"
+                                               onclick="return confirm('Approve this lawyer?')">
+                                                <i class="fas fa-check-circle"></i>
+                                            </a>
+                                            <a href="?reject=<?php echo $row['id']; ?>" 
+                                               class="action-icon reject" 
+                                               data-tooltip="Reject"
+                                               onclick="return confirm('Reject this lawyer?')">
+                                                <i class="fas fa-times-circle"></i>
+                                            </a>
+
+                                        <?php elseif ($row['status'] == 'approved'): ?>
+                                            <!-- Only Reject for approved (plus Delete) -->
+                                            <a href="?reject=<?php echo $row['id']; ?>" 
+                                               class="action-icon reject" 
+                                               data-tooltip="Reject"
+                                               onclick="return confirm('Reject this lawyer?')">
+                                                <i class="fas fa-times-circle"></i>
+                                            </a>
+
+                                        <?php elseif ($row['status'] == 'rejected'): ?>
+                                            <!-- Only Approve for rejected (plus Delete) -->
+                                            <a href="?approve=<?php echo $row['id']; ?>" 
+                                               class="action-icon approve" 
+                                               data-tooltip="Approve"
+                                               onclick="return confirm('Approve this lawyer?')">
+                                                <i class="fas fa-check-circle"></i>
+                                            </a>
+                                        <?php endif; ?>
+
+                                        <!-- Delete – always visible -->
+                                        <a href="?delete=<?php echo $row['id']; ?>" 
+                                           class="action-icon delete" 
+                                           data-tooltip="Delete"
+                                           onclick="return confirm('Delete this lawyer permanently?')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -226,4 +271,4 @@ include '../includes/header.php';
     </div>
 </div>
 
-<?php include '../includes/footer.php'; ?>
+<?php include '../includes/dashboard-footer.php'; ?>

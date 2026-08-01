@@ -1,8 +1,10 @@
 /* Profile page styles – no inline styles */
+
 .profile-container {
     max-width: 1000px;
     margin: 30px auto;
     padding: 0 20px;
+    
 }
 
 .profile-return-link {
@@ -21,7 +23,7 @@
 }
 
 .profile-top-panel {
-    background: var(--white);
+    background: var(--surface-color);
     border: 1px solid var(--border-color);
     padding: 10px;
     margin-bottom: 30px;
@@ -29,11 +31,13 @@
     align-items: center;
     gap: 30px;
     flex-wrap: wrap;
+    border-radius: 14px;
+    box-shadow: var(--shadow-lg);
 }
 .profile-avatar-large {
     width: 150px;
     background: #ebe5db;
-    border: 3px solid white;
+    border: var(--border-soft);
     outline: 1px solid var(--border-color);
     display: flex;
     align-items: center;
@@ -42,6 +46,7 @@
     flex-shrink: 0;
     filter: grayscale(100%);
     transition: 0.4s;
+    border-radius: 4px;
 }
 .profile-top-panel:hover .profile-avatar-large {
     filter: grayscale(0%);
@@ -110,8 +115,10 @@
     gap: 30px;
 }
 .profile-bio-card {
-    background: var(--white);
+    background: var(--surface-color);
     border: 1px solid var(--border-color);
+    border-radius: 14px;
+    box-shadow: var(--shadow-lg);
     padding: 30px;
 }
 .profile-bio-card h2 {

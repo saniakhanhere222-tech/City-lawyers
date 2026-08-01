@@ -3,7 +3,8 @@
  * Lawyer - Manage Time Slots (standalone)
  */
 $page_title = 'Manage Slots';
-$dashboard_page = true;
+$page_layout= 'fluid'; //set in header.php 
+$footer_css = 'dashboard'; // loads specific dashboard-footer.php css (dasboard-footer.css)
 require_once '../includes/config.php';
 
 if (!isset($_SESSION['lawyer_id']) || $_SESSION['user_type'] != 'lawyer') {
@@ -71,16 +72,14 @@ include '../includes/header.php';
 <!---TABLES.CSS – reusable dashboard table styles
    (filter tabs, tables, status badges, action buttons, pagination) -->
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/tables.css">
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/sidebar.css">
+
 
 <div class="dashboard-wrapper">
-    <div class="sidebar">
-        <a href="<?php echo BASE_URL; ?>">Home</a>
-        <a href="<?php echo BASE_URL; ?>lawyer/index.php">Dashboard</a>
-        <a href="<?php echo BASE_URL; ?>lawyer/appointments.php">My Appointments</a>
-        <a href="<?php echo BASE_URL; ?>lawyer/manage-slots.php" class="active">Manage Slots</a>
-        <a href="<?php echo BASE_URL; ?>lawyer/profile.php">Profile</a>
-        <a href="<?php echo BASE_URL; ?>logout.php" class="logout">Logout</a>
-    </div>
+    
+<!-- SIDEBAR -->
+    <?php include '../includes/dashboard-sidebar.php'; ?>
+
 
     <div class="main-content">
         <div class="dashboard-card">
@@ -145,4 +144,4 @@ include '../includes/header.php';
     </div>
 </div>
 
-<?php include '../includes/footer.php'; ?>
+<?php include '../includes/dashboard-footer.php'; ?>

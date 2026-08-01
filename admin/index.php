@@ -1,13 +1,23 @@
 <?php
 // ============================================================
-// Admin Dashboard
+// ADMIN DASHBOARD – Homepage for the Admin Panel
 // ============================================================
+// This page displays:
+// 1. Welcome message for the logged‑in admin
+// 2. Statistics (lawyers, customers, appointments) in two rows of four
+// 3. A table of pending lawyer approvals (limit 5)
+// 4. Uses reusable sidebar (with sidebar.css),
+//  dashboard-footer that loads conditionlly from header.php where $footer_css = 'dashboard';
+//  and CSS from dashboard.css/tables.css 
+// ============================================================
+
 $page_title = 'Admin Dashboard';
-$dashboard_page = true; // triggers full‑width container in header.php
+$page_layout = 'fluid'; //set on all dashboard pages for full width set in header.php
+$footer_css = 'dashboard';
 require_once '../includes/config.php';
 
 // ============================================================
-// 1. Redirect if not logged in as admin
+// 1. AUTHENTICATION – Ensure only logged‑in admins can access
 // ============================================================
 if (!isset($_SESSION['admin_id']) || $_SESSION['user_type'] != 'admin') {
     header("Location: login.php");
@@ -17,7 +27,7 @@ if (!isset($_SESSION['admin_id']) || $_SESSION['user_type'] != 'admin') {
 $admin_name = $_SESSION['admin_name'];
 
 // ============================================================
-// 2. Get statistics using PDO
+// 2. STATISTICS – Fetch all counts using PDO prepared statements
 // ============================================================
 
 // Total lawyers
@@ -61,36 +71,40 @@ $stmt->execute();
 $completed_appointments = $stmt->fetch(PDO::FETCH_ASSOC)['count'];
 
 // ============================================================
-// 3. Get recent pending lawyers (limit 5)
+// 3. RECENT PENDING LAWYERS – Show latest 5 pending approvals
 // ============================================================
-$recentStmt = $conn->prepare("SELECT id, name, email, specialization, city, created_at FROM lawyers WHERE status = 'pending' ORDER BY created_at DESC LIMIT 5");
+$recentStmt = $conn->prepare("
+    SELECT id, name, email, specialization, city, created_at
+    FROM lawyers
+    WHERE status = 'pending'
+    ORDER BY created_at DESC
+    LIMIT 5
+");
 $recentStmt->execute();
 $recent_pending = $recentStmt->fetchAll(PDO::FETCH_ASSOC);
 
 // ============================================================
-// 4. Include header (global.css, dashboard.css, etc.)
+// 4. INCLUDE HEADER – Loads global styles + navbar
 // ============================================================
 include '../includes/header.php';
 ?>
 
-<!-- DASHBOARD.CSS  Desktop: CSS Grid layout (sidebar fixed width, main auto)- 
- Mobile: horizontal navigation strip 
- - Cards, stats grid, layout only -->
-<link rel="stylesheet" href="<?php echo BASE_URL;?>assets/css/dashboard.css">
-<!---TABLES.CSS – reusable dashboard table styles
-   (filter tabs, tables, status badges, action buttons, pagination) -->
+
+
+<!-- ============================================================
+     CSS FILES – Loaded in order
+     ============================================================ -->
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/dashboard.css">
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/tables.css">
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/sidebar.css">
+
+<!-- ============================================================
+     DASHBOARD LAYOUT – Grid wrapper with sidebar + main content
+     ============================================================ -->
 <div class="dashboard-wrapper">
 
     <!-- SIDEBAR -->
-    <div class="sidebar">
-        <a href="<?php echo BASE_URL; ?>">Home</a>
-        <a href="<?php echo BASE_URL; ?>admin/index.php" class="active">Dashboard</a>
-        <a href="<?php echo BASE_URL; ?>admin/manage-lawyers.php">Manage Lawyers</a>
-        <a href="<?php echo BASE_URL; ?>admin/manage-appointments.php">Appointments</a>
-        <a href="<?php echo BASE_URL; ?>admin/manage-content.php">Homepage</a>
-        <a href="<?php echo BASE_URL; ?>logout.php" class="logout">Logout</a>
-    </div>
+    <?php include '../includes/dashboard-sidebar.php'; ?>
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
@@ -101,47 +115,107 @@ include '../includes/header.php';
             <p class="dashboard-subtitle">Manage lawyers, appointments, and website content.</p>
         </div>
 
-        <!-- FIRST STATS ROW -->
+        <!-- ============================================================
+             FIRST STATS ROW – 4 columns with icons + trends (trends are not dynamic)
+             ============================================================ -->
         <div class="stats-grid">
+            <!-- Total Lawyers -->
             <div class="stat-box">
+                <span class="stat-icon"><i class="fas fa-gavel"></i></span>
+                  <p>Total Lawyers</p>
                 <h3><?php echo $total_lawyers; ?></h3>
-                <p>Total Lawyers</p>
+              
+                <div class="stat-trend up">
+                    <i class="fas fa-arrow-up"></i> 12%
+                </div>
             </div>
+
+            <!-- Pending Approvals -->
             <div class="stat-box">
-                <h3><?php echo $pending_lawyers; ?></h3>
+                <span class="stat-icon"><i class="fas fa-clock"></i></span>
                 <p>Pending Approvals</p>
+                <h3><?php echo $pending_lawyers; ?></h3>
+                
+                <div class="stat-trend down">
+                    <i class="fas fa-arrow-down"></i> 5%
+                </div>
             </div>
+
+            <!-- Total Clients -->
             <div class="stat-box">
-                <h3><?php echo $total_customers; ?></h3>
+                <span class="stat-icon"><i class="fas fa-users"></i></span>
                 <p>Total Clients</p>
+                <h3><?php echo $total_customers; ?></h3>
+                
+                <div class="stat-trend up">
+                    <i class="fas fa-arrow-up"></i> 8%
+                </div>
             </div>
+
+            <!-- Total Appointments -->
             <div class="stat-box">
-                <h3><?php echo $total_appointments; ?></h3>
+                <span class="stat-icon"><i class="fas fa-calendar-check"></i></span>
                 <p>Total Appointments</p>
+                <h3><?php echo $total_appointments; ?></h3>
+                
+                <div class="stat-trend up">
+                    <i class="fas fa-arrow-up"></i> 15%
+                </div>
             </div>
         </div>
 
-        <!-- SECOND STATS ROW -->
+        <!-- ============================================================
+             SECOND STATS ROW – 4 columns with icons + trends
+             ============================================================ -->
         <div class="stats-grid">
+            <!-- Approved Lawyers -->
             <div class="stat-box">
-                <h3><?php echo $approved_lawyers; ?></h3>
+                <span class="stat-icon"><i class="fas fa-check-circle"></i></span>
                 <p>Approved Lawyers</p>
+                <h3><?php echo $approved_lawyers; ?></h3>
+                
+                <div class="stat-trend up">
+                    <i class="fas fa-arrow-up"></i> 10%
+                </div>
             </div>
+
+            <!-- Rejected Lawyers -->
             <div class="stat-box">
-                <h3><?php echo $rejected_lawyers; ?></h3>
+                <span class="stat-icon"><i class="fas fa-times-circle"></i></span>
                 <p>Rejected Lawyers</p>
+                <h3><?php echo $rejected_lawyers; ?></h3>
+                
+                <div class="stat-trend neutral">
+                    <i class="fas fa-minus"></i> 0%
+                </div>
             </div>
+
+            <!-- Pending Appointments -->
             <div class="stat-box">
+                <span class="stat-icon"><i class="fas fa-hourglass-half"></i></span>
+                 <p>Pending Appointments</p>
                 <h3><?php echo $pending_appointments; ?></h3>
-                <p>Pending Appointments</p>
+               
+                <div class="stat-trend down">
+                    <i class="fas fa-arrow-down"></i> 3%
+                </div>
             </div>
+
+            <!-- Completed Appointments -->
             <div class="stat-box">
+                <span class="stat-icon"><i class="fas fa-check-double"></i></span>
+                 <p>Completed Appointments</p>
                 <h3><?php echo $completed_appointments; ?></h3>
-                <p>Completed Appointments</p>
+               
+                <div class="stat-trend up">
+                    <i class="fas fa-arrow-up"></i> 22%
+                </div>
             </div>
         </div>
 
-        <!-- PENDING LAWYERS TABLE -->
+        <!-- ============================================================
+             PENDING LAWYERS TABLE – Shows latest 5 pending approvals
+             ============================================================ -->
         <div class="dashboard-card">
             <h3 class="dashboard-title" style="font-size:28px;">Pending Lawyer Approvals</h3>
 
@@ -157,7 +231,7 @@ include '../includes/header.php';
                                 <th>Registered</th>
                                 <th>Actions</th>
                             </tr>
-                        </thead>
+                        </thead>                         
                         <tbody>
                             <?php foreach ($recent_pending as $row): ?>
                                 <tr>
@@ -181,7 +255,7 @@ include '../includes/header.php';
             <?php endif; ?>
         </div>
 
-    </div>
-</div>
+    </div><!-- /main-content -->
+</div><!-- /dashboard-wrapper -->
 
-<?php include '../includes/footer.php'; ?>
+<?php include '../includes/dashboard-footer.php'; ?>

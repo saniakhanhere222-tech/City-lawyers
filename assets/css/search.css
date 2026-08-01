@@ -149,7 +149,7 @@
 .filter-btn {
     width: 100%;
     background: var(--primary-color);
-    color: white;
+    color: var(--surface-color);
     border: none;
     padding: 12px;
     font-size: 11px;
@@ -160,7 +160,7 @@
 }
 
 .filter-btn:hover {
-    background: #1f291f;
+    background:var(--accent-color);
 }
 
 .reset-btn {
@@ -183,17 +183,36 @@
 }
 
 /* LAWYER CARD */
-.lawyer-card {
-    background: white;
-    border: 1px solid #ddd4c7;
-    padding: 22px;
-    margin-bottom: 24px;
-    transition: 0.2s;
+.lawyer-card{
+
+    background:var(--surface-color);
+
+    border:var(--border-soft);
+
+    padding:22px;
+
+    margin-bottom:24px;
+
+    box-shadow:var(--shadow-md);
+
+    transition:
+        
+        box-shadow .35s ease,
+        border-color .35s ease;
+
 }
 
-.lawyer-card:hover {
-    border-color: #c4b8a8;
+
+.lawyer-card:hover{
+
+  
+
+    box-shadow:var(--shadow-lg);
+
+    border-color:rgba(142,247,43,.22);
+
 }
+    
 
 .lawyer-card-inner {
     display: grid;
@@ -208,7 +227,9 @@
     height: 150px;
     overflow: hidden;
     background: #ebe5db;
-    border: 1px solid #ddd4c7;
+    border: 1px solid var(--icon-gray);
+    border-radius: 4px;
+    
 }
 
 .lawyer-img {
@@ -366,37 +387,223 @@
     border-radius: 0 !important;
 }
 
-/* RESPONSIVE */
+/* ============================================================
+   RESPONSIVE: TABLET (768-992px) - Original iPad sizes
+   ============================================================ */
 @media (max-width: 992px) {
     .search-container {
         flex-direction: column;
+        padding: 30px 20px;
+        gap: 30px;
     }
-    
+
     .search-sidebar {
         width: 100%;
         position: static;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
     }
-    
+
+    /* Keep 3-column layout until 992px */
+    .lawyer-card-inner {
+        grid-template-columns: 120px 1fr 140px;
+        gap: 20px;
+    }
+
+    .lawyer-img-wrapper {
+        width: 120px;
+        height: 150px;
+    }
+
+    .lawyer-actions {
+        flex-direction: column;
+        gap: 12px;
+        height: 100%;
+        justify-content: center;
+    }
+
+    .lawyer-top {
+        flex-direction: row;
+        gap: 0;
+    }
+
+    .lawyer-fee {
+        text-align: right;
+    }
+
+    .lawyer-name {
+        font-size: 22px;
+    }
+
+    .lawyer-fee h5 {
+        font-size: 18px;
+    }
+
+    .lawyer-meta {
+        gap: 12px;
+    }
+
+    .lawyer-meta span {
+        font-size: 9px;
+    }
+
+    .lawyer-bio {
+        font-size: 12px;
+    }
+
+    .details-btn,
+    .book-btn {
+        padding: 8px;
+        font-size: 9px;
+    }
+}
+
+/* ============================================================
+   RESPONSIVE: MOBILE (Under 768px) - Switch to single column
+   ============================================================ */
+@media (max-width: 767px) {
+    .search-container {
+        flex-direction: column;
+        padding: 20px 12px;
+        gap: 20px;
+    }
+
+    .search-sidebar {
+        width: 100%;
+        position: static;
+        margin-bottom: 10px;
+    }
+
+    .lawyer-card {
+        padding: 16px;
+    }
+
+    /* Switch to single column on mobile */
     .lawyer-card-inner {
         grid-template-columns: 1fr;
+        gap: 16px;
     }
-    
+
     .lawyer-img-wrapper {
         width: 100%;
-        height: 200px;
+        height: auto;
+        aspect-ratio: 4/3;
+        max-height: 220px;
     }
-    
+
+    .lawyer-img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        object-position: center top;
+        background: #ebe5db;
+    }
+
+    .lawyer-img-placeholder {
+        min-height: 150px;
+    }
+
     .lawyer-actions {
         flex-direction: row;
+        gap: 10px;
+        height: auto;
     }
-    
+
+    .details-btn,
+    .book-btn {
+        flex: 1;
+        padding: 10px;
+        font-size: 9px;
+    }
+
     .lawyer-top {
         flex-direction: column;
-        gap: 15px;
+        gap: 10px;
     }
-    
+
     .lawyer-fee {
         text-align: left;
+    }
+
+    .lawyer-name {
+        font-size: 20px;
+    }
+
+    .lawyer-fee h5 {
+        font-size: 18px;
+    }
+
+    .lawyer-bio {
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .lawyer-meta {
+        gap: 10px;
+    }
+
+    .lawyer-meta span {
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+
+    .results-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .results-count {
+        font-size: 10px;
+    }
+}
+
+/* ============================================================
+   RESPONSIVE: SMALL MOBILE (Under 380px)
+   ============================================================ */
+@media (max-width: 380px) {
+    .search-container {
+        padding: 15px 8px;
+    }
+
+    .lawyer-card {
+        padding: 12px;
+    }
+
+    .lawyer-card-inner {
+        gap: 12px;
+    }
+
+    .lawyer-img-wrapper {
+        aspect-ratio: 16/10;
+        max-height: 180px;
+    }
+
+    .lawyer-name {
+        font-size: 17px;
+    }
+
+    .lawyer-role {
+        font-size: 8px;
+        letter-spacing: 1px;
+    }
+
+    .lawyer-fee h5 {
+        font-size: 16px;
+    }
+
+    .lawyer-bio {
+        font-size: 11px;
+    }
+
+    .lawyer-meta span {
+        font-size: 8px;
+        letter-spacing: 0.5px;
+    }
+
+    .details-btn,
+    .book-btn {
+        font-size: 8px;
+        padding: 8px;
+        letter-spacing: 1px;
     }
 }

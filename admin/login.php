@@ -2,7 +2,20 @@
 // ============================================================
 // Admin Login Page – same classes as customer login
 // ============================================================
+// This page displays:
+// 1. Login form with username and password fields
+// 2. Error message display for invalid credentials
+// 3. Logo and branding at the top
+// 4. Redirects to dashboard if already logged in
+// Uses: auth.css for styling (shared with customer login)
+// Features: 
+// - Plain text password comparison (not hashed - needs security improvement)
+// - Session-based authentication
+// - Redirect to admin dashboard on successful login
+// ============================================================
+
 $page_title = 'Admin Login';
+$footer_css = 'dashboard'; // loads specific dashboard-footer.php css (dasboard-footer.css)
 require_once '../includes/config.php';
 
 // Redirect if already logged in
@@ -37,16 +50,16 @@ include '../includes/header.php';
 
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/auth.css">
 
-<!-- Same wrapper class as customer login, plus ID for custom background -->
-<div class="login-wrapper" id="admin-login">
+<!-- Same wrapper class as customer login for reusable css for all login pages-->
+<div class="login-wrapper">
     <div class="login-bg"></div>
 
-    <div class="container py-5">
+    <div class="container-fluid py-4">
         <div class="row justify-content-center">
-            <div class="col-md-5">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-5">
                 <div class="login-card">
                     <div class="text-center mb-4">
-                        <img src="<?php echo BASE_URL; ?>assets/images/legalFlowlogotransp.png"
+                        <img src="<?php echo BASE_URL; ?>assets/images/citylawyers_logo.png"
                              alt="Logo"
                              class="login-logo">
                         <h3>Admin Portal</h3>
@@ -76,4 +89,4 @@ include '../includes/header.php';
     </div>
 </div>
 
-<?php include '../includes/footer.php'; ?>
+<?php include '../includes/dashboard-footer.php'; ?>

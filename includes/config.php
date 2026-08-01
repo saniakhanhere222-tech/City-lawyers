@@ -6,7 +6,7 @@
 
 // Database Settings
 $db_host = "localhost";
-$db_name = "legalflow";
+$db_name = "city_lawyers";
 $db_user = "root";
 $db_password = "";
 
@@ -29,8 +29,11 @@ try {
 }
 
 // Site Configuration
-define('BASE_URL', 'http://localhost/lawyers-website-vision/');
-define('SITE_NAME', 'legalFlow');
+define('BASE_URL', 'http://localhost/city-lawyers/');
+define('SITE_NAME', 'CityLawyers');
+
+//reusable functions for notifications 
+require_once __DIR__ . '/functions.php';
 
 // Start Session
 if (session_status() === PHP_SESSION_NONE) {

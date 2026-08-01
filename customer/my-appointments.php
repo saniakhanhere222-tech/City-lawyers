@@ -4,9 +4,11 @@
  * 
  * Displays all appointments for the logged‑in customer,
  * allows cancelling (pending/confirmed) and deleting cancelled appointments.
+ * For completed appointments, shows "Write Review" or "✔ Reviewed" badge.
  */
 $page_title = 'My Appointments';
-$dashboard_page = true; // full‑width container in header.php
+$page_layout= 'fluid'; //set in header.php 
+$footer_css = 'dashboard'; // loads specific dashboard-footer.php css (dasboard-footer.css)
 require_once '../includes/config.php';
 
 // ============================================================
@@ -16,6 +18,11 @@ if (!isset($_SESSION['customer_id'])) {
     header("Location: login.php");
     exit();
 }
+
+// Set sidebar variables
+$user_type = 'customer';
+$user_name = $_SESSION['customer_name'];
+$dashboard_link = BASE_URL . 'customer/index.php';
 
 $customer_id = $_SESSION['customer_id'];
 $customer_name = $_SESSION['customer_name'];
@@ -35,11 +42,16 @@ if (isset($_GET['cancel'])) {
         $delStmt = $conn->prepare("DELETE FROM appointments WHERE id = ? AND customer_id = ?");
         $delStmt->execute([$appointment_id, $customer_id]);
 
-        // Notify lawyer
-        $title = "Appointment Cancelled";
-        $message = "Customer $customer_name has cancelled their appointment.";
-        $notifyStmt = $conn->prepare("INSERT INTO notifications (user_id, user_type, title, message) VALUES (?, 'lawyer', ?, ?)");
-        $notifyStmt->execute([$lawyer['lawyer_id'], $title, $message]);
+        // Notify lawyer using new notification system
+        addNotification(
+            $lawyer['lawyer_id'],
+            'lawyer',
+            'cancelled',
+            'Appointment Cancelled',
+            "Customer $customer_name has cancelled their appointment.",
+            'appointments.php',  // ✅ Removed 'lawyer/'
+            'fa-times-circle'
+        );
     }
     header("Location: my-appointments.php");
     exit();
@@ -91,110 +103,38 @@ $stmt->execute();
 $appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // ============================================================
-// 5. Include header (global.css, dashboard.css, tables.css)
+// 5. Pre-fetch review status for all appointments (to avoid N+1 queries)
+// ============================================================
+$appointment_ids = array_column($appointments, 'id');
+$reviewed_map = [];
+
+if (!empty($appointment_ids)) {
+    $placeholders = implode(',', array_fill(0, count($appointment_ids), '?'));
+    $reviewStmt = $conn->prepare("
+        SELECT appointment_id 
+        FROM reviews 
+        WHERE appointment_id IN ($placeholders) AND customer_id = ?
+    ");
+    $params = array_merge($appointment_ids, [$customer_id]);
+    $reviewStmt->execute($params);
+    $reviewed = $reviewStmt->fetchAll(PDO::FETCH_COLUMN);
+    $reviewed_map = array_flip($reviewed);
+}
+
+// ============================================================
+// 6. Include header
 // ============================================================
 include '../includes/header.php';
 ?>
 
-<!-- Load dashboard layout CSS and tables CSS for status badges -->
+<!-- CSS: dashboard + tables + sidebar -->
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/dashboard.css">
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/tables.css">
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/sidebar.css">
 
-<div class="dashboard-wrapper">
-
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <a href="<?php echo BASE_URL; ?>">Home</a>
-        <a href="<?php echo BASE_URL; ?>customer/index.php">Dashboard</a>
-        <a href="<?php echo BASE_URL; ?>customer/my-appointments.php" class="active">My Appointments</a>
-        <a href="<?php echo BASE_URL; ?>customer/search.php">Find Lawyers</a>
-        <a href="<?php echo BASE_URL; ?>logout.php" class="logout">Logout</a>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div class="main-content">
-
-        <!-- Header card -->
-        <div class="dashboard-card">
-            <h2 class="dashboard-title">My Appointments</h2>
-            <p class="dashboard-subtitle"><?php echo $total_rows; ?> total appointments found</p>
-        </div>
-
-        <?php if ($total_rows == 0): ?>
-            <!-- Empty state -->
-            <div class="dashboard-card empty-state">
-                <i class="fas fa-calendar-times"></i>
-                <p>You haven't booked any appointments yet.</p>
-                <a href="search.php" class="btn-find">Find a Lawyer</a>
-            </div>
-        <?php else: ?>
-            <!-- Appointment cards -->
-            <?php foreach ($appointments as $row): ?>
-                <div class="dashboard-card appointment-card">
-                    <div class="appointment-card-inner">
-                        <!-- Lawyer image -->
-                        <div class="appointment-img-wrapper">
-                            <?php if (!empty($row['profile_pic']) && file_exists("../uploads/lawyers/" . $row['profile_pic'])): ?>
-                                <img src="<?php echo BASE_URL; ?>uploads/lawyers/<?php echo htmlspecialchars($row['profile_pic']); ?>" alt="Profile">
-                            <?php else: ?>
-                                <i class="fas fa-user-advocate"></i>
-                            <?php endif; ?>
-                        </div>
-
-                        <!-- Appointment details -->
-                        <div class="appointment-details">
-                            <div class="appointment-header-row">
-                                <div>
-                                    <h3 class="appointment-lawyer-name"><?php echo htmlspecialchars($row['lawyer_name']); ?></h3>
-                                    <p class="appointment-lawyer-spec"><?php echo htmlspecialchars($row['specialization']); ?> | <?php echo htmlspecialchars($row['city']); ?></p>
-                                </div>
-                                <div class="appointment-fee">
-                                    <div class="fee-badge"><?php echo number_format($row['fees']); ?> PKR</div>
-                                    <span>Consultation Fee</span>
-                                </div>
-                            </div>
-
-                            <div class="appointment-meta">
-                                <span><i class="fas fa-calendar-alt"></i> <?php echo date('d M Y', strtotime($row['appointment_date'])); ?></span>
-                                <span><i class="fas fa-clock"></i> <?php echo date('h:i A', strtotime($row['appointment_time'])); ?></span>
-                                <span class="status status-<?php echo $row['status']; ?>"><?php echo ucfirst($row['status']); ?></span>
-                            </div>
-                        </div>
-
-                        <!-- Action buttons -->
-                        <div class="appointment-actions">
-                            <?php if ($row['status'] != 'cancelled' && $row['status'] != 'completed'): ?>
-                                <a href="?cancel=<?php echo $row['id']; ?>" class="action-btn btn-cancel" onclick="return confirm('⚠️ WARNING: This action will permanently delete your appointment and notify the lawyer. Cannot be undone. Cancel appointment?')">Cancel</a>
-                                <a href="book-appointment.php?id=<?php echo $row['lawyer_id']; ?>&edit=<?php echo $row['id']; ?>" class="action-btn btn-edit">Edit</a>
-                            <?php elseif ($row['status'] == 'cancelled'): ?>
-                                <a href="?delete=<?php echo $row['id']; ?>" class="action-btn btn-delete" onclick="return confirm('Permanently delete this cancelled appointment?')">Delete</a>
-                            <?php endif; ?>
-                            <a href="lawyer-profile.php?id=<?php echo $row['lawyer_id']; ?>" class="action-btn btn-profile">View Profile →</a>
-                        </div>
-                    </div>
-                </div>
-            <?php endforeach; ?>
-
-            <!-- Pagination -->
-            <?php if ($total_pages > 1): ?>
-            <div class="pagination-wrap">
-                <?php if ($page > 1): ?>
-                    <a href="?page=<?php echo $page - 1; ?>" class="page-link-custom">← Previous</a>
-                <?php endif; ?>
-                <span style="font-size: 12px; color: #8a8479; margin: 0 15px;">Page <?php echo $page; ?> of <?php echo $total_pages; ?></span>
-                <?php if ($page < $total_pages): ?>
-                    <a href="?page=<?php echo $page + 1; ?>" class="page-link-custom">Next →</a>
-                <?php endif; ?>
-            </div>
-            <?php endif; ?>
-
-        <?php endif; ?>
-    </div>
-</div>
-
-<!-- Custom CSS for appointment cards (specific to this page) – can be moved to a separate file later -->
+<!-- Custom CSS for appointment cards (page-specific) -->
 <style>
-/* Appointment card specific styles (not in dashboard.css) */
+/* Appointment card specific styles */
 .appointment-card {
     background: var(--white);
     border: 1px solid var(--border-color);
@@ -321,6 +261,27 @@ include '../includes/header.php';
 .btn-profile:hover {
     background: #f2ece3;
 }
+/* Review button */
+.btn-review {
+    background: #c6a43f;
+    color: white;
+}
+.btn-review:hover {
+    background: #a8872e;
+}
+/* Reviewed badge */
+.reviewed-badge {
+    color: #2e5b2e;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 8px;
+    text-align: center;
+    background: #dce9d7;
+    border: 1px solid #c5d4c5;
+}
 .empty-state {
     text-align: center;
     padding: 60px 20px;
@@ -370,6 +331,12 @@ include '../includes/header.php';
     }
     .appointment-actions {
         flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .appointment-actions .action-btn,
+    .appointment-actions .reviewed-badge {
+        flex: 1;
+        min-width: 80px;
     }
     .appointment-fee {
         text-align: left;
@@ -380,4 +347,112 @@ include '../includes/header.php';
 }
 </style>
 
-<?php include '../includes/footer.php'; ?>
+<div class="dashboard-wrapper">
+
+    <!-- SIDEBAR -->
+    <?php include '../includes/dashboard-sidebar.php'; ?>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+        <!-- Header card -->
+        <div class="dashboard-card">
+            <h2 class="dashboard-title">My Appointments</h2>
+            <p class="dashboard-subtitle"><?php echo $total_rows; ?> total appointments found</p>
+        </div>
+
+        <?php if ($total_rows == 0): ?>
+            <!-- Empty state -->
+            <div class="dashboard-card empty-state">
+                <i class="fas fa-calendar-times"></i>
+                <p>You haven't booked any appointments yet.</p>
+                <a href="search.php" class="btn-find">Find a Lawyer</a>
+            </div>
+        <?php else: ?>
+            <!-- Appointment cards -->
+            <?php foreach ($appointments as $row): ?>
+                <div class="dashboard-card appointment-card">
+                    <div class="appointment-card-inner">
+                        <!-- Lawyer image -->
+                        <div class="appointment-img-wrapper">
+                            <?php if (!empty($row['profile_pic']) && file_exists("../uploads/lawyers/" . $row['profile_pic'])): ?>
+                                <img src="<?php echo BASE_URL; ?>uploads/lawyers/<?php echo htmlspecialchars($row['profile_pic']); ?>" alt="Profile">
+                            <?php else: ?>
+                                <i class="fas fa-user-advocate"></i>
+                            <?php endif; ?>
+                        </div>
+
+                        <!-- Appointment details -->
+                        <div class="appointment-details">
+                            <div class="appointment-header-row">
+                                <div>
+                                    <h3 class="appointment-lawyer-name"><?php echo htmlspecialchars($row['lawyer_name']); ?></h3>
+                                    <p class="appointment-lawyer-spec"><?php echo htmlspecialchars($row['specialization']); ?> | <?php echo htmlspecialchars($row['city']); ?></p>
+                                </div>
+                                <div class="appointment-fee">
+                                    <div class="fee-badge"><?php echo number_format($row['fees']); ?> PKR</div>
+                                    <span>Consultation Fee</span>
+                                </div>
+                            </div>
+
+                            <div class="appointment-meta">
+                                <span><i class="fas fa-calendar-alt"></i> <?php echo date('d M Y', strtotime($row['appointment_date'])); ?></span>
+                                <span><i class="fas fa-clock"></i> <?php echo date('h:i A', strtotime($row['appointment_time'])); ?></span>
+                                <span class="status status-<?php echo $row['status']; ?>"><?php echo ucfirst($row['status']); ?></span>
+                            </div>
+                        </div>
+
+                        <!-- Action buttons -->
+                        <div class="appointment-actions">
+                            <?php if ($row['status'] != 'cancelled' && $row['status'] != 'completed'): ?>
+                                <!-- Pending / Confirmed: Cancel + Edit -->
+                                <a href="?cancel=<?php echo $row['id']; ?>" class="action-btn btn-cancel" onclick="return confirm('⚠️ WARNING: This action will permanently delete your appointment and notify the lawyer. Cannot be undone. Cancel appointment?')">Cancel</a>
+                                <a href="book-appointment.php?id=<?php echo $row['lawyer_id']; ?>&edit=<?php echo $row['id']; ?>" class="action-btn btn-edit">Edit</a>
+                            
+                            <?php elseif ($row['status'] == 'cancelled'): ?>
+                                <!-- Cancelled: Delete only -->
+                                <a href="?delete=<?php echo $row['id']; ?>" class="action-btn btn-delete" onclick="return confirm('Permanently delete this cancelled appointment?')">Delete</a>
+                            
+                            <?php elseif ($row['status'] == 'completed'): ?>
+                                <!-- Completed: Write Review OR Reviewed badge -->
+                                <?php if (isset($reviewed_map[$row['id']])): ?>
+                                    <span class="reviewed-badge">✔ Reviewed</span>
+                                <?php else: ?>
+                                    <a href="review.php?appointment_id=<?php echo $row['id']; ?>" class="action-btn btn-review">Write Review</a>
+                                <?php endif; ?>
+                            <?php endif; ?>
+
+                            
+                            
+                            <!-- View Profile (always visible for all statuses) -->
+                            <a href="lawyer-profile.php?id=<?php echo $row['lawyer_id']; ?>" class="action-btn btn-profile">View Profile →</a>
+
+                            <!-- Chat button (visible for all statuses except cancelled) -->
+                           <?php if ($row['status'] != 'cancelled'): ?>
+                              <a href="chat.php?appointment_id=<?php echo $row['id']; ?>" class="action-btn btn-chat">
+                                    <i class="fas fa-comment"></i>  <span class="chat-text">Chat</span></a>
+<?php endif; ?>
+                            
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+
+            <!-- Pagination -->
+            <?php if ($total_pages > 1): ?>
+            <div class="pagination-wrap">
+                <?php if ($page > 1): ?>
+                    <a href="?page=<?php echo $page - 1; ?>" class="page-link-custom">← Previous</a>
+                <?php endif; ?>
+                <span style="font-size: 12px; color: #8a8479; margin: 0 15px;">Page <?php echo $page; ?> of <?php echo $total_pages; ?></span>
+                <?php if ($page < $total_pages): ?>
+                    <a href="?page=<?php echo $page + 1; ?>" class="page-link-custom">Next →</a>
+                <?php endif; ?>
+            </div>
+            <?php endif; ?>
+
+        <?php endif; ?>
+    </div>
+</div>
+
+<?php include '../includes/dashboard-footer.php'; ?>

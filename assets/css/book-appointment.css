@@ -2,53 +2,102 @@
    BOOK-APPOINTMENT.CSS – book / reschedule appointment
    Single container, two internal columns, no gap, background image
 ======================================== */
-* {
+
+/* ========================================
+ remove border-radius from specific elements (Not global – so the card can have rounded corners)
+======================================== */
+.form-control,
+.btn-book,
+.lawyer-avatar,
+.alert-danger,
+.success-card {
     border-radius: 0 !important;
 }
 
-/* Background image with opacity (same style as other pages) */
+/* ========================================
+   BACKGROUND – Full page image..uncomment .booking-wrapper::before to keep image with overlay 
+======================================== */
+.booking-wrapper {
+    position: relative;
+    min-height: 100vh;
+    isolation: isolate;
+    background: var(--secondary-color);
+}
+
+/* Background image with overlay – fixed, covers entire viewport */
+/* .booking-wrapper::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        var(--gradient-overlay),
+        url('../images/customerlogin1.jpg')
+        center center / cover
+        no-repeat;
+    z-index: -1;
+} */
+
+/* ========================================
+   CONTAINER – Centers the booking card
+======================================== */
 .booking-container {
     position: relative;
     max-width: 1000px;
     margin: 50px auto;
     padding: 0 20px;
+    z-index: 5;
 }
-.booking-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('../assets/images/customerlogin1.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    filter: grayscale(100%) brightness(0.7);
-    opacity: 0.08;
-    z-index: -1;
-}
-/* Outer wrapper that looks like a single card */
+
+/* ========================================
+   BOOKING CARD – Two columns, rounded corners
+======================================== */
 .booking-wrapper {
     background: var(--primary-color);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border-soft);
     display: grid;
     grid-template-columns: 1fr 2fr;
     gap: 0;
     overflow: hidden;
     position: relative;
     z-index: 1;
+    box-shadow: var(--shadow-lg);
+    border-radius: 14px;  /* ← Rounded corners on the card */
+    transition:box-shadow 0.4s ease-in-out;
 }
-/* Left panel (lawyer info) – inherits background from wrapper */
+.booking-wrapper:hover{
+      box-shadow: var(--shadow-hover);
+}
+
+/* ========================================
+   LEFT PANEL – Lawyer info (dark background)
+======================================== */
 .luxury-panel {
     background: var(--primary-color);
     padding: 30px;
 }
-/* Right panel (form) – white background */
+
+/* ========================================
+   RIGHT PANEL – Booking form (white background)
+======================================== */
 .form-panel {
-    background: var(--white);
+    background: var(--surface-color);
     padding: 30px;
+    display: flex;
+    flex-direction: column;
 }
-/* Lawyer avatar – no border */
+
+/* ========================================
+   FORM – Make it a flex column to push button down
+======================================== */
+.form-panel form {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+/* ========================================
+   LAWYER AVATAR
+======================================== */
 .lawyer-avatar {
     width: 120px;
     height: 120px;
@@ -59,6 +108,7 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    border-radius: 0 !important;
 }
 .lawyer-avatar i {
     font-size: 55px;
@@ -69,6 +119,10 @@
     height: 100%;
     object-fit: cover;
 }
+
+/* ========================================
+   LAWYER NAME PANEL
+======================================== */
 .lawyer-name-panel {
     text-align: center;
     margin-bottom: 25px;
@@ -84,29 +138,35 @@
     letter-spacing: 2px;
     text-transform: uppercase;
 }
+
+/* ========================================
+   DIVIDER
+======================================== */
 .divider {
     height: 1px;
     background: rgba(255,255,255,0.1);
     margin: 20px 0;
 }
+
+/* ========================================
+   INFO ROWS – Selected date, time, fee, etc.
+======================================== */
 .info-row {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
-    /* border-bottom: 1px solid rgba(255,255,255,0.08); */
+   
 }
 .info-label {
     font-size: 11px;
     color: rgba(255,255,255,0.6);
-    
 }
 .info-value {
     font-size: 11px;
-    color: rgba(255, 255, 255, 0.699);
+    color: rgba(255,255,255,0.7);
     font-weight: 500;
-    font-style:italic;
+    font-style: italic;
 }
-/* Dynamic date/time text – lighter and thinner */
 .info-value#displayDate,
 .info-value#displayTime {
     font-weight: 300;
@@ -116,26 +176,29 @@
 .fee-value {
     color: #d1c891;
     font-weight: bold;
-    font-style:italic;
+    font-style: italic;
 }
-/* Form panel styles */
+
+/* ========================================
+   FORM PANEL STYLES
+======================================== */
 .form-panel textarea.form-control {
-    min-height: 120px;
+    min-height: 200px;  /* Slightly smaller */
 }
 .form-title {
     font-size: 28px;
     color: var(--primary-color);
-    margin-bottom: 20px;
+    margin-bottom: 20px;  /* Reduced spacing */
 }
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 30px;  /* Reduced spacing between form groups */
 }
 .form-group label {
     display: block;
     font-size: 11px;
     text-transform: uppercase;
     color: var(--text-light);
-    margin-bottom: 8px;
+    margin-bottom: 4px;  /* Reduced spacing between label and input */
 }
 .form-control {
     width: 100%;
@@ -143,41 +206,56 @@
     border: 1px solid var(--border-color);
     background: var(--white);
     font-size: 14px;
+    border-radius: 0 !important;
 }
 .form-control:focus {
     outline: none;
     border-color: var(--primary-color);
 }
+
+/* ========================================
+   BOOK BUTTON – Pushed to the bottom
+======================================== */
 .btn-book {
     width: 100%;
     background: var(--primary-color);
-    color: white;
+    color: var(--surface-color);
     border: none;
     padding: 12px;
     font-size: 12px;
     text-transform: uppercase;
+    letter-spacing: 4px;
     cursor: pointer;
-   
+    margin-top: auto;  /* Pushes button to the bottom of the flex container */
+    border-radius: 0 !important;
 }
 .btn-book:hover {
-    background: #1e2a1e;
+    background: var(--accent-color);
 }
+
+/* ========================================
+   ALERT DANGER
+======================================== */
 .alert-danger {
     background: #f8f0f0;
     color: #8b3a3a;
-    padding: 12px;
-    margin-bottom: 20px;
+    padding: 10px 12px;  /* Reduced padding */
+    margin-bottom: 14px;  /* Reduced spacing */
     border: 1px solid #e0c5c5;
+    border-radius: 0 !important;
 }
-/* Success modal (unchanged) */
+
+/* ========================================
+   SUCCESS MODAL
+======================================== */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6);  /* dark translucent background */
-    z-index: 99999;                  /* very high to stay on top of everything */
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 99999;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -189,6 +267,7 @@
     text-align: center;
     padding: 35px;
     border: 1px solid var(--border-color);
+    border-radius: 0 !important;
 }
 .success-card i {
     font-size: 60px;
@@ -210,18 +289,10 @@
     justify-content: center;
     margin-top: 20px;
 }
-.form-panel {
-    display: flex;
-    flex-direction: column;
-}
-.form-panel form {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-}
-.btn-book {
-    margin-top: auto;
-}
+
+/* ========================================
+   SUCCESS BUTTONS
+======================================== */
 .btn-dashboard,
 .btn-home {
     padding: 8px 20px;
@@ -239,7 +310,9 @@
     color: var(--text-dark);
 }
 
-/* Responsive: stack columns on screens smaller than 800px */
+/* ========================================
+   RESPONSIVE – Stack columns on smaller screens
+======================================== */
 @media (max-width: 800px) {
     .booking-wrapper {
         grid-template-columns: 1fr;

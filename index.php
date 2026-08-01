@@ -1,5 +1,27 @@
 <?php
-$page_title = 'Find Best Lawyers';
+// ============================================================
+// HOMEPAGE – CityLawyers Public Landing Page
+// ============================================================
+// This page displays:
+// 1. Hero section with search bar (city + specialization)
+// 2. Statistics section with animated progress rings (Lawyers, Clients, Cities, Success Rate)
+// 3. How It Works section with toggle between Client/Lawyer views
+//    - Dynamic step-by-step guide with preview panel
+//    - Uses JavaScript to switch between roles and steps
+// 4. Featured Lawyers section (top 4 featured or fallback to top rated)
+// 5. Practice Domains/Categories section (dynamic from database or hardcoded fallback)
+// Uses: homepage.css, header.php, footer.php
+// Features:
+// - Responsive hero with search functionality
+// - Animated SVG progress rings (static values)
+// - Interactive "How It Works" with role toggle and step preview
+// - Dynamic lawyer cards with profile images
+// - Dynamic categories from database with lawyer counts
+// - Fallback system for featured lawyers and categories
+// ============================================================
+
+$page_layout= 'fluid'; //set in header.php 
+$page_title = 'CityLawyers-Hompepage'; 
 require_once 'includes/config.php';
 
 // ==============================================
@@ -64,13 +86,13 @@ include 'includes/header.php';
 
 <!-- Hero Section (unchanged) -->
 <div class="hero-section">
-    <div class="container">
+    <div class="container ">
         <div class="row align-items-center gy-5">
             <div class="col-lg-6">
                 <div class="hero-content">
-                    <p class="hero-tag">DIRECT ACCESS TO LEGAL EXCELLENCE</p>
-                    <h1 class="hero-title">Counsel in <br><span>Every Motion.</span></h1>
-                    <p class="hero-text">LegalFlow represents the interaction of tradition and digital innovation. Connect with trusted legal professionals across the nation for consultations, representation, and legal advisory.</p>
+                    <p class="hero-tag">Your City's Trusted Legal Network</p>
+                    <h1 class="hero-title">Search Lawyers<br><span>Compare. Book</span></h1>
+                    <p class="hero-text">Connect with experienced legal professionals across your city. Search by expertise, qualifications, fees, and availability—all in one place.</p>
                     
                     <form action="customer/search.php" method="GET">
                         <div class="hero-buttons">
@@ -100,94 +122,325 @@ include 'includes/header.php';
                 </div>
             </div>
             
-            <div class="col-lg-6">
-                <div class="hero-image-wrapper">
-                    <img src="assets/images/home1.jpg" alt="Lawyer" class="hero-image">
-                    <div class="quote-box">
-                        <p>“Integrity is the bedrock of justice.”</p>
-                    </div>
-                </div>
-            </div>
+           <div class="col-lg-6">
+    <div class="hero-image-wrapper">
+
+        <img src="assets/images/hero-img.png"
+             alt="Lawyer"
+             class="hero-image">
+
+        <!-- image fade overlay -->
+        <div class="hero-image-fade"></div>
+
+        <div class="quote-box">
+            <p>“Integrity is the bedrock of justice.”</p>
+        </div>
+
+    </div>
+</div>
         </div>
     </div>
 </div>
 
-<!-- Statistics Section (unchanged) -->
-<div class="stats-section">
+<!-- ===========================
+     STATS SECTION
+=========================== -->
+<section class="stats-section">
+
     <div class="container">
-        <div class="row">
-            <div class="col-md-3 col-6 mb-4">
-                <div class="stat-item">
-                    <h2>100+</h2>
-                    <p>Verified Lawyers</p>
+
+        <!-- <div class="stats-heading">
+            <h2>Trusted Across Pakistan</h2>
+            <p>
+                Connecting clients with experienced legal professionals through
+                a modern, secure and transparent platform.
+            </p>
+        </div> -->
+
+        <div class="row g-4">
+
+            <!-- Lawyers -->
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card">
+
+                    <div class="progress-ring">
+
+                        <svg width="130" height="130" viewBox="0 0 120 120">
+
+                            <circle
+                                class="ring-bg"
+                                cx="60"
+                                cy="60"
+                                r="52">
+                            </circle>
+
+                            <circle
+                                class="ring-progress progress-90"
+                                cx="60"
+                                cy="60"
+                                r="52">
+                            </circle>
+
+                        </svg>
+
+                        <div class="ring-value">
+                            100+
+                        </div>
+
+                    </div>
+
+                    <h4>Verified Lawyers</h4>
+
                 </div>
             </div>
-            <div class="col-md-3 col-6 mb-4">
-                <div class="stat-item">
-                    <h2>500+</h2>
-                    <p>Happy Clients</p>
+
+            <!-- Clients -->
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card">
+
+                    <div class="progress-ring">
+
+                        <svg width="130" height="130" viewBox="0 0 120 120">
+
+                            <circle
+                                class="ring-bg"
+                                cx="60"
+                                cy="60"
+                                r="52">
+                            </circle>
+
+                            <circle
+                                class="ring-progress progress-98"
+                                cx="60"
+                                cy="60"
+                                r="52">
+                            </circle>
+
+                        </svg>
+
+                        <div class="ring-value">
+                            500+
+                        </div>
+
+                    </div>
+
+                    <h4>Happy Clients</h4>
+
                 </div>
             </div>
-            <div class="col-md-3 col-6 mb-4">
-                <div class="stat-item">
-                    <h2>50+</h2>
-                    <p>Cities Covered</p>
+
+            <!-- Cities -->
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card">
+
+                    <div class="progress-ring">
+
+                        <svg width="130" height="130" viewBox="0 0 120 120">
+
+                            <circle
+                                class="ring-bg"
+                                cx="60"
+                                cy="60"
+                                r="52">
+                            </circle>
+
+                            <circle
+                                class="ring-progress progress-70"
+                                cx="60"
+                                cy="60"
+                                r="52">
+                            </circle>
+
+                        </svg>
+
+                        <div class="ring-value">
+                            50+
+                        </div>
+
+                    </div>
+
+                    <h4>Cities Covered</h4>
+
                 </div>
             </div>
-            <div class="col-md-3 col-6 mb-4">
-                <div class="stat-item">
-                    <h2>98%</h2>
-                    <p>Success Rate</p>
+
+            <!-- Success -->
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-card">
+
+                    <div class="progress-ring">
+
+                        <svg width="130" height="130" viewBox="0 0 120 120">
+
+                            <circle
+                                class="ring-bg"
+                                cx="60"
+                                cy="60"
+                                r="52">
+                            </circle>
+
+                            <circle
+                                class="ring-progress progress-98"
+                                cx="60"
+                                cy="60"
+                                r="52">
+                            </circle>
+
+                        </svg>
+
+                        <div class="ring-value">
+                            98%
+                        </div>
+
+                    </div>
+
+                    <h4>Success Rate</h4>
+
                 </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================================
+    // HOW IT WORKS – Interactive Step Guide
+// ============================================================
+// This script:
+// 1. Defines step data for both roles (client/lawyer)
+// 2. Toggles between roles when buttons are clicked
+// 3. Updates the step list and preview panel dynamically
+// 4. Allows users to click on steps to view details
+========================================= -->
+<section class="how-it-works-section">
+    <div class="container">
+
+        <div class="text-center section-header">
+            <p class="section-subtitle">Simple From Start To Finish</p>
+            <h2 class="section-title">How It Works</h2>
+        </div>
+
+        <div class="text-center">
+            <div class="hiw-toggle" role="tablist" aria-label="Choose a role to see the flow">
+                <button type="button" class="hiw-toggle-btn active" data-role="client">For Clients</button>
+                <button type="button" class="hiw-toggle-btn" data-role="lawyer">For Lawyers</button>
             </div>
         </div>
+
+        <div class="hiw-body">
+
+            <!-- Step list (populated per role by JS) -->
+            <div class="hiw-steps" id="hiwSteps"></div>
+
+            <!-- Preview panel (populated per step by JS) -->
+            <div class="hiw-preview" id="hiwPreview"></div>
+
+        </div>
+
     </div>
-</div>
+</section>
+
 
 <!-- Featured Lawyers Section -->
 <div class="featured-section">
     <div class="container">
+
         <div class="text-center mb-5">
-            <h2 class="section-title">Featured lawyers</h2>
-            <p class="section-subtitle">our top rated attorneys</p>
+            <h2 class="section-title">Featured Lawyers</h2>
+            <p class="section-subtitle">Our Top Rated Attorneys</p>
         </div>
-        
+
         <div class="row g-4">
-            <?php if (count($featuredLawyers) > 0): ?>
-                <?php foreach ($featuredLawyers as $row): ?>
-                    <div class="col-md-3 col-6">
-                        <div class="lawyer-card-home">
+
+            <?php if(count($featuredLawyers) > 0): ?>
+
+                <?php foreach($featuredLawyers as $row): ?>
+
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+
+                        <div class="lawyer-card-home h-100">
+
                             <div class="lawyer-img-home">
-                                <?php if (!empty($row['profile_pic']) && file_exists("uploads/lawyers/" . $row['profile_pic'])): ?>
-                                <img src="<?php echo BASE_URL; ?>uploads/lawyers/<?php echo $row['profile_pic']; ?>" alt="<?php echo $row['name']; ?>">
-                               <?php else: ?>
-                                <i class="fas fa-user-advocate"></i>
+
+                                <?php if(!empty($row['profile_pic']) && file_exists("uploads/lawyers/".$row['profile_pic'])): ?>
+
+                                    <img
+                                        src="<?php echo BASE_URL; ?>uploads/lawyers/<?php echo $row['profile_pic']; ?>"
+                                        alt="<?php echo htmlspecialchars($row['name']); ?>">
+
+                                <?php else: ?>
+
+                                    <div class="lawyer-placeholder">
+                                        <i class="fas fa-user-advocate"></i>
+                                    </div>
+
                                 <?php endif; ?>
+
                             </div>
-                            <h4><?php echo $row['name']; ?></h4>
-                            <p class="specialization"><?php echo strtoupper($row['specialization']); ?></p>
-                            <p class="fees"><?php echo number_format($row['fees']); ?> PKR</p>
-                            <a href="customer/lawyer-profile.php?id=<?php echo $row['id']; ?>" class="btn-view-profile">View Profile</a>
+
+                            <div class="lawyer-card-body">
+
+                                <h4>
+                                    <?php echo htmlspecialchars($row['name']); ?>
+                                </h4>
+
+                                <p class="specialization">
+                                    <?php echo strtoupper($row['specialization']); ?>
+                                </p>
+
+                                <p class="fees">
+                                    <?php echo number_format($row['fees']); ?> PKR
+                                </p>
+
+                                <a
+                                    href="customer/lawyer-profile.php?id=<?php echo $row['id']; ?>"
+                                    class="btn-view-profile">
+
+                                    View Profile
+
+                                </a>
+
+                            </div>
+
                         </div>
+
                     </div>
+
                 <?php endforeach; ?>
+
             <?php else: ?>
+
                 <div class="col-12 text-center">
+
                     <p>No featured lawyers yet.</p>
+
                 </div>
+
             <?php endif; ?>
+
         </div>
-        
+
         <div class="text-center mt-5">
-            <a href="customer/search.php" class="btn-view-all">VIEW ALL PARTNERS →</a>
+
+            <a href="customer/search.php" class="btn-view-all">
+                View All Lawyers →
+            </a>
+
         </div>
+
     </div>
 </div>
 
 <!-- Practice Domains Section (Dynamic Categories) -->
 <div class="categories-section">
     <div class="container">
-        <h2 class="section-title text-center mb-5">Practice Domains</h2>
+        <div class="text-center mb-5">
+            <h2 class="section-title">Areas We Cover</h2>
+            <p class="section-subtitle">Explore our specialized legal services </p>
+        </div>
+       
         <div class="row g-4">
             <?php if (count($categories) > 0): ?>
                 <?php foreach ($categories as $cat): ?>

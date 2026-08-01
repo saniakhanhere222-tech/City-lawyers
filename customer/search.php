@@ -113,14 +113,25 @@ $cityStmt = $conn->prepare("SELECT DISTINCT city FROM lawyers WHERE status = 'ap
 $cityStmt->execute();
 $cities = $cityStmt->fetchAll(PDO::FETCH_ASSOC);
 
-// Specializations (predefined list – you could also fetch from categories table)
-$specializations = ['Criminal', 'Divorce', 'Affidavit', 'Civil'];
+// ============================================================
+// 6b. DYNAMIC SPECIALIZATIONS - Fetch from categories table
+// ============================================================
+$specStmt = $conn->prepare("SELECT name FROM categories WHERE status = 'active' ORDER BY order_by ASC, name ASC");
+$specStmt->execute();
+$specializations = $specStmt->fetchAll(PDO::FETCH_COLUMN);
 
-// Genders
+// If no categories found, fallback to hardcoded list
+if (empty($specializations)) {
+    $specializations = ['Criminal', 'Divorce', 'Affidavit', 'Civil'];
+}
+
+// ============================================================
+// 7. Genders
+// ============================================================
 $genders = ['male', 'female'];
 
 // ============================================================
-// 7. Include header
+// 8. Include header
 // ============================================================
 include '../includes/header.php';
 ?>
@@ -158,7 +169,7 @@ include '../includes/header.php';
                         </div>
                     </div>
                     
-                    <!-- Specialization Filter -->
+                    <!-- Specialization Filter - DYNAMIC FROM CATEGORIES TABLE -->
                     <div class="filter-section">
                         <div class="filter-header" data-filter="spec">
                             <strong><i class="fas fa-briefcase"></i> Specialization</strong>
@@ -167,10 +178,10 @@ include '../includes/header.php';
                         <div class="filter-content" id="filter-spec">
                             <?php foreach ($specializations as $spec): ?>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="specialization" value="<?php echo $spec; ?>" 
+                                    <input class="form-check-input" type="radio" name="specialization" value="<?php echo htmlspecialchars($spec); ?>" 
                                         <?php echo ($selected_specialization == $spec) ? 'checked' : ''; ?>
                                         onchange="this.form.submit()">
-                                    <label class="form-check-label"><?php echo $spec; ?></label>
+                                    <label class="form-check-label"><?php echo htmlspecialchars($spec); ?></label>
                                 </div>
                             <?php endforeach; ?>
                         </div>
@@ -341,6 +352,7 @@ include '../includes/header.php';
                             
                             <div class="lawyer-meta">
                                 <span><i class="fas fa-location-dot"></i> <?php echo htmlspecialchars($row['city']); ?></span>
+                                <span><i class="fas fa-gavel"></i> <?php echo htmlspecialchars($row['specialization']); ?></span> 
                                 <span><i class="fas fa-briefcase"></i> <?php echo $row['experience']; ?> Years</span>
                                 <span>★ <?php echo $row['avg_rating'] ?: 'New'; ?> Rated</span>
                                 <span><i class="fas fa-venus-mars"></i> <?php echo ucfirst($row['gender']); ?></span>

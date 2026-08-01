@@ -3,6 +3,7 @@
 // Customer Login Page
 // ==============================================
 $page_title = 'Customer Login';
+$footer_css = 'dashboard';
 require_once '../includes/config.php';
 
 // Redirect if already logged in
@@ -42,16 +43,15 @@ include '../includes/header.php';
 <!-- Page wrapper – everything inside this class is independent -->
 <div class="login-wrapper">
 
-    <!-- Background image (set via CSS, not inline) -->
+    <!-- Background image -->
     <div class="login-bg"></div>
 
-    <div class="container py-5">
+    <div class="container-fluid py-4">
         <div class="row justify-content-center">
-            <div class="col-md-5">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-5">
                 <div class="login-card">
                     <div class="text-center mb-4">
-                        <!-- Logo inside wrapper – will be styled by .login-wrapper .login-logo -->
-                        <img src="<?php echo BASE_URL; ?>assets/images/legalFlowlogotransp.png" alt="Logo" class="login-logo">
+                        <img src="<?php echo BASE_URL; ?>assets/images/citylawyers_logo.png" alt="Logo" class="login-logo">
                         <h3>Welcome User</h3>
                         <p>Please login to your account</p>
                     </div>
@@ -88,4 +88,4 @@ include '../includes/header.php';
     </div>
 </div>
 
-<?php include '../includes/footer.php'; ?>
+<?php include '../includes/dashboard-footer.php'; ?>

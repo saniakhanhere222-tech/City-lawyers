@@ -1,154 +1,838 @@
-/* =========================
-   HERO SECTION
-========================= */
-.hero-section {
+/* Background gradients = permanent page background. */
+.hero-section{
+    position:relative;
+    overflow:hidden;
+    isolation:isolate;
+
+    min-height:calc(100vh - 74px);
+
+    display:flex;
+    align-items:center;
+
+    background:
+
+     radial-gradient(
+        circle at 82% 18%,
+        rgba(31, 43, 31, 0.301) 0%,
+        rgba(31,43,31,.08) 12%,
+        transparent 24%
+    ),
+
+    radial-gradient(
+        circle at 15% 85%,
+        rgba(47,61,47,.10) 0%,
+        rgba(47,61,47,.05) 15%,
+        transparent 28%
+    ),
+
+    linear-gradient(
+        180deg,
+        #FAFCFA 0%,
+        var(--secondary-color)55%,
+        #EEF3EE 100%
+    );
+}
+/*All content above backgrounds */
+.hero-section .container{
+    position:relative;
+    z-index:2;
+    
+    
+}
+/* ::before gradients = extra glow overlay. */
+.hero-section::before{
+
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+        radial-gradient(circle at 82% 20%,
+            rgba(45, 97, 10, 0.507),
+            transparent 36%),
+
+        radial-gradient(circle at 15% 85%,
+            rgba(47,61,47,.05),
+            transparent 45%);
+
+    z-index:0;
+
+    pointer-events:none;
+}
+/* <!--bottom fade above image -->  */
+.hero-section::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    height:240px;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(248,255,248,0) 0%,
+            rgba(244,251,244,.30) 80%,
+            rgba(240,248,240,.65)85%,
+           
+            rgba(236, 247, 236, 0.945) 90%,
+            var(--secondary-color) 100%
+        );
+
+    z-index:1;
+
+    pointer-events:none;
+}
+.hero-image-wrapper{
+
+    position:relative;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    min-height:500px;
+  
+
+    overflow:hidden;   /* prevents the fade from spilling outside */
+}
+
+.hero-image{
+
+    width:100%;
+    max-width:560px;
+
+    height:auto;
+
+    object-fit:contain;
+
+    position:relative;
+    z-index:2;
+}
+
+/* Bottom image fade */
+
+.hero-image-wrapper::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+    right:0;
+    bottom:0;
+
+    height:120px;
+
+    background:linear-gradient(
+        to bottom,
+        rgba(245,251,245,0),
+        var(--secondary-color)
+    );
+
+    z-index:3;
+
+    pointer-events:none;
+}
+/*=========================================
+  QUOTE CARD
+=========================================*/
+
+.quote-box{
+
+    position:absolute;
+
+    right:0px;
+    bottom:100px;
+
+    width:240px;
+
+    padding:24px 24px 22px;
+
+    background:var(--surface-color);
+
+    border:1px solid var(--border-color);
+  
+
+    border-radius:14px;
+
+    box-shadow: var(--shadow-lg);
+
+    animation:quoteFloat 4s ease-in-out infinite;
+
+    z-index:5;
+
+    overflow:hidden;
+
+}
+
+
+
+
+/* Quote Symbol */
+
+.quote-box::before{
+
+    content:"❝";
+
+    position:absolute;
+
+    top:14px;
+    left:18px;
+
+    font-family:Georgia,serif;
+
+    font-size:52px;
+
+    line-height:1;
+
+    color:#C5CCC4;
+
+}
+
+/* Quote Text */
+
+.quote-box p{
+
+    margin:0;
+
+    padding-top:24px;
+
+    color:var(--primary-color);
+
+    font-size:17px;
+
+    line-height:1.6;
+
+    font-style:italic;
+
+    font-weight:500;
+
+}
+/*=========================================
+ LEFT
+=========================================*/
+
+.hero-content{
+    position:relative;
+    max-width:620px;
+  
+      
+}
+.hero-tag{
+
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+
+    font-size:12px;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    color:var(--accent-color);
+    font-weight:600;
+
+    margin-bottom:22px;
+}
+.hero-tag::before{
+
+    content:"";
+
+    width:45px;
+    height:2px;
+
+    background:var(--accent-color);
+
+}
+.hero-title{
+
+    font-size:5.4rem;
+    line-height:.92;
+    margin-bottom:24px;
+    color:var(--text-dark);
+    font-weight:700;
+}
+.hero-title span{
+
+    color:var(--accent-color);
+
+    position:relative;
+}
+
+.hero-title span::after{
+
+    content:"";
+
+    position:absolute;
+    left:0;
+    bottom:8px;
+
+    width:100%;
+    height:10px;
+
+    background:rgba(47,61,47,.08);
+
+    z-index:-1;
+}
+.hero-text{
+
+    font-size:16px;
+    line-height:1.9;
+    color:var(--text-light);
+    max-width:560px;
+
+    margin-bottom:38px;
+ 
+}
+/*=========================
+    SEARCH BAR
+=========================*/
+.hero-buttons{
+
+    display:grid;
+
+   grid-template-columns: minmax(180px,1fr) minmax(180px,1fr) 150px;
+
+    width:100%;
+
+    max-width:760px;
+
+    background:var(--surface-color);
+
+    border:1px solid var(--border-color);
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    box-shadow:var(--shadow-lg);
+
+}
+
+/*=========================
+    INPUTS
+=========================*/
+
+.luxury-input{
+
+    height:58px !important;
+    width:100%;
+
+    min-width:0;
+
+    padding:0 22px !important;
+
+    border:none !important;
+
+    border-radius:0 !important;
+
+    background:transparent !important;
+
+    box-shadow:none !important;
+
+    font-size:14px;
+
+    font-weight:500;
+
+    color:var(--text-dark);
+
+    transition:.3s;
+}
+
+.luxury-input::placeholder{
+
+    color:var(--text-light);
+
+    font-weight:400;
+
+    opacity:1;
+}
+
+/* .hero-buttons input{
+
+    border-right:1px solid var(--border-color) !important;
+} */
+
+.hero-buttons select{
+
+    border-right:1px solid var(--border-color) !important;
+
+    color:var(--text-light);
+
+    cursor:pointer;
+    background:transparent;
+}
+
+
+/* Focus */
+
+.luxury-input:focus{
+
+   background:color-mix(in srgb, var(--primary-color) 3%, transparent) !important;
+    color:var(--primary-color);
+}
+/*=========================
+    BUTTON
+=========================*/
+
+.btn-luxury{
+
+    position:relative;
+
+    overflow:hidden;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:0 20px;
+
+    min-width:150px;
+
+    border:none;
+
+    background:var(--primary-color);
+
+    color:var(--secondary-color);
+
+    font-size:11px;
+
+    font-weight:600;
+    cursor:pointer;
+
+    letter-spacing:2.5px;
+
+    text-transform:uppercase;
+
+    transition:
+        transform .45s,
+        background .45s,
+        box-shadow .45s,
+        color .35s;
+}
+
+
+/* Premium shine */
+
+.btn-luxury::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:-120%;
+
+    left:-70%;
+
+    width:45%;
+
+    height:300%;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.25),
+        transparent);
+
+    transform:rotate(25deg);
+
+    transition:.8s;
+}
+
+
+/* Hover */
+
+.btn-luxury:hover{
+
+    background:var(--accent-color);
+
+    color:whitesmoke;
+
+    transform:
+        perspective(800px)
+        rotateX(5deg)
+        translateY(-2px);
+
+    box-shadow:
+        0 14px 28px rgba(0,0,0,.18);
+}
+
+.btn-luxury:hover::before{
+
+    left:150%;
+}
+
+/*=========================
+    STATS SECTION
+==========================*/
+.stats-section {
+    position: relative;
     background: var(--secondary-color);
-    min-height: auto;
-    display: flex;
-    align-items: center;
+    margin-top: -2px;
     padding: 20px 0 40px;
+    border-radius: 0 0 70px 70px;
     overflow: hidden;
+    box-shadow:
+        0 12px 30px rgba(0,0,0,.04),
+        0 35px 70px rgba(0,0,0,.08),
+        inset 0 1px rgba(255,255,255,.8);
 }
 
-.hero-content {
-    max-width: 640px;
-    margin-bottom: 0;
+
+
+.stats-section .row {
+    position: relative;
+    z-index: 2;
+    align-items: center;
 }
 
-.hero-tag {
-    letter-spacing: 3px;
-    font-size: 11px;
-    text-transform: uppercase;
-    color: var(--primary-color);
-    margin-bottom: 20px;
+/*=========================
+    STAT CARD
+==========================*/
+.stat-card {
+    text-align: center;
+    padding: 10px;
+    background: none;
+    border: none;
+    box-shadow: none;
+    transition: .35s;
+}
+.stat-card:hover {
+    transform: translateY(-8px);
 }
 
-.hero-title {
-    font-size: 5.2rem;
-    line-height: 0.92;
-    margin-bottom: 28px;
-    color: var(--primary-color);
+/*=========================
+    SVG RING
+==========================*/
+.progress-ring {
+    position: relative;
+    width: 135px;
+    height: 135px;
+    margin: 0 auto;
+    transition: .35s;
 }
-
-.hero-title span {
-    font-style: italic;
-    color: #7d7d7d;
-    margin-left: 40px;
+.progress-ring svg {
+    width: 135px;
+    height: 135px;
+    transform: rotate(-90deg);
+    overflow: visible;
 }
-
-.hero-text {
-    color: var(--text-light);
-    line-height: 1.9;
-    max-width: 540px;
-    margin-bottom: 35px;
-    font-size: 15px;
+.ring-bg {
+    fill: none;
+    stroke: #D7DBD5;
+    stroke-width: 8;
 }
+.ring-progress {
+    fill: none;
+    stroke: var(--accent-color);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 326.7;
+    stroke-dashoffset: 326.7;
+    animation: fillRing 2s ease forwards;
+    transition: .35s;
+}
+.progress-70 { stroke-dashoffset: 98; }
+.progress-80 { stroke-dashoffset: 65; }
+.progress-90 { stroke-dashoffset: 33; }
+.progress-98 { stroke-dashoffset: 7; }
 
-.hero-buttons {
+.ring-value {
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
-    width: 100%;
-    max-width: 720px;
+    justify-content: center;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-family: 'Cormorant Garamond', serif;
+}
+.stat-card h4 {
+    margin-top: 22px;
+    margin-bottom: 6px;
+    font-size: 22px;
+    color: var(--primary-color);
+    font-family: 'Cormorant Garamond', serif;
+}
+.stat-card p {
+    margin: 0;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-light);
 }
 
-.luxury-input {
-    height: 60px;
-    border-radius: 0 !important;
+/*=========================
+    ANIMATION
+==========================*/
+@keyframes fillRing {
+    from { stroke-dashoffset: 326.7; }
+}
+
+/*=========================
+    HOVER
+==========================*/
+.stat-card:hover .progress-ring {
+    transform: scale(1.06);
+}
+.stat-card:hover .ring-progress {
+    stroke: var(--accent-color);
+}
+.stat-card:hover .ring-value {
+    color: var(--accent-color);
+}
+/* =========================================
+   HOW IT WORKS SECTION
+   Matches LegalFlow theme (green/cream palette)
+========================================= */
+.how-it-works-section {
+    padding: 100px 0;
+    background: var(--secondary-color);
+}
+
+.how-it-works-section .section-header {
+    margin-bottom: 52px;
+}
+
+/* =========================================
+   ROLE TOGGLE – Pill buttons
+========================================= */
+.hiw-toggle {
+    display: inline-flex;
+    padding: 6px;
+    margin: 0 auto 44px;
+    background: var(--surface-color);
     border: 1px solid var(--border-color);
-    background: #fff;
-    box-shadow: none !important;
-    padding: 0 18px;
-    font-size: 14px;
-    color: var(--text-dark);
+    border-radius: 999px;
+    box-shadow: var(--shadow-sm);
 }
 
-.hero-buttons input {
-    border-right: none;
+.hiw-toggle-btn {
+    position: relative;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background var(--transition-fast), color var(--transition-fast);
 }
 
-.hero-buttons select {
-    border-right: none;
+.hiw-toggle-btn.active {
+    background: var(--primary-color);
+    color: var(--text-white);
 }
 
-.luxury-input:focus {
+/* =========================================
+   TWO-COLUMN LAYOUT
+========================================= */
+.hiw-body {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 56px;
+    align-items: start;
+}
+
+/* =========================================
+   STEP LIST – Left column
+========================================= */
+.hiw-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.hiw-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 18px 20px;
+    border-radius: var(--card-radius);
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-align: left;
+    background: transparent;
+    transition: background var(--transition-fast), border-color var(--transition-fast);
+    margin-bottom: 12px;
+}
+
+.hiw-step:hover {
+    background: var(--surface-color);
     border-color: var(--border-color);
 }
 
-.btn-luxury {
-    height: 60px;
-    border: none;
-    padding: 0 34px;
-    background: var(--primary-color);
-    color: #fff;
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 1px;
-    border-radius: 0 !important;
-    transition: 0.4s;
-    white-space: nowrap;
+.hiw-step.active {
+    background: var(--surface-color);
+    border-color: var(--border-color);
+    box-shadow: var(--shadow-sm);
 }
 
-.btn-luxury:hover {
-    background: #1f291f;
-    color: #fff;
-}
-
-.hero-image-wrapper {
-    position: relative;
+/* Step number (circular badge) */
+.hiw-step-num {
+    flex: none;
+    width: 34px;
+    height: 34px;
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--surface-alt);
+    color: var(--text-muted);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 600;
+    transition: background var(--transition-fast), color var(--transition-fast);
 }
 
-.hero-image {
-    width: 100%;
-    max-width: 470px;
-    height: 600px;
-    object-fit: cover;
-    border: 12px solid rgb(247, 240, 240);
-    filter: brightness(96%);
+.hiw-step.active .hiw-step-num {
+    background: var(--accent-color);
+    color: var(--text-white);
 }
 
-.quote-box {
-    position: absolute;
-    bottom: 35px;
-    right: -20px;
-    background: var(--primary-color);
-    color: #fff;
-    width: 240px;
-    padding: 28px;
+.hiw-step-title {
+    margin: 0 0 4px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
 }
 
-.quote-box p {
+.hiw-step.active .hiw-step-title {
+    color: var(--primary-color);
+}
+
+.hiw-step-desc {
     margin: 0;
-    font-style: italic;
-    line-height: 1.7;
-    font-size: 15px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text-muted);
 }
 
-/* =========================
-   STATS SECTION
-========================= */
-.stats-section {
-    background: var(--primary-color);
-    padding: 70px 0;
+/* =========================================
+   PREVIEW PANEL – Right column
+========================================= */
+.hiw-preview {
+    position: relative;
+    padding: 36px;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--card-radius);
+    box-shadow: var(--shadow-green-strong);
+    min-height: 420px;
+    overflow: hidden;
 }
 
-.stat-item {
-    text-align: center;
-    color: #fff;
-}
-
-.stat-item h2 {
-    font-size: 3rem;
+.hiw-preview-eyebrow {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent-color);
+    font-weight: 600;
     margin-bottom: 10px;
 }
 
-.stat-item p {
-    font-size: 12px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    opacity: 0.8;
+.hiw-preview-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: var(--primary-color);
+    margin-bottom: 14px;
+}
+
+.hiw-preview-desc {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text-dark);
+    max-width: 440px;
+    margin-bottom: 32px;
+}
+
+/* =========================================
+   SCREENSHOT STYLES (replaces mock visuals)
+========================================= */
+.hiw-screen {
+    border: 1px solid var(--border-color);
+    border-radius: calc(var(--card-radius) - 4px);
+    background: var(--surface-alt);
+    overflow: hidden;
+}
+
+.hiw-screen-bar {
+    display: flex;
+    gap: 6px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--surface-color);
+}
+
+.hiw-screen-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-color);
+}
+
+.hiw-screen-body {
+    padding: 22px;
+}
+
+/* Screenshot styling */
+.hiw-screenshot {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    display: block;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+@media (max-width: 991px) {
+    .hiw-body {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+
+    .hiw-steps {
+        flex-direction: row;
+        overflow-x: auto;
+        gap: 10px;
+        padding-bottom: 6px;
+    }
+
+    .hiw-step {
+        flex: none;
+        width: 220px;
+    }
+}
+
+@media (max-width: 576px) {
+    .how-it-works-section {
+        padding: 60px 0;
+    }
+
+    .hiw-preview {
+        padding: 24px;
+    }
+
+    .hiw-preview-title {
+        font-size: 26px;
+    }
+
+    .hiw-screenshot {
+        border-radius: 4px;
+    }
 }
 
 /* =========================
@@ -172,280 +856,1201 @@
 /* =========================
    FEATURED LAWYERS SECTION
 ========================= */
-.featured-section {
-    padding: 80px 0;
-    background: var(--secondary-color);
+
+.featured-section{
+    padding:100px 0;
+    background:var(--secondary-color);
 }
 
-.lawyer-card-home {
-    background: transparent;
-    transition: 0.4s ease;
+/*=========================
+    CARD
+=========================*/
+
+.lawyer-card-home{
+
+    position:relative;
+
+    display:flex;
+    flex-direction:column;
+
+    height:100%;
+
+    overflow:hidden;
+
+    background:var(--surface-color);
+
+    border:1px solid var(--border-color);
+
+    border-radius:16px;
+
+    transition:
+        transform .55s cubic-bezier(.2,.8,.2,1),
+        box-shadow .45s,
+        border-color .45s,
+        background .45s;
+
+    box-shadow:
+        rgba(50,50,93,.18) 0 30px 60px -20px,
+        rgba(0,0,0,.14) 0 18px 35px -18px,
+        rgba(10,37,64,.10) 0 -2px 6px inset;
 }
 
-.lawyer-card-home:hover {
-    transform: translateY(-6px);
+.lawyer-card-home:hover{
+
+    background:var(--charcoal-black);
+
+    transform:
+        perspective(1000px)
+        rotateX(10deg)
+        rotateY(-10deg)
+        translateY(-16px)
+        scale(1.02);
+
+    border-color:#374151;
+
+    box-shadow:
+        0 45px 80px rgba(0,0,0,.22),
+        0 18px 40px rgba(0,0,0,.12),
+        rgba(10,37,64,.35) 0 -2px 8px inset;
 }
 
-.lawyer-img-home {
-    width: 100%;
-    height: 240px;
-    overflow: hidden;
-    position: relative;
-    background: #ddd;
-    border: 10px solid rgba(245, 241, 235, 0.9);
+
+/*=========================
+    IMAGE
+=========================*/
+
+.lawyer-img-home{
+
+    width:100%;
+
+    aspect-ratio:4/5;
+
+    overflow:hidden;
+
+    background:#D9DED7;
+
+    border-radius:16px 16px 0 0;
 }
 
-.lawyer-img-home img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: 0.5s ease;
-    filter: grayscale(100%);
+.lawyer-img-home img{
+
+    width:100%;
+
+    height:100%;
+
+    display:block;
+
+    object-fit:cover;
+
+    transition:transform .6s ease;
 }
 
-.lawyer-card-home:hover .lawyer-img-home img {
-    transform: scale(1.03);
-    filter: grayscale(0%);
+.lawyer-card-home:hover .lawyer-img-home img{
+
+    transform:scale(1.08);
 }
 
-.lawyer-img-home i {
-    font-size: 65px;
-    color: var(--primary-color);
-    margin-top: 95px;
-    text-align: center;
-    width: 100%;
+
+/*=========================
+    PLACEHOLDER
+=========================*/
+
+.lawyer-placeholder{
+
+    width:100%;
+    height:100%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:70px;
+
+    color:var(--primary-color);
 }
 
-.lawyer-card-home h4 {
-    font-size: 22px;
-    color: var(--primary-color);
-    margin-top: 20px;
-    margin-bottom: 6px;
-    border-top: 1px solid var(--border-color);
-    padding-top: 15px;
+
+/*=========================
+    CARD BODY
+=========================*/
+
+.lawyer-card-body{
+
+    display:flex;
+
+    flex-direction:column;
+
+    flex:1;
+
+    padding:22px;
 }
 
-.lawyer-card-home .specialization {
+
+/*=========================
+    CONTENT
+=========================*/
+
+.lawyer-card-body h4{
+
+    margin:0 0 8px;
+
+    padding-top:18px;
+
+    border-top:1px solid var(--border-color);
+
+    font-size:22px;
+
+    color:var(--primary-color);
+
+    transition:.35s;
+}
+
+.lawyer-card-body .specialization{
+
+    margin:0 0 14px;
+
+    font-size:10px;
+
+    letter-spacing:3px;
+
+    text-transform:uppercase;
+
+    color:var(--text-light);
+
+    transition:.35s;
+}
+
+.lawyer-card-body .fees{
+
+    margin:0;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    color:var(--primary-color);
+
+    transition:.35s;
+}
+
+
+
+
+
+/*=========================
+    HOVER TEXT
+=========================*/
+
+.lawyer-card-home:hover h4{
+
+    color:var(--secondary-color);
+
+    border-top-color:rgba(255,255,255,.12);
+}
+
+.lawyer-card-home:hover .specialization{
+
+    color:var(--muted-white);
+}
+
+.lawyer-card-home:hover .fees{
+
+    color:var(--muted-white);
+}
+
+.lawyer-card-home:hover .lawyer-placeholder{
+
+    color:var(--muted-white);
+}
+/*=========================
+    PROFILE BUTTON
+=========================*/
+
+.btn-view-profile{
+
+    position:relative;
+
+    overflow:hidden;
+
+   align-self:flex-start;
+
+   margin-top: auto;
+
+    margin:20px 0 0 0;
+
+    padding:12px 24px;
+
+    background:var(--primary-color);
+
+    color:var(--secondary-color);
+
+    border:1px solid var(--primary-color);
+
+    border-radius:8px;
+
+    font-size:10px;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    transition:
+        transform .45s,
+        background .45s,
+        color .45s,
+        box-shadow .45s;
+}
+
+/* Shine */
+
+.btn-view-profile::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:-120%;
+
+    left:-70%;
+
+    width:45%;
+
+    height:300%;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.25),
+        transparent);
+
+    transform:rotate(25deg);
+
+    transition:.8s;
+}
+
+.btn-view-profile:hover{
+
+    background:var(--accent-color);
+
+    color:var(--surface-color);
+
+    transform:
+        perspective(800px)
+        rotateX(6deg)
+        translateY(-3px);
+
+    box-shadow:var(--shadow-sm);
+}
+
+.btn-view-profile:hover::before{
+
+    left:150%;
+}
+
+
+/*=========================
+    VIEW ALL BUTTON
+=========================*/
+
+.btn-view-all{
+
+    display:inline-block;
+
+    padding:14px 36px;
+
+    border:1px solid var(--border-color);
+
+    border-radius:8px;
+
+    background:var(--surface-color);
+
+    color:var(--primary-color);
+
+    font-size:11px;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    transition:.4s;
+}
+
+.btn-view-all:hover{
+
+    background:var(--primary-color);
+
+    color:var(--secondary-color);
+
+    transform:translateY(-3px);
+}
+
+/* =========================
+   PRACTICE DOMAIN CARDS
+========================= */
+.categories-section{
+    padding:100px 0;
+    background:var(--secondary-color);
+}
+
+.category-card{
+
+    position:relative;
+    overflow:hidden;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    min-height:260px;
+    padding:38px 28px;
+
+    text-align:center;
+    text-decoration:none;
+
+    background:var(--surface-color);
+    color:var(--accent-color);
+
+    border:var(--border-soft);
+    border-radius:var(--card-radius);
+
+    transform-style:preserve-3d;
+
+    transition:
+        transform .55s cubic-bezier(.2,.8,.2,1),
+        background .45s,
+        color .45s,
+        border-color .45s,
+        box-shadow .45s;
+
+    box-shadow:var(--shadow-lg);
+
+}
+
+
+
+
+/* shine */
+
+.category-card::after{
+
+    content:"";
+
+    position:absolute;
+
+    top:-140%;
+    left:-70%;
+
+    width:45%;
+    height:300%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.18),
+            transparent);
+
+    transform:rotate(25deg);
+
+    transition:.8s;
+
+}
+
+
+/* ========================= */
+
+.category-icon{
+
+    font-size:48px;
+
+    color:var( --icon-gray);
+
+    margin-bottom:22px;
+
+    transform:translateZ(35px);
+
+    transition:.45s;
+
+}
+
+.category-card h4{
+
+    font-family:'Cormorant Garamond',serif;
+
+    font-size:28px;
+
+    color:var(--accent-color);
+
+    margin-bottom:10px;
+
+    transform:translateZ(28px);
+
+    transition:.45s;
+
+}
+
+.category-card p{
+
+    color:var(--text-dark);
+
+    font-size:11px;
+
+    letter-spacing:2px;
+
+    margin:0;
+
+    transform:translateZ(18px);
+
+    transition:.45s;
+
+}
+
+
+/* underline */
+
+.category-card h4::after{
+
+    content:"";
+
+    display:block;
+
+    width:0;
+
+    height:2px;
+
+    margin:8px auto 0;
+
+    background:var(--accent-color);
+
+    transition:.4s;
+
+}
+
+
+/* =========================
+   HOVER
+========================= */
+
+
+
+.category-card:hover{
+
+    background:var(--charcoal-black);
+
+    transform:
+        perspective(1000px)
+        rotateX(10deg)
+        rotateY(-10deg)
+        translateY(-16px)
+        scale(1.03);
+
+    border-color:#374151;
+
+    box-shadow:var(--shadow-hover);
+
+}
+
+.category-card:hover::before{
+
+    opacity:1;
+
+}
+
+.category-card:hover::after{
+
+    left:150%;
+
+}
+
+.category-card:hover .category-icon{
+
+    color:var(--secondary-color);
+
+    transform:
+        translateZ(70px)
+        scale(1.15);
+
+}
+
+.category-card:hover h4{
+
+    color:var(--secondary-color);
+
+    transform:translateZ(60px);
+
+}
+
+.category-card:hover p{
+
+    color:var(--muted-white);
+
+    transform:translateZ(40px);
+
+}
+
+.category-card:hover h4::after{
+
+    width:65px;
+
+    background:var(--secondary-color);
+
+}
+
+
+
+
+/*=========================================
+  Large Desktop (2K / 4K)
+=========================================*/
+@media (min-width:1600px){
+ 
+}
+
+/*=========================================
+  Desktop
+=========================================*/
+@media (max-width:1399px){
+
+}
+
+/*=========================================
+  Laptop
+=========================================*/
+@media (max-width:1199px){
+
+.hero-section{
+    
+background:
+
+        radial-gradient(
+            circle at 84% 28%,
+            rgba(31,43,31,.30) 0%,
+            rgba(31,43,31,.08) 14%,
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 15% 85%,
+            rgba(47,61,47,.10) 0%,
+            rgba(47,61,47,.05) 15%,
+            transparent 28%
+        ),
+
+        linear-gradient(
+            180deg,
+            #FAFCFA 0%,
+            var(--secondary-color) 55%,
+            #EEF3EE 100%
+        );
+}
+ .hero-title{
+    font-size:4.7rem;
+}
+
+.hero-content{
+    max-width:560px;
+}
+
+.hero-image{
+    max-width:500px;
+}
+
+.quote-box{
+  
+
+    right:20px;
+    bottom:40px;
+
+    width:230px;
+
+
+}
+
+.hero-buttons{
+    max-width:100%;
+}
+  .progress-ring {
+        width: 120px;
+        height: 120px;
+    }
+    .progress-ring svg {
+        width: 120px;
+        height: 120px;
+    }
+
+     .lawyer-card-body{
+        padding:20px;
+    }
+
+    .lawyer-card-body h4{
+        font-size:20px;
+    }
+
+    .lawyer-card-body .specialization{
+        font-size:9px;
+        letter-spacing:2px;
+    }
+
+    .lawyer-card-body .fees{
+        font-size:13px;
+    }
+
+    .btn-view-profile{
+        padding:11px 22px;
+        font-size:9px;
+    }
+     .categories-section{
+        padding:80px 0;
+    }
+
+    .category-card{
+        min-height:240px;
+        padding:32px 24px;
+    }
+
+    .category-icon{
+        font-size:42px;
+        margin-bottom:18px;
+    }
+
+    .category-card h4{
+        font-size:25px;
+    }
+
+
+
+
+}
+
+
+
+
+
+
+/*=========================================
+  Tablet Portrait
+=========================================*/
+@media (max-width:767px){
+
+.hero-title{
+
+    font-size:3rem;
+
+}
+
+.hero-tag{
+
+    justify-content:center;
+
+}
+
+.hero-image{
+
+    max-width:380px;
+
+}
+
+.hero-image-wrapper{
+
+    min-height:380px;
+
+}
+
+.quote-box{
+
+    right:15px;
+    bottom:20px;
+
+    width:200px;
+
+}
+.hero-section{
+
+    background:
+
+        radial-gradient(
+            circle at 50% 74%,
+            rgba(31,43,31,.28) 0%,
+            rgba(31,43,31,.08) 18%,
+            transparent 34%
+        ),
+
+        radial-gradient(
+            circle at 10% 92%,
+            rgba(47,61,47,.08) 0%,
+            rgba(47,61,47,.04) 18%,
+            transparent 32%
+        ),
+
+        linear-gradient(
+            180deg,
+            #FAFCFA 0%,
+            var(--secondary-color) 55%,
+            #EEF3EE 100%
+        );
+
+
+}
+ .stat-card {
+        padding: 15px 10px;
+    }
+
+.lawyer-card-home{
+
+        border-radius:14px;
+
+    }
+
+    .lawyer-img-home{
+
+        border-radius:14px 14px 0 0;
+
+    }
+
+    .lawyer-card-body{
+
+        padding:16px;
+
+    }
+
+    .lawyer-card-body h4{
+
+        font-size:18px;
+
+        padding-top:14px;
+
+    }
+
+    .lawyer-card-body .specialization{
+
+        font-size:9px;
+
+        letter-spacing:2px;
+
+    }
+
+    .lawyer-card-body .fees{
+
+        font-size:13px;
+
+    }
+
+    .lawyer-placeholder{
+
+        font-size:54px;
+
+    }
+
+    .btn-view-profile{
+
+        width:100%;
+
+        font-size:9px;
+
+        padding:11px;
+
+    }
+    .categories-section{
+        padding:60px 0;
+    }
+
+    .category-card{
+
+        min-height:200px;
+
+        padding:24px 18px;
+
+        border-radius:12px;
+
+    }
+
+    .category-icon{
+
+        font-size:34px;
+
+        margin-bottom:14px;
+
+    }
+
+    .category-card h4{
+
+        font-size:20px;
+
+    }
+
+    .category-card p{
+
+        font-size:10px;
+
+        letter-spacing:1px;
+
+    }
+}
+
+
+/*=========================================
+  Large Mobile
+=========================================*/
+@media (max-width:576px){
+
+.hero-section{
+
+    padding:60px 0;
+   
+
+    background:
+
+        radial-gradient(
+            circle at 50% 78%,
+            rgba(31,43,31,.26) 0%,
+            rgba(31,43,31,.08) 20%,
+            transparent 36%
+        ),
+
+        radial-gradient(
+            circle at 8% 95%,
+            rgba(47,61,47,.08) 0%,
+            rgba(47,61,47,.04) 20%,
+            transparent 34%
+        ),
+
+        linear-gradient(
+            180deg,
+            #FAFCFA 0%,
+            var(--secondary-color) 55%,
+            #EEF3EE 100%
+        );
+
+}
+
+.hero-title{
+
+    font-size:3rem;
+
+}
+
+.hero-text{
+
+    font-size:15px;
+
+    line-height:1.8;
+
+}
+
+.hero-tag{
+
+    font-size:11px;
+
+    letter-spacing:2px;
+
+}
+.hero-buttons{
+
+    grid-template-columns:
+        minmax(100px,1fr)
+        minmax(100px,1fr)
+        minmax(90px,1fr);
+
+    border-radius:10px;
+
+}
+
+.hero-image{
+
+    max-width:300px;
+
+}
+
+.hero-image-wrapper{
+
+    min-height:320px;
+    
+
+}
+
+.quote-box{
+
+    right:10px;
+    bottom:15px;
+
+    width:180px;
+
+    padding:18px;
+
+}
+.stats-section {
+        padding: 35px 0 70px;
+        border-radius: 0 0 40px 40px;
+    }
+    .progress-ring {
+        width: 105px;
+        height: 105px;
+    }
+    .progress-ring svg {
+        width: 105px;
+        height: 105px;
+    }
+    .ring-value {
+        font-size: 24px;
+    }
+    .stat-card h4 {
+        font-size: 18px;
+    }
+
+.lawyer-card-home{
+
+        border-radius:12px;
+         max-width:320px;
+
+        margin:0 auto;
+
+    }
+
+    .lawyer-img-home{
+
+        border-radius:12px 12px 0 0;
+
+    }
+
+    .lawyer-card-body{
+
+        padding:15px;
+
+    }
+
+    .lawyer-card-body h4{
+
+        font-size:17px;
+
+        padding-top:12px;
+
+    }
+
+    .lawyer-card-body .specialization{
+
+        font-size:8px;
+
+        letter-spacing:1.5px;
+
+        margin-bottom:10px;
+
+    }
+
+    .lawyer-card-body .fees{
+
+        font-size:12px;
+
+    }
+
+    .lawyer-placeholder{
+
+        font-size:48px;
+
+    }
+
+    .btn-view-profile{
+
+        width:100%;
+
+        padding:10px;
+
+        font-size:9px;
+
+        letter-spacing:1.5px;
+
+    }
+     .categories-section{
+        padding:50px 0;
+    }
+
+    .category-card{
+
+        min-height:180px;
+
+        padding:20px 16px;
+
+        border-radius:10px;
+
+    }
+
+    .category-icon{
+
+        font-size:30px;
+
+        margin-bottom:12px;
+
+    }
+
+    .category-card h4{
+
+        font-size:18px;
+
+        margin-bottom:8px;
+
+    }
+
+    .category-card p{
+
+        font-size:9px;
+
+        letter-spacing:1px;
+
+    }
+
+    .category-card:hover{
+
+        transform:translateY(-6px);
+
+    }
+
+
+}
+
+
+/*=========================================
+  Small Mobile
+=========================================*/
+@media (max-width:400px){
+
+
+.hero-title{
+
+    font-size:3rem;
+
+}
+.hero-tag{
+    letter-spacing: 2px;
     font-size: 10px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text-light);
-    margin-bottom: 14px;
+}
+.hero-tag::before{
+    width:20px;
 }
 
-.lawyer-card-home .fees {
+.hero-image{
+
+    max-width:250px; 
+}
+.hero-image-wrapper::after{
+
+    height:100px;
+
+    background:linear-gradient(
+        to bottom,
+        rgba(245,251,245,0),
+        var(--secondary-color)
+    );
+}
+
+.hero-image-wrapper{
+
+    min-height:300px;
+    background: var(--accent-color);
+
+}
+.hero-buttons{
+
+    grid-template-columns:
+        minmax(110px,1fr)
+        minmax(110px,1fr)
+        105px;
+
+    border-radius:10px;
+
+}
+
+.luxury-input{
+
+    height:48px !important;
+
+    padding:0 12px !important;
+
+    font-size:13px;
+
+}
+
+.btn-luxury{
+
+    min-width:auto;
+
+    height:48px;
+
+    padding:0 14px;
+
+    font-size:10px;
+
+    letter-spacing:1.5px;
+
+}
+.quote-box{
+
+    right:8px;
+    bottom:10px;
+
+    width:165px;
+
+    padding:15px;
+
+}
+.quote-box p{
     font-size: 14px;
-    color: var(--primary-color);
-    font-weight: 600;
-    margin-bottom: 20px;
 }
 
-.btn-view-profile {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    transition: 0.4s;
-    background: var(--primary-color);
-    color: #fff;
-    border: 1px solid var(--border-color);
+.lawyer-card-home{
+
+        border-radius:12px;
+         max-width:200px;
+
+        margin:0 auto;
+
+    }
+
+ .lawyer-card-body{
+
+        padding:14px;
+
+    }
+
+    .lawyer-card-body h4{
+
+        font-size:16px;
+
+    }
+
+    .lawyer-card-body .specialization{
+
+        font-size:8px;
+
+        letter-spacing:1px;
+
+    }
+
+    .lawyer-card-body .fees{
+
+        font-size:11px;
+
+    }
+
+    .lawyer-placeholder{
+
+        font-size:42px;
+
+    }
+
+    .btn-view-profile{
+
+        font-size:8px;
+
+        padding:9px;
+
+    }
+
+
 }
 
-.btn-view-profile:hover {
-    color: var(--text-dark);
-    border: 1px solid var(--border-color);
-    background-color: var(--secondary-color);
-}
 
-.btn-view-all {
-    display: inline-block;
-    padding: 14px 34px;
-    border: 1px solid var(--border-color);
-    color: var(--text-dark);
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    transition: 0.4s;
-}
 
-.btn-view-all:hover {
-    background: var(--primary-color);
-    color: #fff;
-}
 
-/* =========================
-   CATEGORIES SECTION (Practice Domains)
-========================= */
-.categories-section {
-    padding: 80px 0;
-    background: var(--secondary-color);
-}
 
-.category-card {
-    display: block;
-    text-align: center;
-    padding: 35px 20px;
-    background: var(--white);
-    border: 1px solid var(--border-color);
-    text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-}
-
-.category-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.06);
-    border-color: var(--primary-color);
-}
-
-.category-icon {
-    font-size: 42px;
-    margin-bottom: 18px;
-    display: block;
-    color: var(--primary-color);
-}
-
-.category-card h4 {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    color: var(--primary-color);
-    margin-bottom: 8px;
-    position: relative;
-    display: inline-block;
-}
-
-.category-card h4::after {
-    content: '';
-    position: absolute;
-    bottom: -6px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    background: var(--primary-color);
-    transition: width 0.3s ease;
-}
-
-.category-card:hover h4::after {
-    width: 30px;
-}
-
-.category-card p {
-    font-size: 11px;
-    color: var(--text-light);
-    letter-spacing: 1.5px;
-    margin: 12px 0 0;
-}
-
-/* =========================
-   HOMEPAGE RESPONSIVE MEDIA QUERIES
-   (Only those that affect hero, stats, featured, categories)
-========================= */
-@media (max-width: 991px) {
-    .hero-section {
-        padding: 40px 0;
-    }
-
-    .hero-title {
-        font-size: 3rem;
-    }
-
-    .hero-title span {
-        margin-left: 0;
-    }
-
-    .hero-buttons {
-        flex-direction: column;
-        gap: 12px;
-    }
-
-    .hero-buttons input,
-    .hero-buttons select,
-    .hero-buttons button {
-        width: 100%;
-        border-right: 1px solid var(--border-color);
-    }
-
-    .hero-image-wrapper {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .hero-image {
-        width: 100%;
-        max-width: 470px;
-        height: auto;
-        display: block;
-    }
-
-    .quote-box {
-        position: absolute;
-        bottom: 30px;
-        right: -15px;
-        background: var(--primary-color);
-        color: #fff;
-        width: 240px;
-        padding: 28px;
-        z-index: 10;
-    }
-
-    .featured-section {
-        padding: 50px 20px;
-    }
-
-    .lawyer-img-home {
-        height: 200px;
-    }
-
-    .categories-section {
-        padding: 50px 20px;
-    }
-}
-
-@media (max-width: 767px) {
-    .hero-title {
-        font-size: 2.8rem;
-    }
-
-    .hero-text {
-        font-size: 14px;
-    }
-
-    .hero-image {
-        height: 300px;
-    }
-
-    .section-title {
-        font-size: 2rem;
-    }
-
-    .lawyer-card-home h4 {
-        font-size: 18px;
-    }
-
-    .category-card h4 {
-        font-size: 18px;
-    }
-
-    .category-icon {
-        font-size: 32px;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero-title {
-        font-size: 2.2rem;
-    }
-
-    .hero-image {
-        height: 250px;
-    }
-
-    .btn-luxury {
-        padding: 0 20px;
-        font-size: 11px;
-    }
-}

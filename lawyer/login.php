@@ -3,6 +3,7 @@
 // Lawyer Login Page – same classes as customer login
 // ============================================================
 $page_title = 'Lawyer Login';
+$footer_css = 'dashboard'; // loads specific dashboard-footer.php css (dasboard-footer.css)
 require_once '../includes/config.php';
 
 // Redirect if already logged in
@@ -47,19 +48,19 @@ include '../includes/header.php';
 <!-- Load auth.css for this page -->
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/auth.css">
 
-<!-- Lawyer login wrapper – same classes as customer, plus ID for custom background -->
-<div class="login-wrapper" id="lawyer-login">
+<!-- Lawyer login wrapper -->
+<div class="login-wrapper">
 
     <!-- Background image div (styled in auth.css) -->
     <div class="login-bg"></div>
 
-    <div class="container py-5">
+    <div class="container-fluid py-4">
         <div class="row justify-content-center">
-            <div class="col-md-5">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-5">
                 <div class="login-card">
                     <div class="text-center mb-4">
                         <!-- Logo – styled by .login-wrapper .login-logo -->
-                        <img src="<?php echo BASE_URL; ?>assets/images/legalFlowlogotransp.png"
+                        <img src="<?php echo BASE_URL; ?>assets/images/citylawyers_logo.png"
                              alt="Logo"
                              class="login-logo">
                         <h3>Welcome Lawyer</h3>
@@ -97,5 +98,5 @@ include '../includes/header.php';
         </div>
     </div>
 </div>
-
-<?php include '../includes/footer.php'; ?>
+ 
+<?php include '../includes/dashboard-footer.php'; ?>

@@ -1,0 +1,53 @@
+/* =========================
+   DASHBOARD FOOTER
+========================= */
+.dashboard-footer {
+    position: relative;
+    overflow: hidden;
+    padding: 18px 25px;
+    text-align: center;
+    background: linear-gradient(180deg, #263326 0%, var(--primary-color) 55%, #1B251B 100%);
+    color:var(--text-gray);
+    border-top: 1px solid rgba(255,255,255,.08);
+    letter-spacing: .8px;
+    font-size: 13px;
+    z-index: 10;
+}
+
+/* Decorative glow */
+.dashboard-footer::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 30%, rgba(142,247,43,.08), transparent 35%),
+                radial-gradient(circle at 85% 75%, rgba(255,255,255,.03), transparent 40%);
+    pointer-events: none;
+}
+
+/* Keep text above glow */
+.dashboard-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Hover */
+.dashboard-footer:hover {
+    color: var(--secondary-color);
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .dashboard-footer {
+        padding: 16px 20px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    .dashboard-footer {
+        padding: 14px 15px;
+        font-size: 11px;
+        letter-spacing: .5px;
+    }
+}

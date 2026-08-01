@@ -122,9 +122,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['date']) && isset($_POS
                 // Reschedule
                 $updateStmt = $conn->prepare("UPDATE appointments SET appointment_date = ?, appointment_time = ?, booking_message = ?, status = 'pending', reschedule_count = reschedule_count + 1 WHERE id = ? AND customer_id = ?");
                 if ($updateStmt->execute([$date, $time, $message, $edit_post_id, $customer_id])) {
-                    $notifyMsg = "Customer $customer_name rescheduled to " . date('d M Y', strtotime($date)) . " at " . date('h:i A', strtotime($time));
-                    $notifyStmt = $conn->prepare("INSERT INTO notifications (user_id, user_type, title, message) VALUES (?, 'lawyer', 'Appointment Rescheduled', ?)");
-                    $notifyStmt->execute([$lawyer_id, $notifyMsg]);
+                    // ✅ Notification for lawyer (rescheduled)
+                    addNotification(
+                        $lawyer_id,
+                        'lawyer',
+                        'rescheduled',
+                        'Appointment Rescheduled',
+                        "Customer $customer_name rescheduled to " . date('d M Y', strtotime($date)) . " at " . date('h:i A', strtotime($time)),
+                        'appointments.php',  // ✅ Removed 'lawyer/'
+                        'fa-calendar-alt'
+                    );
                     $show_modal = true;
                     $booked_lawyer_name = $lawyer['name'];
                 } else {
@@ -134,9 +141,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['date']) && isset($_POS
                 // New appointment
                 $insertStmt = $conn->prepare("INSERT INTO appointments (lawyer_id, customer_id, appointment_date, appointment_time, booking_message, status) VALUES (?, ?, ?, ?, ?, 'pending')");
                 if ($insertStmt->execute([$lawyer_id, $customer_id, $date, $time, $message])) {
-                    $notifyMsg = "Customer $customer_name requested appointment on " . date('d M Y', strtotime($date)) . " at " . date('h:i A', strtotime($time));
-                    $notifyStmt = $conn->prepare("INSERT INTO notifications (user_id, user_type, title, message) VALUES (?, 'lawyer', 'New Appointment Request', ?)");
-                    $notifyStmt->execute([$lawyer_id, $notifyMsg]);
+                    // ✅ Notification for lawyer (new request)
+                    addNotification(
+                        $lawyer_id,
+                        'lawyer',
+                        'new_request',
+                        'New Appointment Request',
+                        "Customer $customer_name requested appointment on " . date('d M Y', strtotime($date)) . " at " . date('h:i A', strtotime($time)),
+                        'appointments.php',  // ✅ Removed 'lawyer/'
+                        'fa-clock'
+                    );
                     $show_modal = true;
                     $booked_lawyer_name = $lawyer['name'];
                 } else {

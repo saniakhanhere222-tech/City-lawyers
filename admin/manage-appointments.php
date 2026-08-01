@@ -7,9 +7,12 @@
  * - Filter appointments by status (pending, confirmed, completed, cancelled)
  * - Delete any appointment
  * - Paginate through results (10 per page)
+ * - Loads dashboard-footer with conditional footer css loading set by $footer_css = 'dashboard
+ * - dashboard view as full width set in header.php $page_layout= 'fluid'; 
  */
-$dashboard_page = true;
 $page_title = 'Manage Appointments';
+$page_layout= 'fluid'; //set in header.php 
+$footer_css = 'dashboard'; // loads specific dashboard-footer.php css (dasboard-footer.css)
 require_once '../includes/config.php';
 
 // ============================================================
@@ -19,6 +22,11 @@ if (!isset($_SESSION['admin_id']) || $_SESSION['user_type'] != 'admin') {
     header("Location: login.php");
     exit();
 }
+
+// Set sidebar variables
+$user_type = 'admin';
+$user_name = $_SESSION['admin_name'];
+$dashboard_link = BASE_URL . 'admin/index.php';
 
 // ============================================================
 // 2. Handle Delete action (with PDO)
@@ -80,27 +88,20 @@ $stmt->execute();
 $appointments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 // ============================================================
-// 5. Include header (global, forms, dashboard CSS)
+// 5. Include header
 // ============================================================
 include '../includes/header.php';
 ?>
 
-<!-- No inline CSS – all styles come from dashboard.css -->
- <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/dashboard.css">
- <!---TABLES.CSS – reusable dashboard table styles
-   (filter tabs, tables, status badges, action buttons, pagination) -->
+<!-- CSS: dashboard + tables + sidebar -->
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/dashboard.css">
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/tables.css">
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/sidebar.css">
+
 <div class="dashboard-wrapper">
 
     <!-- SIDEBAR -->
-    <div class="sidebar">
-        <a href="<?php echo BASE_URL; ?>">Home</a>
-        <a href="<?php echo BASE_URL; ?>admin/index.php">Dashboard</a>
-        <a href="<?php echo BASE_URL; ?>admin/manage-lawyers.php">Manage Lawyers</a>
-        <a href="<?php echo BASE_URL; ?>admin/manage-appointments.php" class="active">Appointments</a>
-        <a href="<?php echo BASE_URL; ?>admin/manage-content.php">Homepage</a>
-        <a href="<?php echo BASE_URL; ?>logout.php" class="logout">Logout</a>
-    </div>
+    <?php include '../includes/dashboard-sidebar.php'; ?>
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
@@ -151,16 +152,24 @@ include '../includes/header.php';
                                         <?php echo ucfirst($row['status']); ?>
                                     </span>
                                 </td>
-                                <td class="action-btn-group">
-                                    <a href="?delete=<?php echo $row['id']; ?>" class="action-btn btn-delete" onclick="return confirm('Delete this appointment permanently?')">Delete</a>
+                                <td>
+                                    <div class="action-icons">
+                                        <a href="?delete=<?php echo $row['id']; ?>" 
+                                           class="action-icon delete" 
+                                           data-tooltip="Delete"
+                                           onclick="return confirm('Delete this appointment permanently?')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
                                 </td>
+                                
                             </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- PAGINATION (manual, as the function hasn't been built yet) -->
+                <!-- PAGINATION -->
                 <?php if ($total_pages > 1): ?>
                 <div class="pagination-wrap">
                     <?php if ($page > 1): ?>
@@ -185,4 +194,4 @@ include '../includes/header.php';
     </div>
 </div>
 
-<?php include '../includes/footer.php'; ?>
+<?php include '../includes/dashboard-footer.php'; ?>

@@ -9,7 +9,8 @@
  * - Paginate through results
  */
 $page_title = 'Manage Customers';
-$dashboard_page = true;
+$page_layout = 'fluid';
+$footer_css = 'dashboard';
 require_once '../includes/config.php';
 
 // ============================================================
@@ -95,31 +96,39 @@ $customers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 include '../includes/header.php';
 ?>
 
+<!-- ============================================================
+     CSS FILES
+     dashboard.css – layout + cards
+     tables.css – table styles, badges, pagination
+     sidebar.css – collapsible sidebar
+     ============================================================ -->
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/dashboard.css">
-<!---TABLES.CSS – reusable dashboard table styles
-   (filter tabs, tables, status badges, action buttons, pagination) -->
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/tables.css">
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/sidebar.css">
+
+
 
 <div class="dashboard-wrapper">
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-        <a href="<?php echo BASE_URL; ?>">Home</a>
-        <a href="<?php echo BASE_URL; ?>admin/index.php">Dashboard</a>
-        <a href="<?php echo BASE_URL; ?>admin/manage-lawyers.php">Manage Lawyers</a>
-        <a href="<?php echo BASE_URL; ?>admin/manage-customers.php" class="active">Manage Customers</a>
-        <a href="<?php echo BASE_URL; ?>admin/manage-appointments.php">Appointments</a>
-        <a href="<?php echo BASE_URL; ?>admin/manage-content.php">Homepage</a>
-        <a href="<?php echo BASE_URL; ?>logout.php" class="logout">Logout</a>
-    </div>
+
+    <!-- SIDEBAR – Reusable component -->
+    <?php include '../includes/dashboard-sidebar.php'; ?>
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
+
+        <!-- ============================================================
+             HEADER CARD
+             ============================================================ -->
         <div class="dashboard-card">
             <h2 class="dashboard-title">Manage Customers</h2>
             <p class="dashboard-subtitle">View, search, and delete customer accounts</p>
         </div>
 
-        <!-- FILTER / SEARCH BOX -->
+        <!-- ============================================================
+             FILTER / SEARCH BOX
+             Uses .filter-row, .filter-group, .filter-btn, .reset-btn
+             from tables.css
+             ============================================================ -->
         <div class="dashboard-card">
             <form method="GET" action="">
                 <div class="filter-row">
@@ -148,7 +157,9 @@ include '../includes/header.php';
             </form>
         </div>
 
-        <!-- CUSTOMERS TABLE -->
+        <!-- ============================================================
+             CUSTOMERS TABLE
+             ============================================================ -->
         <div class="dashboard-card">
             <?php if (count($customers) > 0): ?>
                 <div class="table-wrap">
@@ -173,8 +184,18 @@ include '../includes/header.php';
                                 <td><?php echo htmlspecialchars($row['phone'] ?? '-'); ?></td>
                                 <td><?php echo htmlspecialchars($row['city'] ?? '-'); ?></td>
                                 <td><?php echo date('d M Y', strtotime($row['reg_date'])); ?></td>
-                                <td class="action-btn-group">
-                                    <a href="?delete=<?php echo $row['id']; ?>" class="action-btn btn-delete" onclick="return confirm('Delete this customer permanently? This will also delete all their appointments.')">Delete</a>
+                                <td>
+                                    <!-- ========================================
+                                         ICON ACTION BUTTONS (Delete only)
+                                         ======================================== -->
+                                    <div class="action-icons">
+                                        <a href="?delete=<?php echo $row['id']; ?>" 
+                                           class="action-icon delete" 
+                                           data-tooltip="Delete"
+                                           onclick="return confirm('Delete this customer permanently? This will also delete all their appointments.')">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -182,7 +203,9 @@ include '../includes/header.php';
                     </table>
                 </div>
 
-                <!-- PAGINATION -->
+                <!-- ============================================================
+                     PAGINATION
+                     ============================================================ -->
                 <?php if ($total_pages > 1): ?>
                 <div class="pagination-wrap">
                     <?php if ($page > 1): ?>
@@ -201,7 +224,8 @@ include '../includes/header.php';
                 <p class="no-data">No customers found.</p>
             <?php endif; ?>
         </div>
-    </div>
-</div>
 
-<?php include '../includes/footer.php'; ?>
+    </div><!-- /main-content -->
+</div><!-- /dashboard-wrapper -->
+
+<?php include '../includes/dashboard-footer.php'; ?>

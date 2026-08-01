@@ -6,7 +6,8 @@
  * for the logged‑in customer.
  */
 $page_title = 'Customer Dashboard';
-$dashboard_page = true; // triggers full‑width container in header.php
+$page_layout = 'fluid';
+$footer_css = 'dashboard';
 require_once '../includes/config.php';
 
 // ============================================================
@@ -16,6 +17,11 @@ if (!isset($_SESSION['customer_id']) || $_SESSION['user_type'] != 'customer') {
     header("Location: ../customer/login.php");
     exit();
 }
+
+// Set sidebar variables
+$user_type = 'customer';
+$user_name = $_SESSION['customer_name'];
+$dashboard_link = BASE_URL . 'customer/index.php';
 
 $customer_id = $_SESSION['customer_id'];
 $customer_name = $_SESSION['customer_name'];
@@ -63,60 +69,92 @@ $completedStmt->execute([$customer_id]);
 $completed = $completedStmt->fetch(PDO::FETCH_ASSOC)['count'];
 
 // ============================================================
-// 4. Include header (global.css, dashboard.css, etc.)
+// 4. Include header
 // ============================================================
 include '../includes/header.php';
 ?>
 
-<!-- DASHBOARD.CSS  Desktop: CSS Grid layout (sidebar fixed width, main auto)- 
- Mobile: horizontal navigation strip 
- - Cards, stats grid, layout only -->
-<link rel="stylesheet" href="<?php echo BASE_URL;?>assets/css/dashboard.css">
-<!---TABLES.CSS – reusable dashboard table styles
-   (filter tabs, tables, status badges, action buttons, pagination) -->
+<!-- ============================================================
+     CSS FILES
+     dashboard.css – layout + cards + stats grid
+     tables.css – table styles, badges
+     sidebar.css – collapsible sidebar
+     ============================================================ -->
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/dashboard.css">
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/tables.css">
+<link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/sidebar.css">
 
 <div class="dashboard-wrapper">
 
     <!-- SIDEBAR -->
-    <div class="sidebar">
-        <a href="<?php echo BASE_URL; ?>">Home</a>
-        <a href="<?php echo BASE_URL; ?>customer/index.php" class="active">Dashboard</a>
-        <a href="<?php echo BASE_URL; ?>customer/my-appointments.php">My Appointments</a>
-        <a href="<?php echo BASE_URL; ?>customer/search.php">Find Lawyers</a>
-        <a href="<?php echo BASE_URL; ?>logout.php" class="logout">Logout</a>
-    </div>
+    <?php include '../includes/dashboard-sidebar.php'; ?>
 
     <!-- MAIN CONTENT -->
     <div class="main-content">
 
-        <!-- WELCOME CARD -->
+        <!-- ============================================================
+             WELCOME CARD
+             ============================================================ -->
         <div class="dashboard-card">
             <h2 class="dashboard-title">Welcome, <?php echo htmlspecialchars($customer_name); ?>!</h2>
             <p class="dashboard-subtitle">Manage appointments and connect with trusted legal professionals.</p>
         </div>
 
-        <!-- STATISTICS GRID -->
+        <!-- ============================================================
+             STATISTICS GRID – 4 columns with icons + trends
+             The .stat-icon and .stat-trend styles are already in dashboard.css
+             ============================================================ -->
         <div class="stats-grid">
+
+            <!-- Total Appointments -->
             <div class="stat-box">
+                <span class="stat-icon"><i class="fas fa-calendar-check"></i></span>
+                 <p>Total Appointments</p>
                 <h3><?php echo $total; ?></h3>
-                <p>Total Appointments</p>
+               
+                <div class="stat-trend up">
+                    <i class="fas fa-arrow-up"></i> 12%
+                </div>
             </div>
+
+            <!-- Pending Appointments -->
             <div class="stat-box">
+                <span class="stat-icon"><i class="fas fa-clock"></i></span>
+                 <p>Pending</p>
                 <h3><?php echo $pending; ?></h3>
-                <p>Pending</p>
+               
+                <div class="stat-trend down">
+                    <i class="fas fa-arrow-down"></i> 5%
+                </div>
             </div>
+
+            <!-- Confirmed Appointments -->
             <div class="stat-box">
+                <span class="stat-icon"><i class="fas fa-check-circle"></i></span>
+                  <p>Confirmed</p>
                 <h3><?php echo $confirmed; ?></h3>
-                <p>Confirmed</p>
+              
+                <div class="stat-trend up">
+                    <i class="fas fa-arrow-up"></i> 8%
+                </div>
             </div>
+
+            <!-- Completed Appointments -->
             <div class="stat-box">
+                <span class="stat-icon"><i class="fas fa-check-double"></i></span>
+                 <p>Completed</p>
                 <h3><?php echo $completed; ?></h3>
-                <p>Completed</p>
+               
+                <div class="stat-trend up">
+                    <i class="fas fa-arrow-up"></i> 15%
+                </div>
             </div>
+
         </div>
 
-        <!-- UPCOMING APPOINTMENTS TABLE -->
+        <!-- ============================================================
+             UPCOMING APPOINTMENTS TABLE
+             ============================================================ -->
         <div class="dashboard-card">
             <h3 class="dashboard-title" style="font-size:28px;">Upcoming Appointments</h3>
 
@@ -156,7 +194,7 @@ include '../includes/header.php';
             <?php endif; ?>
         </div>
 
-    </div>
-</div>
+    </div><!-- /main-content -->
+</div><!-- /dashboard-wrapper -->
 
-<?php include '../includes/footer.php'; ?>
+<?php include '../includes/dashboard-footer.php'; ?>

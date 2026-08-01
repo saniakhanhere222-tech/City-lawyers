@@ -1,29 +1,44 @@
-/* =========================
-   AUTH.CSS – login page styles (isolated)
-========================= */
+/* ============================================================
+   AUTH.CSS – Login page styles (isolated)
+   ============================================================ */
 
-/* Background image – no inline style needed */
-.login-wrapper .login-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: url('../images/customerlogin1.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    filter: grayscale(100%) brightness(0.7);
-    z-index: -1;   
+.login-wrapper {
+    position: relative;
+    min-height: 100vh;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Card container */
+
+/* ============================================================
+   BACKGROUND
+   ============================================================ */
+.login-wrapper .login-bg {
+    position: fixed;
+    inset: 0;
+    background:
+        var(--gradient-overlay),
+        url("../images/customerlogin1.jpg")
+        center center / cover
+        no-repeat;
+    z-index: -2;
+}
+
+
+/* ============================================================
+   LOGIN CARD
+   ============================================================ */
 .login-wrapper .login-card {
     background: var(--secondary-color);
     border: 1px solid var(--border-color);
-    border-radius: 0;
-    box-shadow: 0 18px 35px rgba(0,0,0,0.08);
-    padding: 1.5rem;
+    border-radius: 14px;
+    box-shadow: var(--shadow-lg);
+    padding: 2rem;
+    width: 100%;
+    max-width: 440px;
+    margin: 2rem auto;
 }
 
 .login-wrapper .login-card h3 {
@@ -36,17 +51,35 @@
     color: var(--text-light);
 }
 
-/* Logo – completely independent size */
+
+/* ============================================================
+   LOGO
+   ============================================================ */
 .login-wrapper .login-logo {
     width: 48px;
     height: 48px;
     object-fit: contain;
-    margin-bottom: 0.5rem;
-    margin:0 auto;
-    
+    margin: 0 auto 0.5rem;
 }
 
-/* Override any global form styles inside wrapper */
+
+/* ============================================================
+   FORM LABELS
+   ============================================================ */
+.login-wrapper .form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+}
+
+
+/* ============================================================
+   FORM INPUTS
+   ============================================================ */
 .login-wrapper .form-control {
     border-radius: 0;
     border: 1px solid var(--border-color);
@@ -63,41 +96,225 @@
     box-shadow: none !important;
 }
 
+
+/* ============================================================
+   LOGIN BUTTON
+   ============================================================ */
 .login-wrapper .btn-login {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 12px;
     background: var(--primary-color);
-    color: var(--white);
+    color: var(--surface-color);
     border: 1px solid var(--primary-color);
     border-radius: 0;
-    padding: 10px;
-    font-weight: 500;
-    letter-spacing: 1px;
-    transition: 0.3s ease;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    transition:
+        transform .45s,
+        background .45s,
+        color .35s,
+        box-shadow .45s,
+        border-color .35s;
 }
 
+/* Shine effect */
+.login-wrapper .btn-login::before {
+    content: "";
+    position: absolute;
+    top: -120%;
+    left: -70%;
+    width: 45%;
+    height: 300%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255,255,255,.25),
+        transparent
+    );
+    transform: rotate(25deg);
+    transition: .8s;
+}
+
+/* Hover */
 .login-wrapper .btn-login:hover {
     background: var(--accent-color);
-    color: var(--border-color);
+    color: var(--surface-color);
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
 }
 
+.login-wrapper .btn-login:hover::before {
+    left: 150%;
+}
+
+/* Active click */
+.login-wrapper .btn-login:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-sm);
+}
+
+
+/* ============================================================
+   LOGIN LINKS
+   ============================================================ */
 .login-wrapper a {
     color: var(--primary-color);
-    text-decoration: none;
     font-weight: 600;
+    text-decoration: none;
+    transition: color .3s ease;
 }
 
 .login-wrapper a:hover {
-    color: var(--text-dark);
+    color: var(--accent-color);
     text-decoration: underline;
 }
 
-/* ============================================
-   Support admin login – reuse same background
-   ============================================ */
-#admin-login .login-bg {
+
+/* ============================================================
+   RESPONSIVE: TABLET (iPad 768-1024px)
+   ============================================================ */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .login-wrapper .login-card {
+        max-width: 480px;
+        padding: 2.5rem;
+        margin: 2rem auto;
+    }
+
+    .login-wrapper .login-logo {
+        width: 56px;
+        height: 56px;
+    }
+
+    .login-wrapper .login-card h3 {
+        font-size: 1.75rem;
+    }
+
+    .login-wrapper .login-card p {
+        font-size: 0.95rem;
+    }
+
+    .login-wrapper .form-label {
+        font-size: 13px;
+    }
+
+    .login-wrapper .form-control {
+        height: 44px;
+        font-size: 15px;
+    }
+
+    .login-wrapper .btn-login {
+        padding: 14px;
+        font-size: 13px;
+        letter-spacing: 5px;
+    }
+
+    .login-wrapper .mb-3 {
+        margin-bottom: 1.25rem !important;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE: MOBILE (Portrait & Landscape)
+   ============================================================ */
+@media (max-width: 767px) {
+    .login-wrapper .login-card {
+        max-width: 100%;
+        padding: 1.5rem;
+        margin: 1.5rem 1rem;
+    }
+
+    .login-wrapper .login-logo {
+        width: 42px;
+        height: 42px;
+    }
+
+    .login-wrapper .login-card h3 {
+        font-size: 1.25rem;
+    }
+
+    .login-wrapper .login-card p {
+        font-size: 0.85rem;
+    }
+
+    .login-wrapper .form-label {
+        font-size: 11px;
+    }
+
+    .login-wrapper .form-control {
+        height: 38px;
+        font-size: 13px;
+    }
+
+    .login-wrapper .btn-login {
+        padding: 10px;
+        font-size: 11px;
+        letter-spacing: 3px;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE: SMALL MOBILE (Under 380px)
+   ============================================================ */
+@media (max-width: 380px) {
+    .login-wrapper .login-card {
+        padding: 1rem;
+        margin: 1rem 0.5rem;
+    }
+
+    .login-wrapper .login-logo {
+        width: 36px;
+        height: 36px;
+    }
+
+    .login-wrapper .login-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .login-wrapper .form-label {
+        font-size: 10px;
+    }
+
+    .login-wrapper .form-control {
+        height: 34px;
+        font-size: 12px;
+    }
+
+    .login-wrapper .btn-login {
+        padding: 8px;
+        font-size: 10px;
+        letter-spacing: 2px;
+    }
+}
+
+
+/* ============================================================
+   RESPONSIVE: LARGE SCREENS (Desktop)
+   ============================================================ */
+@media (min-width: 1025px) {
+    .login-wrapper .login-card {
+        max-width: 440px;
+        padding: 2rem;
+    }
+}
+
+
+/* ============================================================
+   SUPPORT LOGIN OVERRIDES (Reuse same background)
+   ============================================================ */
+/* #admin-login .login-bg {
     background-image: url('../images/adminlogin.jpg');
-   
-}
-/* Lawyer login background (overrides using ID) */
-#lawyer-login .login-bg {
+} */
+
+/* #lawyer-login .login-bg {
     background-image: url('../images/lawyerslogin1.jpg');
-}
+} */
