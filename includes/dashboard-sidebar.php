@@ -1,17 +1,16 @@
 <?php
-/**
- * Dashboard Sidebar – Reusable for all dashboard pages
- * 
- * Usage: include 'includes/dashboard-sidebar.php';
- * 
- * Expected variables:
- * - $user_type   : 'customer', 'lawyer', or 'admin'
- * - $user_name   : Display name of the logged‑in user
- * - $dashboard_link : Link to the dashboard homepage for the user
- * - $page_title  : Page title (used to highlight active menu item)
- * - BASE_URL     : Defined in config.php
- * - SITE_NAME    : Defined in config.php
- */
+// ============================================================
+// DASHBOARD SIDEBAR - Reusable Navigation
+// ============================================================
+// Role-based sidebar (admin/lawyer/customer) with:
+// - User avatar + name display
+// - Role-specific menu items
+// - Active menu highlighting ($page_title)
+// - Logout with confirmation
+//
+// Expected: $user_type, $user_name, $page_title, BASE_URL
+// Security: htmlspecialchars() on all output
+// ============================================================
 ?>
 
 <!-- ===================================================

@@ -1,10 +1,30 @@
 <?php
-/**
- * Lawyer Dashboard
- * 
- * Displays statistics, today's appointments, and upcoming appointments
- * for the logged‑in lawyer.
- */
+// ============================================================
+// LAWYER - DASHBOARD
+// ============================================================
+// This dashboard provides lawyers with key metrics and quick actions:
+//
+// 1. Statistics: Total, Pending, Confirmed, Today's Earnings
+// 2. Today's Appointments: Full day schedule with actions
+// 3. Upcoming Appointments: Next 10 future appointments
+// 4. Quick Actions: Confirm, Complete, Cancel from dashboard
+// 5. Earnings: SUM of fees from completed appointments today
+//
+// Features:
+// - Authentication required (lawyer only)
+// - Real-time statistics
+// - Quick action buttons
+// - Earnings tracking
+// - Responsive layout
+//
+// Database Tables: appointments, customers, lawyers
+//
+// Related Files:
+// - ../includes/config.php - Database connection
+// - ../includes/dashboard-sidebar.php - Navigation
+// - lawyer/appointments.php - Full appointment management
+// - lawyer/chat.php - Chat with customers
+// ============================================================
 $page_title = 'Lawyer Dashboard';
 $page_layout = 'fluid';
 $footer_css = 'dashboard';

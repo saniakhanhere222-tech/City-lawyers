@@ -1,8 +1,19 @@
 <?php
-// =====================================================
-// config.php
-// Database Connection + Site Configuration + Session
-// =====================================================
+// ============================================================
+// CONFIGURATION - Database + Site + Session
+// ============================================================
+// This file provides:
+// 1. PDO database connection (MySQL, exceptions, FETCH_ASSOC)
+// 2. Site constants: BASE_URL, SITE_NAME
+// 3. Include functions.php for reusable helpers
+// 4. Session start (if not already started)
+//
+// Usage: require_once 'includes/config.php';
+// Provides: $conn (PDO), BASE_URL, SITE_NAME, session
+//
+// Security: Use prepared statements via PDO
+// Related: includes/functions.php
+// ============================================================
 
 // Database Settings
 $db_host = "localhost";

@@ -1,11 +1,29 @@
 <?php
-/**
- * Customer - My Appointments
- * 
- * Displays all appointments for the logged‑in customer,
- * allows cancelling (pending/confirmed) and deleting cancelled appointments.
- * For completed appointments, shows "Write Review" or "✔ Reviewed" badge.
- */
+// ============================================================
+// CUSTOMER - MY APPOINTMENTS
+// ============================================================
+// This page manages all customer appointments with status-based actions:
+//
+// 1. Display: Appointment cards with lawyer details, date, time, status
+// 2. Actions: Cancel, Edit, Delete, Write Review, Chat, View Profile
+// 3. Status Logic:
+//    - Pending/Confirmed: Cancel + Edit
+//    - Completed: Write Review or Reviewed badge
+//    - Cancelled: Delete only
+// 4. Features: Notification on cancel, N+1 query prevention, pagination
+//
+// Database Tables: appointments, lawyers, reviews, notifications
+//
+// Related Files:
+// - ../includes/config.php - Database connection
+// - ../includes/header.php - Global header
+// - ../includes/dashboard-sidebar.php - Navigation
+// - ../includes/dashboard-footer.php - Dashboard footer
+// - customer/book-appointment.php - Edit link
+// - customer/review.php - Review link
+// - customer/chat.php - Chat link
+// - customer/lawyer-profile.php - View profile
+// ============================================================
 $page_title = 'My Appointments';
 $page_layout= 'fluid'; //set in header.php 
 $footer_css = 'dashboard'; // loads specific dashboard-footer.php css (dasboard-footer.css)

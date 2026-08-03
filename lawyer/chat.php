@@ -1,11 +1,33 @@
 <?php
-/**
- * Lawyer - Chat with Customer
- * 
- * Displays chat history for a specific appointment.
- * Allows lawyer to send messages to the customer.
- * Auto‑refreshes every 3 seconds to show new messages.
- */
+// ============================================================
+// LAWYER - CHAT WITH CUSTOMER
+// ============================================================
+// This page enables real-time communication with customers:
+//
+// 1. Features: Message history, auto-refresh (3 sec), read receipts
+// 2. Authentication: Lawyer only, appointment ownership required
+// 3. Message Flow: Booking message seeded, lawyer messages on right
+// 4. Header: Shows customer name, date, lawyer's profile picture
+//
+// AJAX Endpoints: send-messages.php, get-messages.php, mark-messages-read.php
+//
+// Features:
+// - Authentication required (lawyer only)
+// - Appointment ownership verification
+// - Real-time messaging with polling
+// - Read status tracking
+// - Enter key support
+//
+// Database Tables: appointments, messages, customers, lawyers
+//
+// Related Files:
+// - ../includes/config.php - Database connection
+// - ../includes/dashboard-sidebar.php - Navigation
+// - ../includes/functions.php - Helper functions
+// - ../includes/send-messages.php - AJAX endpoint
+// - ../includes/get-messages.php - AJAX endpoint
+// - assets/css/chat.css - Chat styling
+// ============================================================
 $page_title = 'Chat';
 $page_layout= 'fluid'; //set in header.php 
 $footer_css = 'dashboard'; // loads specific dashboard-footer.php css (dasboard-footer.css)

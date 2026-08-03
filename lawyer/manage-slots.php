@@ -1,7 +1,26 @@
 <?php
-/**
- * Lawyer - Manage Time Slots (standalone)
- */
+// ============================================================
+// LAWYER - MANAGE TIME SLOTS
+// ============================================================
+// This page manages lawyer availability for appointments:
+//
+// 1. Add: Create new time slots (day + start/end time)
+// 2. Delete: Remove slots (protected if appointments exist)
+// 3. Display: Show all slots ordered by day (Monday → Saturday)
+//
+// Features:
+// - Authentication required (lawyer only)
+// - Booking protection on deletion
+// - Custom day ordering
+// - Time formatting (24h input, 12h display)
+//
+// Database Tables: slots, appointments
+//
+// Related Files:
+// - ../includes/config.php - Database connection
+// - ../includes/dashboard-sidebar.php - Navigation
+// - customer/book-appointment.php - Uses slots for booking
+// ============================================================
 $page_title = 'Manage Slots';
 $page_layout= 'fluid'; //set in header.php 
 $footer_css = 'dashboard'; // loads specific dashboard-footer.php css (dasboard-footer.css)

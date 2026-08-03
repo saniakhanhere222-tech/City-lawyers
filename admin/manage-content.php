@@ -1,10 +1,45 @@
 <?php
 /**
- * Admin - Manage Homepage Content (Featured Lawyers + Categories)
+ * Admin - Manage Homepage Content
  * 
- * Allows admin to:
- * - Select featured lawyers for homepage
- * - Manage categories (add, edit, delete, reorder)
+ * This page controls all content displayed on the public homepage with two main tabs:
+ * 
+ * TAB 1: Featured Lawyers
+ * - Select featured lawyers to display on homepage
+ * - Filter lawyers by experience, rating, and minimum appointments
+ * - Paginated lawyer list (10 per page)
+ * - Checkbox selection with save functionality
+ * - Lawyer details: name, specialization, experience, rating, appointments, fees
+ * 
+ * TAB 2: Categories (Practice Areas)
+ * - Full CRUD operations for categories:
+ *   - Add: Create new categories with name, icon, status, order
+ *   - Edit: Modify existing categories
+ *   - Delete: Remove categories (permanent)
+ *   - Toggle: Activate/deactivate categories
+ * - Display order management (lower numbers appear first)
+ * - Category count badge on tab
+ * 
+ * Features:
+ * - Tabbed interface with URL-based state management
+ * - Dynamic WHERE clause builder for filtering
+ * - Subquery for counting lawyer appointments
+ * - File existence check for profile images
+ * - Form validation for category operations
+ * 
+ * Database Tables Used:
+ * - lawyers (is_featured flag, profile_pic, status)
+ * - categories (name, icon_class, status, order_by)
+ * - appointments (for appointment counts)
+ * 
+ * Related Files:
+ * - ../includes/config.php - Database connection
+ * - ../includes/header.php - Global header
+ * - ../includes/dashboard-sidebar.php - Navigation
+ * - ../includes/dashboard-footer.php - Footer
+ * - assets/css/dashboard.css - Dashboard styling
+ * - assets/css/tables.css - Table styling
+ * - assets/css/sidebar.css - Sidebar styling
  */
 $page_title = 'Manage Homepage Content';
 $page_layout= 'fluid';

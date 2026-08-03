@@ -1,13 +1,14 @@
 <?php
 // ============================================================
-// header.php — Global navigation bar + HTML <head>
-// Included at the top of every public page.
+// GLOBAL HEADER - Navigation + HTML Head
+// ============================================================
+// Provides: Meta/HTML head, CSS, navbar for guests and
+// logged-in users (customer/lawyer/admin), notifications
+// dropdown with AJAX mark-as-read, offcanvas mobile menu.
 //
-// IMPROVEMENTS:
-// - Logged-in navbar: bell dropdown + user dropdown ALWAYS visible
-// - Notification dropdown shows latest notifications with unread count
-// - Guest navbar: offcanvas menu (doesn't push content on mobile)
-// - User dropdown shows Dashboard + Logout with icons
+// Usage: include at top of every page.
+// Expected: $page_title, $page_layout, $footer_css (optional)
+// Related: config.php, functions.php
 // ============================================================
 ?>
 
@@ -291,6 +292,8 @@ function markNotificationRead(notificationId, redirectUrl) {
     });
 }
 </script>
+
+
 
 <!-- ============================================================
      MAIN CONTENT WRAPPER

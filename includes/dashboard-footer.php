@@ -1,13 +1,13 @@
 <?php
-/**
- * Dashboard Footer – Reusable for all dashboard pages
- * 
- * Usage: include 'includes/dashboard-footer.php';
- * 
- * Expected variables:
- * - $page_js : Optional – path to page‑specific JavaScript file
- * - BASE_URL : Defined in config.php
- */
+// ============================================================
+// DASHBOARD FOOTER - Reusable Footer
+// ============================================================
+// Provides: Copyright, Bootstrap JS, sidebar toggle logic,
+// and optional page-specific JS ($page_js).
+//
+// Usage: include at bottom of dashboard pages.
+// Expected: BASE_URL, SITE_NAME (from config.php)
+// Optional: $page_js for custom scripts
 ?>
 
         </div> <!-- end .main-content -->

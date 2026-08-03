@@ -1,13 +1,12 @@
 <?php
-/**
- * AJAX Endpoint – Get all messages for an appointment
- * 
- * Called from customer/chat.php and lawyer/chat.php via fetch().
- * Expects GET request with:
- *   - appointment_id
- * 
- * Returns JSON: { success: true, messages: [...] }
- */
+// ============================================================
+// Fetches all messages for an appointment via GET request.
+// Requires: appointment_id (GET parameter)
+// Returns: JSON { success: true, messages: [...] }
+// Used by: customer/chat.php, lawyer/chat.php (auto-refresh)
+// Security: Session auth, XSS prevention with htmlspecialchars()
+// Related: getChatMessages() in functions.php
+// ============================================================
 session_start();
 require_once 'config.php';
 

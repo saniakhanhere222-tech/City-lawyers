@@ -1,6 +1,29 @@
 <?php
 // ============================================================
-// Lawyer Login Page – same classes as customer login
+// LAWYER - LOGIN
+// ============================================================
+// This page authenticates lawyers with email and password
+// plus status validation (approved only):
+//
+// 1. Authentication: Email + password with password_verify()
+// 2. Status Check: Only approved lawyers can login
+// 3. Error Messages: Invalid credentials OR pending approval
+// 4. Registration Link: Links to register.php?type=lawyer
+//
+// Features:
+// - Password hashing (bcrypt)
+// - Status-based access control
+// - Session-based authentication
+// - Redirect if already logged in
+//
+// Database Tables: lawyers (id, name, email, password, status)
+//
+// Related Files:
+// - ../includes/config.php - Database connection
+// - ../includes/header.php - Global header
+// - assets/css/auth.css - Page styling
+// - lawyer/index.php - Redirect destination
+// - ../register.php - Registration link
 // ============================================================
 $page_title = 'Lawyer Login';
 $footer_css = 'dashboard'; // loads specific dashboard-footer.php css (dasboard-footer.css)

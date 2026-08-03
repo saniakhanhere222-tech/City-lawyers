@@ -2,11 +2,32 @@
 /**
  * Admin - Manage Customers
  * 
- * Allows admin to:
- * - Search customers by name or email
- * - Filter by city
- * - Delete customer accounts
- * - Paginate through results
+ * This page provides oversight of all registered customer accounts:
+ * - View all customers with account details
+ * - Filter customers by status (active, inactive, pending)
+ * - Delete customer accounts (with confirmation)
+ * - View customer appointment history
+ * - Paginate through results (10 per page)
+ * 
+ * Features:
+ * - Customer account management
+ * - Activity status tracking
+ * - Account deletion with confirmation
+ * - Customer profile information display
+ * 
+ * Security Notes:
+ * - Soft delete recommended over permanent deletion
+ * - Consider GDPR compliance for data retention
+ * - Log deletion actions for audit trail
+ * 
+ * Related Files:
+ * - ../includes/config.php - Database connection
+ * - ../includes/header.php - Global header
+ * - ../includes/dashboard-sidebar.php - Navigation
+ * - ../includes/dashboard-footer.php - Footer
+ * - assets/css/dashboard.css - Dashboard styling
+ * - assets/css/tables.css - Table styling
+ * - assets/css/sidebar.css - Sidebar styling
  */
 $page_title = 'Manage Customers';
 $page_layout = 'fluid';

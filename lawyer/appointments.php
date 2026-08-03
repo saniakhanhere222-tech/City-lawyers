@@ -1,12 +1,32 @@
 <?php
-/**
- * Lawyer - My Appointments
- * 
- * Displays all appointments for the logged‑in lawyer.
- * Allows confirming, completing, or cancelling appointments.
- * When an appointment is completed, sends a notification to the customer
- * asking them to leave a review.
- */
+// ============================================================
+// LAWYER - MY APPOINTMENTS
+// ============================================================
+// This page manages lawyer appointments with lifecycle actions:
+//
+// 1. Actions: Confirm pending, Complete confirmed, Cancel any
+// 2. Notifications: Auto-sent to customers on each action
+// 3. Review Request: Auto-sent when appointment is completed
+// 4. Chat: Available for all non-cancelled appointments
+//
+// Status Flow: Pending → Confirmed → Completed
+// Cancellation: Available from Pending or Confirmed
+//
+// Features:
+// - Authentication required (lawyer only)
+// - Ownership verification on all actions
+// - Status-based action buttons
+// - Automatic customer notifications
+//
+// Database Tables: appointments, customers, notifications
+//
+// Related Files:
+// - ../includes/config.php - Database connection
+// - ../includes/dashboard-sidebar.php - Navigation
+// - ../includes/functions.php - addNotification()
+// - lawyer/chat.php - Chat link
+// - customer/review.php - Review link
+// ============================================================
 $page_title = 'My Appointments';
 $page_layout = 'fluid';
 $footer_css = 'dashboard';

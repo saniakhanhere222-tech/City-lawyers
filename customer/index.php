@@ -1,10 +1,62 @@
 <?php
-/**
- * Customer Dashboard
- * 
- * Displays appointment statistics and upcoming appointments
- * for the logged‑in customer.
- */
+
+// ============================================================
+// CUSTOMER - DASHBOARD
+// ============================================================
+// This is the main dashboard for logged-in customers:
+//
+// 1. Welcome Section:
+//    - Personalized greeting with customer name
+//    - Quick stats (appointments count, pending, etc.)
+//    - Quick action buttons (search, book appointment)
+//
+// 2. Upcoming Appointments:
+//    - List of upcoming appointments
+//    - Appointment details (date, time, lawyer name)
+//    - Status badges (pending, confirmed, completed)
+//    - Cancel or reschedule options
+//
+// 3. Appointment History:
+//    - Past appointments list
+//    - Review option for completed appointments
+//    - View appointment details
+//    - Pagination for history
+//
+// 4. Quick Stats:
+//    - Total appointments
+//    - Pending appointments
+//    - Completed appointments
+//    - Cancelled appointments
+//
+// 5. Recent Activity:
+//    - Recent notifications
+//    - Last appointment updates
+//    - Lawyer responses
+//
+// Features:
+// - Authentication required (customer only)
+// - Appointment management
+// - Review submission
+// - Notification display
+// - Responsive dashboard layout
+//
+// Database Tables Used:
+// - customers (profile data)
+// - appointments (customer bookings)
+// - lawyers (appointment details)
+// - notifications (customer alerts)
+//
+// Related Files:
+// - ../includes/config.php - Database connection
+// - ../includes/header.php - Global header
+// - ../includes/dashboard-sidebar.php - Navigation
+// - ../includes/dashboard-footer.php - Dashboard footer
+// - assets/css/dashboard.css - Dashboard styling
+// - assets/css/tables.css - Table styling
+// - assets/css/sidebar.css - Sidebar styling
+// ============================================================
+
+
 $page_title = 'Customer Dashboard';
 $page_layout = 'fluid';
 $footer_css = 'dashboard';

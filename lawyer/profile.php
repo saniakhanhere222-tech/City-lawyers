@@ -1,12 +1,29 @@
 <?php
-/**
- * Lawyer - Edit Profile
- * 
- * Allows a logged‑in lawyer to update their profile information,
- * including name, email, phone, city, specialization, gender,
- * experience, fees, bio, core specialization, academic credentials,
- * and profile picture.
- */
+
+// ============================================================
+// LAWYER - EDIT PROFILE
+// ============================================================
+// This page manages lawyer profile information and picture:
+//
+// 1. Personal: Name, Email (unique), Phone, City
+// 2. Professional: Specialization, Gender, Experience, Fees
+// 3. Biography: Bio, Core Specializations, Academic Credentials
+// 4. Picture: Upload new image (auto-delete old)
+//
+// Features:
+// - Authentication required (lawyer only)
+// - Email uniqueness validation
+// - Profile picture upload with old file deletion
+// - Comma-separated list support
+// - Success/error messaging
+//
+// Database Tables: lawyers
+//
+// Related Files:
+// - ../includes/config.php - Database connection
+// - ../includes/dashboard-sidebar.php - Navigation
+// - uploads/lawyers/ - Profile picture storage
+// ============================================================
 $page_title = 'Edit Profile';
 $page_layout = 'fluid';
 $footer_css = 'dashboard';

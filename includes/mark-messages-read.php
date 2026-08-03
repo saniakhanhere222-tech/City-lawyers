@@ -1,13 +1,14 @@
 <?php
-/**
- * AJAX Endpoint – Mark all messages as read for an appointment
- * 
- * Called from customer/chat.php and lawyer/chat.php when chat is opened.
- * Expects POST request with:
- *   - appointment_id
- * 
- * Returns JSON: { success: true/false }
- */
+// ============================================================
+// AJAX ENDPOINT - MARK CHAT MESSAGES AS READ
+// ============================================================
+// Marks all unread messages in an appointment as read via POST.
+// Requires: appointment_id (POST parameter)
+// Returns: JSON { success: true/false }
+// Called when chat page loads (customer/chat.php, lawyer/chat.php)
+// Security: Session auth, PDO prepared statements
+// Related: markMessagesAsRead() in functions.php
+// ============================================================
 session_start();
 require_once 'config.php';
 

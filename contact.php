@@ -19,23 +19,52 @@ include 'includes/header.php';
 
 /* Hero Section */
 .about-hero {
+    position: relative;
     text-align: center;
-    margin-bottom: 60px;
+    padding: 60px 30px;
+    margin-bottom: 40px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--gradient-overlay), url('<?php echo BASE_URL; ?>assets/images/customerlogin1.jpg') center center / cover no-repeat;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: var(--shadow-lg);
+    color: #ffffff;
+}
+
+.about-hero .hero-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin: 0 auto 18px;
+    display: block;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
 }
 
 .about-hero h1 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 48px;
-    color: var(--primary-color);
-    margin-bottom: 15px;
+    font-size: 46px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+
+.about-hero .title-divider {
+    width: 90px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-color, #2F5D3A), transparent);
+    margin: 0 auto 18px;
+    border-radius: 2px;
 }
 
 .about-hero p {
     font-size: 16px;
-    color: var(--text-light);
-    max-width: 700px;
+    color: var(--muted-white, #E9ECE8);
+    max-width: 720px;
     margin: 0 auto;
     line-height: 1.8;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.7);
 }
 
 /* Tab Navigation */

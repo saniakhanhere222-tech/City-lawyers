@@ -10,6 +10,7 @@
 :root {
     --sidebar-width: 260px;
     --sidebar-collapse: 70px;
+    --navbar-height: 66px;
 }
 
 /* ========================================
@@ -25,20 +26,25 @@ body {
    DASHBOARD LAYOUT
 ======================================== */
 .dashboard-wrapper {
-    display: grid;
-    grid-template-columns: var(--sidebar-width) 1fr;
-    min-height: 100vh;
+    display: block;
+    margin-left: var(--sidebar-width);
+    min-height: calc(100vh - var(--navbar-height, 66px));
+    transition: margin-left 0.35s ease;
 }
 
 .dashboard-sidebar {
-    position: sticky;
-    top: 0;
-    height: 100vh;
+    position: fixed;
+    top: var(--navbar-height, 66px);
+    left: 0;
+    width: var(--sidebar-width);
+    height: calc(100vh - var(--navbar-height, 66px));
+    z-index: 1000;
     overflow-y: auto;
+    transition: width 0.35s ease;
 }
 
 .dashboard-wrapper.sidebar-collapsed {
-    grid-template-columns: var(--sidebar-collapse) 1fr;
+    margin-left: var(--sidebar-collapse);
 }
 
 /* ========================================
@@ -328,15 +334,17 @@ textarea:focus {
 ======================================== */
 @media (max-width: 991px) {
     .dashboard-wrapper {
-        grid-template-columns: 70px 1fr;
+        margin-left: 70px;
     }
     .dashboard-wrapper.sidebar-collapsed {
-        grid-template-columns: 70px 1fr;
+        margin-left: 70px;
     }
     .dashboard-sidebar {
-        position: sticky;
-        top: 0;
-        height: calc(100vh - 70px);
+        position: fixed;
+        top: var(--navbar-height, 66px);
+        left: 0;
+        width: 70px;
+        height: calc(100vh - var(--navbar-height, 66px));
     }
     .main-content {
         padding: 25px;

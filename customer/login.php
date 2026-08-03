@@ -1,7 +1,43 @@
 <?php
-// ==============================================
-// Customer Login Page
-// ==============================================
+// ============================================================
+// CUSTOMER - LOGIN
+// ============================================================
+// This page authenticates customers with email and password:
+//
+// 1. Login Form:
+//    - Email and password fields
+//    - Error message display
+//    - Registration link for new users
+//
+// 2. Authentication:
+//    - Secure password verification (password_verify)
+//    - Session creation on success
+//    - Redirect to dashboard
+//    - Redirect if already logged in
+//
+// 3. Security:
+//    - Password hashing with bcrypt
+//    - Prepared statements
+//    - XSS prevention
+//    - Generic error messages
+//
+// Features:
+// - Session-based authentication
+// - Responsive login card
+// - Shared auth.css styling
+// - Dashboard footer integration
+//
+// Database Tables Used:
+// - customers (id, name, email, password)
+//
+// Related Files:
+// - ../includes/config.php - Database connection
+// - ../includes/header.php - Global header
+// - ../includes/dashboard-footer.php - Footer
+// - assets/css/auth.css - Page styling
+// - customer/index.php - Redirect destination
+// - ../register.php - Registration link
+// ============================================================
 $page_title = 'Customer Login';
 $footer_css = 'dashboard';
 require_once '../includes/config.php';

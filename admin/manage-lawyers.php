@@ -1,7 +1,62 @@
 <?php
 // ============================================================
-// Admin - Manage Lawyers (PDO version)
-// Approve, reject, delete lawyer accounts
+// ADMIN - MANAGE LAWYERS
+// ============================================================
+// This page manages all lawyer registrations with complete workflow:
+// 
+// 1. Status Management:
+//    - Approve pending lawyers (status: pending → approved)
+//    - Reject pending lawyers (status: pending → rejected)
+//    - Re-approve rejected lawyers (status: rejected → approved)
+//    - Reject approved lawyers (status: approved → rejected)
+// 
+// 2. Account Deletion:
+//    - Permanently delete lawyer accounts
+//    - Automatically removes associated profile pictures
+//    - Cascading deletion of related data
+// 
+// 3. Notification System:
+//    - Sends approval notification to lawyers
+//    - Sends rejection notification with instructions
+//    - Links to lawyer profile for updates
+// 
+// 4. Filtering & Display:
+//    - Filter lawyers by status (all/pending/approved/rejected)
+//    - Display lawyer details: image, name, email, specialization, city, experience, fees
+//    - Status badges with color coding
+//    - Conditional action buttons based on current status
+// 
+// 5. Pagination:
+//    - Shows 10 lawyers per page
+//    - Preserves status filter across pages
+// 
+// Features:
+// - Session-based authentication (admin only)
+// - File system cleanup on deletion (unlink)
+// - Notification integration (addNotification function)
+// - Responsive table with action icons
+// - JavaScript confirm dialogs for safety
+// 
+// Database Tables Used:
+// - lawyers (all columns)
+// - notifications (via addNotification function)
+// 
+// Security Notes:
+// - All IDs cast to integers before use
+// - Prepared statements for all queries
+// - File path verification before deletion
+// - Confirmation required for all destructive actions
+// 
+// Related Files:
+// - ../includes/config.php - Database connection
+// - ../includes/header.php - Global header
+// - ../includes/dashboard-sidebar.php - Navigation
+// - ../includes/dashboard-footer.php - Footer
+// - ../includes/functions.php - Contains addNotification()
+// - assets/css/dashboard.css - Dashboard styling
+// - assets/css/tables.css - Table styling
+// - assets/css/sidebar.css - Sidebar styling
+// - uploads/lawyers/ - Profile picture storage
 // ============================================================
 $page_title = 'Manage Lawyers';
 $page_layout = 'fluid';

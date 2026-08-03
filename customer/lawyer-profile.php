@@ -1,11 +1,39 @@
 <?php
-/**
- * Customer - Lawyer Profile Page
- * 
- * Displays detailed information about a specific lawyer,
- * including bio, contact details, working hours, and client reviews.
- */
-
+// ============================================================
+// CUSTOMER - LAWYER PROFILE
+// ============================================================
+// This page displays detailed lawyer information for customers:
+//
+// 1. Top Panel: Profile image, name, specialization, rating stars,
+//    fee badge, city, experience, gender
+//
+// 2. Left Column: Biography, core specializations, academic credentials
+//
+// 3. Right Column (Sidebar): Available time slots, contact info,
+//    book appointment button
+//
+// 4. Reviews: Latest 5 client reviews with ratings and comments
+//
+// Features:
+// - Public page (no login required)
+// - Only shows approved lawyers
+// - Dynamic data from lawyers, slots, and reviews tables
+// - Responsive two-column layout
+// - XSS prevention with htmlspecialchars()
+//
+// Security:
+// - ID casting to integer
+// - Prepared statements
+// - Status validation (approved only)
+// - Output escaping
+//
+// Related Files:
+// - ../includes/config.php - Database connection
+// - ../includes/header.php - Global header
+// - ../includes/footer.php - Global footer
+// - assets/css/lawyer-profile.css - Page styling
+// - customer/search.php - Redirect source
+// - customer/book-appointment.php - Booking destination
 // ============================================================
 // 1. Page setup and configuration
 // ============================================================

@@ -1,16 +1,15 @@
 <?php
-/**
- * AJAX Endpoint – Send a new message
- * 
- * Called from customer/chat.php and lawyer/chat.php via fetch().
- * Expects POST request with:
- *   - appointment_id
- *   - receiver_id
- *   - receiver_type (customer or lawyer)
- *   - message
- * 
- * Returns JSON: { success: true/false, error: 'message' }
- */
+// ============================================================
+// AJAX ENDPOINT - SEND CHAT MESSAGE
+// ============================================================
+// Saves a new chat message to the database via POST.
+// Requires: appointment_id, receiver_id, receiver_type, message
+// Sender is automatically detected from session (customer/lawyer)
+// Returns: JSON { success: true/false }
+// Called from customer/chat.php and lawyer/chat.php
+// Security: Session auth, PDO prepared statements
+// Related: sendMessage() in functions.php
+
 session_start();
 require_once 'config.php';
 

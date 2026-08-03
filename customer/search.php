@@ -1,4 +1,33 @@
 <?php
+
+// ============================================================
+// CUSTOMER - FIND LAWYERS (SEARCH & FILTER)
+// ============================================================
+// This page provides comprehensive lawyer search with filters:
+//
+// 1. Filters: City, Specialization, Rating, Gender, Experience, Fees
+// 2. Auto-submit: Radio buttons submit instantly on change
+// 3. Display: Lawyer cards with profile, bio, meta, actions
+// 4. Pagination: 6 per page with filter persistence
+// 5. Specializations: Dynamic from categories table (fallback to hardcoded)
+//
+// Features:
+// - Public page (no authentication required)
+// - Real-time filtering
+// - Only approved lawyers shown
+// - Admin-managed specializations
+// - Filter persistence across pagination
+//
+// Database Tables: lawyers, categories
+//
+// Related Files:
+// - ../includes/config.php - Database connection
+// - ../includes/header.php - Global header
+// - ../includes/footer.php - Global footer
+// - assets/css/search.css - Page styling
+// - customer/lawyer-profile.php - View details
+// - customer/book-appointment.php - Book appointment
+// ============================================================
 // ============================================================
 // Find Lawyers Page – Search & Filter
 // ============================================================

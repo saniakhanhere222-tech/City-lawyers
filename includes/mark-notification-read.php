@@ -1,11 +1,15 @@
 <?php
-/**
- * AJAX endpoint – Mark a notification as read
- * 
- * Called from header.php dropdown via fetch().
- * Expects POST request with notification_id.
- * Returns JSON response.
- */
+// ============================================================
+// AJAX ENDPOINT - MARK NOTIFICATION AS READ
+// ============================================================
+// Marks a single notification as read via POST request.
+// Requires: notification_id (POST parameter)
+// Returns: JSON { success: true/false }
+// Called from header.php dropdown via AJAX.
+// Security: Session auth, PDO prepared statements.
+// Related: markNotificationRead() in functions.php
+// ============================================================
+
 session_start();
 require_once 'config.php';
 

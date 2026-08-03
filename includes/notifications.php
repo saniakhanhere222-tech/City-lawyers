@@ -1,16 +1,19 @@
 <?php
-/**
- * Notifications Page – Reusable for all roles 
- * 
- * Usage: include 'includes/notifications.php';
- * Works for customer, lawyer, and admin.
- * 
- * Expected variables:
- * - $user_type   : 'customer', 'lawyer', or 'admin'
- * - $user_id     : ID of the logged‑in user
- * - $user_name   : Display name of the logged‑in user
- * - $dashboard_link : Link to the dashboard homepage
- */
+// ============================================================
+// NOTIFICATIONS PAGE - SHARED INCLUDE FOR ALL ROLES
+// ============================================================
+// Reusable notification center for customer, lawyer, admin.
+// Features: Unread count badge, filter tabs (All/Unread/Read/type),
+// pagination (15 per page), mark as read (single/all).
+// User auto-detected from session.
+//
+// Helper Functions: getNotifications(), getUnreadCount(),
+// getNotificationTypes(), markNotificationRead(), markAllRead()
+//
+// Database: notifications table
+// Related: config.php, functions.php, header.php
+
+
 $page_title = 'Notifications';
 $page_layout= 'fluid'; //set in header.php 
 require_once '../includes/config.php';

@@ -1,3 +1,16 @@
+<?php
+// ============================================================
+// PUBLIC FOOTER - Reusable Footer
+// ============================================================
+// Provides: Logo/branding, navigation links, social icons,
+// Bootstrap JS, custom JS, and conditional homepage JS.
+//
+// Usage: include at bottom of public pages.
+// Expected: BASE_URL, SITE_NAME (from config.php)
+// Optional: $page_title for conditional JS loading
+// ============================================================
+?>
+    
     </div> <!-- .container -->
 </main>
 

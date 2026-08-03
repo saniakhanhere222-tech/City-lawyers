@@ -5,7 +5,7 @@
  * This page allows the admin to:
  * - View all appointments (with lawyer and customer details)
  * - Filter appointments by status (pending, confirmed, completed, cancelled)
- * - Delete any appointment
+ * - Delete any pending appointment ( not approved ones )
  * - Paginate through results (10 per page)
  * - Loads dashboard-footer with conditional footer css loading set by $footer_css = 'dashboard
  * - dashboard view as full width set in header.php $page_layout= 'fluid'; 

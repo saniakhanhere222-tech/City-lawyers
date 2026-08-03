@@ -1,19 +1,36 @@
 <?php
-/**
- * Customer - Review Lawyer
- * 
- * Allows a customer to leave a review (rating + comment) for a lawyer
- * after an appointment has been completed.
- * 
- * Steps:
- * 1. Check login
- * 2. Validate appointment ID
- * 3. Verify appointment belongs to customer
- * 4. Verify appointment is completed
- * 5. Check if review already exists
- * 6. Display form (star rating + comment)
- * 7. Process submission → insert review → update lawyer rating
- */
+// ============================================================
+// CUSTOMER - REVIEW LAWYER
+// ============================================================
+// This page allows customers to submit reviews for completed appointments:
+//
+// 1. Review Form: Star rating (1-5) + comment textarea
+// 2. Validation: Appointment ownership, status = 'completed', no duplicates
+// 3. Processing: Insert review, calculate new average, update lawyer rating
+// 4. Success: Thank you page with navigation to profile or appointments
+//
+// Features:
+// - Authentication required (customer only)
+// - One review per appointment
+// - Automatic average rating update
+// - Interactive star rating UI
+// - Session-based error handling
+//
+// Database Tables: appointments, reviews, lawyers
+//
+// Security:
+// - Prepared statements
+// - Appointment ownership verification
+// - Duplicate prevention
+// - Input validation (rating 1-5)
+//
+// Related Files:
+// - ../includes/config.php - Database connection
+// - ../includes/header.php - Global header
+// - ../includes/footer.php - Global footer
+// - customer/my-appointments.php - Source page
+// - customer/lawyer-profile.php - Destination page
+// ============================================================
 $page_title = 'Review Lawyer';
 
 require_once '../includes/config.php';

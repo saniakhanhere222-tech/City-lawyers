@@ -1,10 +1,15 @@
 <?php
-// ===============================================================================
-// FUNCTIONS.PHP – Reusable helper functions includes functions for notificatons and chat module functions 
-// ================================================================================
-
 // ============================================================
-// NOTIFICATION FUNCTIONS 
+// FUNCTIONS - Reusable Helpers (Notifications & Chat)
+// ============================================================
+// Provides: Notification CRUD (add, count, mark read, filter),
+// Chat messaging (send, fetch, mark read), time formatting.
+//
+// All functions use PDO prepared statements for security.
+// Called from header.php, notifications.php, chat.php, etc.
+//
+// Database Tables: notifications, messages
+// Related: config.php (includes this file)
 // ============================================================
 
 /**

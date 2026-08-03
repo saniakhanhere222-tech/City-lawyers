@@ -1,12 +1,69 @@
 <?php
-/**
- * ============================================================
- * FILE: customer/book-appointment.php
- * 
- * PURPOSE: Allows a logged‑in customer to book a new appointment
- *          or reschedule an existing one with a lawyer.
- * ============================================================
- */
+// ============================================================
+// CUSTOMER - BOOK APPOINTMENT
+// ============================================================
+// This page allows customers to book new appointments or reschedule
+// existing ones with approved lawyers:
+//
+// 1. Booking Workflow:
+//    - Select appointment date (future dates only)
+//    - View available time slots (30-minute increments)
+//    - Double booking prevention
+//    - Optional message to lawyer
+//    - Submit booking request
+//
+// 2. Reschedule Functionality:
+//    - Edit existing appointments via ?edit=ID
+//    - Pre-fill form with existing data
+//    - Track reschedule count
+//    - Update appointment with new date/time
+//
+// 3. Lawyer Information Display:
+//    - Profile picture or default avatar
+//    - Name, specialization, fees
+//    - Location (city), experience, rating
+//    - Live updates of selected date/time
+//
+// 4. Notification System:
+//    - Sends 'new_request' notification to lawyer on new booking
+//    - Sends 'rescheduled' notification on reschedule
+//    - Links to lawyer's appointment management
+//
+// 5. Success Confirmation:
+//    - Modal overlay on successful booking
+//    - Shows lawyer name and action taken
+//    - Links to dashboard and homepage
+//
+// Features:
+// - Authentication required (customer only)
+// - Dynamic time slots based on lawyer availability
+// - Real-time UI updates with JavaScript
+// - Date validation (no past dates)
+// - Status tracking (pending appointments)
+// - Responsive two-panel layout
+//
+// Database Tables Used:
+// - lawyers (profile, fees, specialization)
+// - appointments (create/update bookings)
+// - slots (lawyer availability)
+// - notifications (lawyer notifications)
+//
+// Security:
+// - Prepared statements for all queries
+// - ID casting to integers
+// - Session-based authentication
+// - File existence check for images
+//
+// Related Files:
+// - ../includes/config.php - Database connection
+// - ../includes/header.php - Global header
+// - ../includes/footer.php - Global footer
+// - ../includes/functions.php - Contains addNotification()
+// - assets/css/book-appointment.css - Page styling
+// - customer/search.php - Lawyer search
+// - customer/index.php - Customer dashboard
+// - lawyer/appointments.php - Lawyer appointment view
+// ============================================================
 $page_title = 'Book Appointment';
 require_once '../includes/config.php';
 

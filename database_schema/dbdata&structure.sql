@@ -41,7 +41,7 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `username`, `password`, `name`, `email`, `created_at`) VALUES
-(1, 'admin', '123', 'Administrator', 'admin@legalflow.com', '2026-06-10 21:00:34');
+(1, 'admin', '123', 'Administrator', 'admin@citylawyers.com', '2026-06-10 21:00:34');
 
 -- --------------------------------------------------------
 
