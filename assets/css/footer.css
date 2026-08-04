@@ -109,6 +109,71 @@
     color: rgba(255,255,255,.55);
     letter-spacing: .5px;
 }
+/* ========================================
+   BACK TO TOP BUTTON
+======================================== */
+.back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--primary-color, #2c3e2c);
+    color: #fff;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    background: var(--accent-color, #1a2e1a);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 25px rgba(0,0,0,0.35);
+}
+
+.back-to-top:active {
+    transform: scale(0.95);
+}
+
+/* Pulse animation for attention (optional) */
+.back-to-top.pulse {
+    animation: pulse 2s ease-in-out;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(44, 62, 44, 0.4); }
+    70% { box-shadow: 0 0 0 15px rgba(44, 62, 44, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(44, 62, 44, 0); }
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+@media (max-width: 576px) {
+    .back-to-top {
+        bottom: 20px;
+        right: 20px;
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
+    }
+}
 
 /* Responsive */
 @media (max-width: 991px) {

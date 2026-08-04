@@ -177,18 +177,18 @@ CREATE TABLE `notifications` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `payments`
+-- Table structure for table `payments` executed later with complete payments module
 --
 
-CREATE TABLE `payments` (
-  `id` int(11) NOT NULL,
-  `appointment_id` int(11) NOT NULL,
-  `amount` decimal(10,2) NOT NULL,
-  `payment_method` varchar(50) DEFAULT 'cash',
-  `status` enum('pending','paid','failed','refunded') DEFAULT 'pending',
-  `transaction_id` varchar(100) DEFAULT NULL,
-  `payment_date` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- CREATE TABLE `payments` (
+--   `id` int(11) NOT NULL,
+--   `appointment_id` int(11) NOT NULL,
+--   `amount` decimal(10,2) NOT NULL,
+--   `payment_method` varchar(50) DEFAULT 'cash',
+--   `status` enum('pending','paid','failed','refunded') DEFAULT 'pending',
+--   `transaction_id` varchar(100) DEFAULT NULL,
+--   `payment_date` timestamp NOT NULL DEFAULT current_timestamp()
+-- ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 

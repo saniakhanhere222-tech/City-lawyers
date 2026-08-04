@@ -248,6 +248,8 @@ The platform solves three main problems:
 - **Mobile App** – Native iOS/Android applications
 - **Advanced Analytics** – Detailed statistics for lawyers
 - **AI-powered Lawyer Recommendation** – Match based on case type
+- **active/inactive status control by admin** - to control users action(e.g:spam activities)
+- **inactivate further bookings by lawyer** - when more appointments in queue or simply disable slots
 
 [↑ Back to top](#table-of-contents)
 

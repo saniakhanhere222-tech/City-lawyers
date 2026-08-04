@@ -187,7 +187,7 @@ include '../includes/header.php';
                 <span class="stat-icon"><i class="fas fa-money-bill-wave"></i></span>
                 <h3><?php echo number_format($today_earnings); ?> PKR</h3>
                 <p>Today's Earnings </p>
-                <div class="small">from completed appointments</div>
+                
                 
                 <div class="stat-trend up">
                     <i class="fas fa-arrow-up"></i> 15%

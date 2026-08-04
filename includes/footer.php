@@ -61,16 +61,59 @@
     </div>
 </footer>
 
+<!-- ============================================================
+     BACK TO TOP BUTTON - Floating arrow
+============================================================ -->
+<button id="backToTop" class="back-to-top" aria-label="Back to top">
+    <i class="fas fa-arrow-up"></i>
+</button>
+
 <!-- Bootstrap 5 JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Custom JS -->
 <script src="<?php echo BASE_URL; ?>assets/js/main.js"></script>
+
 <!-- ============================================================
      CONDITIONAL HOMEPAGE JS
 ============================================================ -->
 <?php if (isset($page_title) && $page_title === 'CityLawyers-Hompepage'): ?>
     <script src="<?php echo BASE_URL; ?>assets/js/how-it-works.js"></script>
 <?php endif; ?>
+
+<!-- ============================================================
+     BACK TO TOP JAVASCRIPT
+============================================================ -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const backToTopBtn = document.getElementById('backToTop');
+    
+    if (!backToTopBtn) return;
+
+    // Show/hide button based on scroll position
+    window.addEventListener('scroll', function() {
+        if (window.pageYOffset > 300) {
+            backToTopBtn.classList.add('visible');
+        } else {
+            backToTopBtn.classList.remove('visible');
+        }
+    });
+
+    // Smooth scroll to top on click
+    backToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+        
+        // Optional: Pulse animation feedback
+        this.classList.add('pulse');
+        setTimeout(() => {
+            this.classList.remove('pulse');
+        }, 2000);
+    });
+});
+</script>
+
 </body>
 </html>
