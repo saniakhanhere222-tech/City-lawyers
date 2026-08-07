@@ -12,6 +12,13 @@
     --sidebar-collapse: 70px;
     --navbar-height: 66px;
 }
+/* ============================================================
+   FIX: Remove body padding on dashboard pages
+   (Header auto-hide is disabled on dashboard)
+============================================================ */
+body {
+    padding-top: 0 !important;
+}
 
 /* ========================================
    RESET
@@ -56,6 +63,7 @@ body {
     background: var(--secondary-color);
     overflow-x: hidden;
     overflow-y: auto;
+    margin-top:70px ;
 }
 
 /* ========================================

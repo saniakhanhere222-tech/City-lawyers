@@ -20,7 +20,7 @@
     inset: 0;
     background:
         var(--gradient-overlay),
-        url("../images/customerlogin1.jpg")
+        url("../images/customerlogin.png")
         center center / cover
         no-repeat;
     z-index: -2;

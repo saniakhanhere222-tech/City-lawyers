@@ -83,6 +83,13 @@
                         <span class="nav-text">Notifications</span>
                     </a>
                 </li>
+                <li>
+                   <a href="<?php echo BASE_URL; ?>admin/manage-reviews.php" class="<?php echo ($page_title == 'Manage Reviews') ? 'active' : ''; ?>">
+                      <i class="fas fa-star"></i>
+                     <span class="nav-text">Manage Reviews</span>
+                </a>
+                 </li>
+                
 
             <?php elseif ($user_type === 'lawyer'): ?>
                 <!-- LAWYER MENU -->
@@ -110,6 +117,12 @@
                         <span class="nav-text">Profile</span>
                     </a>
                 </li>
+                <li>
+                  <a href="<?php echo BASE_URL; ?>lawyer/receipts.php" class="<?php echo ($page_title == 'Payment Receipts') ? 'active' : ''; ?>">
+                 <i class="fas fa-receipt"></i>
+                <span class="nav-text">Receipts</span>
+                 </a>
+               </li>
                 <li>
                     <a href="<?php echo BASE_URL; ?>lawyer/notifications.php" class="<?php echo ($page_title == 'Notifications') ? 'active' : ''; ?>">
                         <i class="fas fa-bell"></i>

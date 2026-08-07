@@ -30,6 +30,14 @@
     color: var(--primary-color);
     border-bottom-color: var(--primary-color);
 }
+.tab-badge {
+    background: var(--primary-color);
+    color: white;
+    padding: 1px 10px;
+    font-size: 11px;
+    border-radius: 0;
+    margin-left: 8px;
+}
 
 /* ----------------------------------------
    FILTER ROW (used in manage-content & manage-customers)
@@ -90,42 +98,120 @@
 }
 
 /* ----------------------------------------
-   TABLES
+   TABLES - STYLED HEADERS
 ---------------------------------------- */
 .table-wrap {
     overflow-x: auto;
 }
+
 .dashboard-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
 }
+
+/* === TABLE HEADER - Premium Styling === */
+.dashboard-table thead {
+    background: var(--primary-color);
+}
+
+.dashboard-table thead tr {
+    position: relative;
+}
+
+.dashboard-table thead tr::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--secondary-color, #c4a86a);
+    opacity: 0.4;
+}
+
 .dashboard-table th {
-    font-size: 11px;
-    letter-spacing: 2px;
+    font-size: 10px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
-    color: var(--text-light);
-    padding: 14px 10px;
-    border-bottom: 1px solid var(--border-color);
+    color: rgba(255, 255, 255, 0.85);
+    padding: 16px 14px;
     font-weight: 600;
     text-align: left;
+    background: var(--primary-color);
+    border-bottom: none;
+    position: relative;
+    white-space: nowrap;
 }
+
+/* Subtle separator between columns */
+.dashboard-table th:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 25%;
+    height: 50%;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.10);
+}
+
+/* First column - no separator */
+.dashboard-table th:first-child::after {
+    display: none;
+}
+
+/* Header with sortable feel - icon on hover */
+.dashboard-table th i {
+    margin-right: 6px;
+    font-size: 11px;
+    opacity: 0.6;
+    transition: opacity 0.2s;
+}
+
+.dashboard-table th:hover i {
+    opacity: 1;
+}
+
+/* === TABLE BODY === */
 .dashboard-table td {
-    padding: 16px 10px;
+    padding: 14px 14px;
     border-bottom: 1px solid #ece4d8;
     font-size: 13px;
     color: var(--text-dark);
+    vertical-align: middle;
+    background: var(--white);
+    transition: background 0.15s;
+}
+
+.dashboard-table tbody tr:hover td {
+    background: #faf8f5;
+}
+
+/* Zebra striping - subtle */
+.dashboard-table tbody tr:nth-child(even) td {
+    background: #fcfbf9;
+}
+
+.dashboard-table tbody tr:nth-child(even):hover td {
+    background: #f8f6f2;
+}
+
+/* Status column - center align */
+.dashboard-table td:has(.status-badge) {
+    text-align: center;
 }
 
 /* ----------------------------------------
    STATUS BADGES (for lawyer/appointment status)
 ---------------------------------------- */
 .status-badge {
-    padding: 4px 10px;
-    font-size: 10px;
+    padding: 4px 12px;
+    font-size: 9px;
     letter-spacing: 1px;
     text-transform: uppercase;
     display: inline-block;
+    border-radius: 3px;
+    font-weight: 600;
 }
 .status-pending {
     background: var(--status-pending-bg);
@@ -327,6 +413,7 @@
     width: 100%;
     font-family: 'Inter', sans-serif;
 }
+
 .btn-chat:hover {
     box-shadow: rgba(105, 206, 47, 0.35) 0 -25px 18px -14px inset,
                 rgba(105, 206, 47, 0.25) 0 1px 2px,
@@ -337,35 +424,92 @@
     transform: scale(1.05) rotate(-1deg);
     color: white;
 }
+
 .btn-chat i {
     font-size: 14px;
 }
 
-/* Mobile: Chat button – icon only */
+/* ========================================
+   CHAT BUTTON – Mobile: Smaller Button
+======================================== */
 @media (max-width: 768px) {
+    .btn-chat {
+        padding: 8px 14px;
+        font-size: 10px;
+        letter-spacing: 1px;
+        gap: 6px;
+        width: 100%;
+        border-radius: 100px;
+    }
+    .btn-chat i {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 576px) {
+    .btn-chat {
+        padding: 6px 10px;
+        font-size: 9px;
+        letter-spacing: 0.5px;
+        gap: 4px;
+        border-radius: 50px;
+        min-width: 0;
+        width: auto;
+        flex: 1;
+    }
+    .btn-chat i {
+        font-size: 11px;
+    }
+    .btn-chat .chat-text {
+        display: inline-block;
+    }
+}
+
+/* ========================================
+   CHAT BUTTON – Very Small Mobile
+   Fits nicely on all screens below 430px
+======================================== */
+@media (max-width: 430px) {
+    .btn-chat {
+        padding: 5px 8px;
+        font-size: 8px;
+        letter-spacing: 0.3px;
+        gap: 3px;
+        border-radius: 50px;
+        min-width: 0;
+        width: auto;
+        flex: 1;
+    }
+    .btn-chat i {
+        font-size: 10px;
+    }
+    .btn-chat .chat-text {
+        display: inline-block;
+        font-size: 7px;
+    }
+}
+
+/* ========================================
+   CHAT BUTTON – Extremely Small Mobile
+   Icon only for screens under 360px
+======================================== */
+@media (max-width: 360px) {
+    .btn-chat {
+        padding: 4px 6px;
+        min-width: 28px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        aspect-ratio: 1/1;
+        justify-content: center;
+        flex: 0 0 28px;
+    }
     .btn-chat .chat-text {
         display: none;
     }
-    .btn-chat {
-        padding: 10px;
-        min-width: 42px;
-        width: auto;
-        border-radius: 100px;
-        aspect-ratio: 1/1;
-        justify-content: center;
-    }
     .btn-chat i {
-        font-size: 18px;
+        font-size: 12px;
         margin: 0;
-    }
-}
-@media (max-width: 480px) {
-    .btn-chat i {
-        font-size: 16px;
-    }
-    .btn-chat {
-        padding: 8px;
-        min-width: 38px;
     }
 }
 
@@ -454,4 +598,5 @@
     height: 40px;
     object-fit: cover;
     background: #ebe5db;
+    border-radius: 4px;
 }

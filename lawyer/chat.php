@@ -134,7 +134,7 @@ include '../includes/header.php';
     <?php include '../includes/dashboard-sidebar.php'; ?>
 
     <!-- MAIN CONTENT -->
-    <div class="main-content">
+    <div class="main-content d-flex justify-content-center align-items-center">
 
         <div class="dashboard-card" style="padding:0; overflow:hidden;">
 

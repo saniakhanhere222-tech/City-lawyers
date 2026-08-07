@@ -133,9 +133,15 @@ include 'includes/header.php';
         <div class="hero-image-fade"></div>
 
         <div class="quote-box">
-            <p>“Integrity is the bedrock of justice.”</p>
+    <p class="quote-text">"Integrity is the bedrock of justice."</p>
+    <div class="quote-author">
+        <div class="quote-avatar">JM</div>
+        <div class="quote-author-info">
+            <span class="quote-author-name">John Marshall</span>
+            <span class="quote-author-role">Former Chief Justice</span>
         </div>
-
+    </div>
+</div>
     </div>
 </div>
         </div>

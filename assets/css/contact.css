@@ -1,0 +1,200 @@
+
+.about-page {
+    background: var(--secondary-color);
+    min-height: 100vh;
+    padding: 60px 0;
+}
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Hero Section */
+.about-hero {
+    position: relative;
+    text-align: center;
+    padding: 60px 30px;
+    margin-bottom: 40px;
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--gradient-overlay), url('../images/customerlogin.png') center center / cover no-repeat;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: var(--shadow-lg);
+    color: #ffffff;
+}
+
+.about-hero .hero-logo {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin: 0 auto 18px;
+    display: block;
+    filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+}
+
+.about-hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 46px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+
+.about-hero .title-divider {
+    width: 90px;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent-color, #2F5D3A), transparent);
+    margin: 0 auto 18px;
+    border-radius: 2px;
+}
+
+.about-hero p {
+    font-size: 16px;
+    color: var(--muted-white, #E9ECE8);
+    max-width: 720px;
+    margin: 0 auto;
+    line-height: 1.8;
+    text-shadow: 0 1px 6px rgba(0,0,0,0.7);
+}
+
+/* Tab Navigation */
+.about-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--border-color);
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    padding: 12px 28px;
+    background: transparent;
+    border: none;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: 500;
+}
+
+.tab-btn:hover {
+    color: var(--primary-color);
+}
+
+.tab-btn.active {
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    padding: 40px;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Content Styles */
+.tab-content h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.tab-content h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    color: var(--primary-color);
+    margin: 25px 0 15px;
+}
+
+.tab-content p {
+    font-size: 14px;
+    color: var(--text-light);
+    line-height: 1.8;
+    margin-bottom: 15px;
+}
+
+.tab-content ul {
+    margin: 15px 0;
+    padding-left: 20px;
+}
+
+.tab-content li {
+    font-size: 14px;
+    color: var(--text-light);
+    line-height: 1.8;
+    margin-bottom: 8px;
+}
+
+/* Contact Info Cards */
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin: 30px 0;
+}
+
+.contact-card {
+    text-align: center;
+    padding: 30px;
+    border: 1px solid var(--border-color);
+    background: var(--secondary-color);
+}
+
+.contact-card i {
+    font-size: 40px;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.contact-card h4 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.contact-card p {
+    margin: 0;
+    font-size: 13px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .about-tabs {
+        gap: 0;
+    }
+    
+    .tab-btn {
+        padding: 10px 16px;
+        font-size: 11px;
+    }
+    
+    .tab-content {
+        padding: 25px;
+    }
+    
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}

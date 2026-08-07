@@ -16,10 +16,14 @@
 // ============================================================
 
 // Database Settings
-$db_host = "localhost";
-$db_name = "city_lawyers";
-$db_user = "root";
-$db_password = "";
+// $db_host = "localhost";
+// $db_name = "city_lawyers";
+// $db_user = "root";
+// $db_password = "";
+$db_host = "sql201.infinityfree.com";
+$db_name = "if0_42566140_XXX";   // Replace XXX with your actual database name
+$db_user = "if0_42566140";
+$db_password = "sAniawaqar123";
 
 // Create PDO Connection
 try {

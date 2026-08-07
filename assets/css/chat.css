@@ -2,19 +2,24 @@
    CHAT.CSS – Shared chat styles
    Used by customer/chat.php and lawyer/chat.php
 ======================================== */
-
+.dashboard-card{
+    border-radius:20px;
+    width:80% ;
+    border:2px solid var(--border-color)
+}
 .chat-container {
     display: flex;
     flex-direction: column;
-    height: 550px;
-    border: 1px solid var(--border-color);
+    height: 80vh; 
+    border: 1px solid var(--border-soft);
     background: var(--white);
+    border-radius:var(--card-radius) ;
 }
 
 .chat-header {
     padding: 15px 20px;
     border-bottom: 1px solid var(--border-color);
-    background: var(--secondary-color);
+    background: var(--surface-color);
     display: flex;
     align-items: center;
     gap: 15px;

@@ -293,7 +293,12 @@ function markNotificationRead(notificationId, redirectUrl) {
 }
 </script>
 
-
+<!-- ============================================================
+     HEADER AUTO-HIDE ON SCROLL - Only for public pages
+============================================================ -->
+<?php if (!isset($page_layout) || $page_layout !== 'fluid'): ?>
+    <script src="<?php echo BASE_URL; ?>assets/js/header.js"></script>
+<?php endif; ?>
 
 <!-- ============================================================
      MAIN CONTENT WRAPPER

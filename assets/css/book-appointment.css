@@ -1,22 +1,33 @@
-/* ========================================
-   BOOK-APPOINTMENT.CSS – book / reschedule appointment
-   Single container, two internal columns, no gap, background image
-======================================== */
+/* ============================================================
+   BOOK-APPOINTMENT.CSS – Book / Reschedule Appointment
+   ============================================================
+   This file contains all styles for the 2-step booking process:
+   
+   1. Step Indicator (outside card, top of page)
+   2. Booking Card Layout (two columns)
+   3. Left Panel - Lawyer Information
+   4. Right Panel - Booking Form (Step 1 & Step 2)
+   5. Payment Method Cards
+   6. Dynamic Payment Details
+   7. Receipt Upload Area
+   8. Loader Overlay
+   9. Success Alert (replaces modal)
+   10. Responsive Breakpoints
+   ============================================================ */
 
-/* ========================================
- remove border-radius from specific elements (Not global – so the card can have rounded corners)
-======================================== */
+/* ============================================================
+   GLOBAL OVERRIDES - Remove border-radius from specific elements
+   ============================================================ */
 .form-control,
 .btn-book,
 .lawyer-avatar,
-.alert-danger,
-.success-card {
+.alert-danger {
     border-radius: 0 !important;
 }
 
-/* ========================================
-   BACKGROUND – Full page image..uncomment .booking-wrapper::before to keep image with overlay 
-======================================== */
+/* ============================================================
+   BACKGROUND – Full page container
+   ============================================================ */
 .booking-wrapper {
     position: relative;
     min-height: 100vh;
@@ -24,7 +35,7 @@
     background: var(--secondary-color);
 }
 
-/* Background image with overlay – fixed, covers entire viewport */
+/* Background image with overlay – Uncomment to enable */
 /* .booking-wrapper::before {
     content: "";
     position: fixed;
@@ -37,9 +48,9 @@
     z-index: -1;
 } */
 
-/* ========================================
+/* ============================================================
    CONTAINER – Centers the booking card
-======================================== */
+   ============================================================ */
 .booking-container {
     position: relative;
     max-width: 1000px;
@@ -48,9 +59,9 @@
     z-index: 5;
 }
 
-/* ========================================
+/* ============================================================
    BOOKING CARD – Two columns, rounded corners
-======================================== */
+   ============================================================ */
 .booking-wrapper {
     background: var(--primary-color);
     border: 1px solid var(--border-soft);
@@ -61,24 +72,26 @@
     position: relative;
     z-index: 1;
     box-shadow: var(--shadow-lg);
-    border-radius: 14px;  /* ← Rounded corners on the card */
-    transition:box-shadow 0.4s ease-in-out;
-}
-.booking-wrapper:hover{
-      box-shadow: var(--shadow-hover);
+    border-radius: var(--card-radius, 14px);
+    transition: box-shadow 0.4s ease-in-out, border-color 0.4s ease-in-out;
 }
 
-/* ========================================
+.booking-wrapper:hover {
+    box-shadow: var(--shadow-hover);
+    border-color: var(--accent-color);
+}
+
+/* ============================================================
    LEFT PANEL – Lawyer info (dark background)
-======================================== */
+   ============================================================ */
 .luxury-panel {
     background: var(--primary-color);
     padding: 30px;
 }
 
-/* ========================================
+/* ============================================================
    RIGHT PANEL – Booking form (white background)
-======================================== */
+   ============================================================ */
 .form-panel {
     background: var(--surface-color);
     padding: 30px;
@@ -86,21 +99,21 @@
     flex-direction: column;
 }
 
-/* ========================================
+/* ============================================================
    FORM – Make it a flex column to push button down
-======================================== */
+   ============================================================ */
 .form-panel form {
     display: flex;
     flex-direction: column;
     flex: 1;
 }
 
-/* ========================================
+/* ============================================================
    LAWYER AVATAR
-======================================== */
+   ============================================================ */
 .lawyer-avatar {
-    width: 120px;
-    height: 120px;
+    width: 200px;
+    height: 300px;
     margin: 0 auto 20px;
     background: rgba(255,255,255,0.1);
     border: none;
@@ -120,9 +133,9 @@
     object-fit: cover;
 }
 
-/* ========================================
+/* ============================================================
    LAWYER NAME PANEL
-======================================== */
+   ============================================================ */
 .lawyer-name-panel {
     text-align: center;
     margin-bottom: 25px;
@@ -139,23 +152,22 @@
     text-transform: uppercase;
 }
 
-/* ========================================
+/* ============================================================
    DIVIDER
-======================================== */
+   ============================================================ */
 .divider {
     height: 1px;
     background: rgba(255,255,255,0.1);
     margin: 20px 0;
 }
 
-/* ========================================
+/* ============================================================
    INFO ROWS – Selected date, time, fee, etc.
-======================================== */
+   ============================================================ */
 .info-row {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
-   
 }
 .info-label {
     font-size: 11px;
@@ -179,26 +191,26 @@
     font-style: italic;
 }
 
-/* ========================================
+/* ============================================================
    FORM PANEL STYLES
-======================================== */
+   ============================================================ */
 .form-panel textarea.form-control {
-    min-height: 200px;  /* Slightly smaller */
+    min-height: 180px;
 }
 .form-title {
     font-size: 28px;
     color: var(--primary-color);
-    margin-bottom: 20px;  /* Reduced spacing */
+    margin-bottom: 20px;
 }
 .form-group {
-    margin-bottom: 30px;  /* Reduced spacing between form groups */
+    margin-bottom: 30px;
 }
 .form-group label {
     display: block;
     font-size: 11px;
     text-transform: uppercase;
-    color: var(--text-light);
-    margin-bottom: 4px;  /* Reduced spacing between label and input */
+    color: var(--text-muted);
+    margin-bottom: 4px;
 }
 .form-control {
     width: 100%;
@@ -213,9 +225,322 @@
     border-color: var(--primary-color);
 }
 
-/* ========================================
-   BOOK BUTTON – Pushed to the bottom
-======================================== */
+/* ============================================================
+   ALERT DANGER
+   ============================================================ */
+.alert-danger {
+    background: #f8f0f0;
+    color: #8b3a3a;
+    padding: 10px 12px;
+    margin-bottom: 14px;
+    border: 1px solid #e0c5c5;
+    border-radius: 0 !important;
+}
+
+/* ============================================================
+   STEP INDICATOR - Top of page (outside wrapper)
+   ============================================================ */
+.step-indicator-wrapper {
+    max-width: 600px;
+    margin: 20px auto 20px;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.step-indicator-wrapper .step-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 24px;
+    color: var(--primary-color);
+    margin-bottom: 25px;
+}
+
+.step-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    position: relative;
+    padding: 0;
+}
+
+.step-indicator .step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-light);
+    position: relative;
+    z-index: 2;
+}
+
+.step-indicator .step .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--border-color);
+    color: var(--text-light);
+    font-size: 16px;
+    font-weight: 700;
+    transition: 0.4s;
+    border: 2px solid var(--border-color);
+}
+
+.step-indicator .step.active .num {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(31, 43, 31, 0.15);
+}
+
+.step-indicator .step.completed .num {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.step-indicator .step .step-label {
+    font-size: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.step-indicator .step.active .step-label {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.step-indicator .step.completed .step-label {
+    color: var(--accent-color);
+}
+
+/* Progress Line - Between steps */
+.step-indicator .step-line {
+    flex: 1;
+    height: 3px;
+    background: var(--border-color);
+    position: relative;
+    z-index: 1;
+    margin: 0 12px;
+    max-width: 80px;
+    min-width: 30px;
+    transition: 0.4s;
+    border-radius: 2px;
+}
+
+.step-indicator .step-line.completed {
+    background: var(--accent-color);
+}
+
+/* ============================================================
+   PAYMENT METHOD CARDS - Using border variable
+   ============================================================ */
+.payment-methods {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.payment-method-card {
+    border: var(--border-soft, 1px solid var(--border-soft));
+    padding: 16px 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    background: var(--surface-color);
+    box-shadow: var(--shadow-lg);
+}
+
+.payment-method-card:hover {
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.payment-method-card.selected {
+    border-color: var(--primary-color);
+    background: #f0f5f0;
+    box-shadow: 0 0 0 3px rgba(31, 43, 31, 0.10);
+}
+
+.payment-method-card input[type="radio"] {
+    display: none;
+}
+
+.payment-method-card i {
+    font-size: 28px;
+    color: var(--primary-color);
+    display: block;
+    margin-bottom: 6px;
+}
+
+.payment-method-card .method-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-dark);
+}
+
+.payment-method-card .method-desc {
+    font-size: 10px;
+    color: var(--text-light);
+}
+
+/* ============================================================
+   PAYMENT DETAILS FORM
+   ============================================================ */
+.payment-details {
+    background: #f8f6f2;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+.payment-details .form-group {
+    margin-bottom: 14px;
+}
+.payment-details .form-group:last-child {
+    margin-bottom: 0;
+}
+.payment-details label {
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    display: block;
+    margin-bottom: 4px;
+}
+.payment-details input,
+.payment-details select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    background: var(--white);
+    font-size: 14px;
+    border-radius: 4px;
+}
+.payment-details input:focus,
+.payment-details select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+/* ============================================================
+   RECEIPT UPLOAD AREA
+   ============================================================ */
+.upload-area {
+    border: 2px dashed var(--border-color);
+    padding: 30px;
+    text-align: center;
+    border-radius: 8px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.upload-area:hover {
+    border-color: var(--primary-color);
+    background: #f8f6f2;
+}
+.upload-area i {
+    font-size: 36px;
+    color: var(--text-light);
+    margin-bottom: 8px;
+}
+.upload-area p {
+    margin: 0;
+    color: var(--text-light);
+    font-size: 13px;
+}
+.upload-area .file-name {
+    color: var(--primary-color);
+    font-weight: 500;
+    margin-top: 6px;
+}
+.upload-area input[type="file"] {
+    display: none;
+}
+
+/* ============================================================
+   AMOUNT DISPLAY
+   ============================================================ */
+.amount-display {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 20px;
+    background: #f0f5f0;
+    border: 1px solid var(--border-color);
+    border-left: 3px solid var(--accent-color);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.amount-display .label {
+    font-size: 10px;
+    color: var(--text-light);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.amount-display .amount {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-family: 'Cormorant Garamond', serif;
+}
+
+/* ============================================================
+   NAVIGATION BUTTONS
+   ============================================================ */
+.btn-nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 35px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    min-width: 140px;
+}
+
+.btn-back {
+    background: transparent;
+    border: 2px solid var(--border-color);
+    color: var(--text-dark);
+}
+.btn-back:hover {
+    background: #f0ebe4;
+    border-color: var(--primary-color);
+}
+
+.btn-next {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 4px 15px rgba(31, 43, 31, 0.25);
+}
+.btn-next:hover {
+    background: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(47, 93, 58, 0.35);
+}
+.btn-next:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+/* ============================================================
+   CONFIRM BOOKING BUTTON (Step 2)
+   ============================================================ */
 .btn-book {
     width: 100%;
     background: var(--primary-color);
@@ -226,95 +551,320 @@
     text-transform: uppercase;
     letter-spacing: 4px;
     cursor: pointer;
-    margin-top: auto;  /* Pushes button to the bottom of the flex container */
+    margin-top: auto;
     border-radius: 0 !important;
 }
 .btn-book:hover {
     background: var(--accent-color);
 }
 
-/* ========================================
-   ALERT DANGER
-======================================== */
-.alert-danger {
-    background: #f8f0f0;
-    color: #8b3a3a;
-    padding: 10px 12px;  /* Reduced padding */
-    margin-bottom: 14px;  /* Reduced spacing */
-    border: 1px solid #e0c5c5;
-    border-radius: 0 !important;
-}
-
-/* ========================================
-   SUCCESS MODAL
-======================================== */
-.modal-overlay {
+/* ============================================================
+   LOADER OVERLAY
+   ============================================================ */
+.loader-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 99999;
+    right: 0;
+    bottom: 0;
+    background: rgba(255,255,255,0.9);
+    z-index: 9999;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
 }
-.success-card {
-    background: white;
-    max-width: 400px;
-    width: 90%;
-    text-align: center;
-    padding: 35px;
-    border: 1px solid var(--border-color);
-    border-radius: 0 !important;
+.loader-overlay.active {
+    opacity: 1;
+    visibility: visible;
 }
-.success-card i {
-    font-size: 60px;
-    color: #2e5b2e;
-    margin-bottom: 15px;
+.loader-overlay .spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid var(--border-color);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
 }
-.success-card h3 {
-    font-size: 24px;
-    color: var(--primary-color);
-    margin-bottom: 10px;
-}
-.success-card p {
-    color: var(--text-light);
-    margin-bottom: 10px;
-}
-.success-actions {
-    display: flex;
-    gap: 15px;
-    justify-content: center;
+.loader-overlay p {
     margin-top: 20px;
-}
-
-/* ========================================
-   SUCCESS BUTTONS
-======================================== */
-.btn-dashboard,
-.btn-home {
-    padding: 8px 20px;
-    font-size: 11px;
-    text-transform: uppercase;
-    text-decoration: none;
-}
-.btn-dashboard {
-    background: var(--primary-color);
-    color: white;
-}
-.btn-home {
-    background: transparent;
-    border: 1px solid var(--border-color);
     color: var(--text-dark);
+    font-size: 16px;
+    font-weight: 500;
+}
+@keyframes spin {
+    to { transform: rotate(360deg); }
 }
 
-/* ========================================
-   RESPONSIVE – Stack columns on smaller screens
-======================================== */
+/* ============================================================
+   SUCCESS ALERT - Shows at top of page after booking
+   ============================================================ */
+.success-alert {
+    max-width: 1000px;
+    margin: 20px auto 0;
+    padding: 0 20px;
+}
+
+.success-alert-content {
+    background: #dce9d7;
+    border-left: 4px solid #2e7d32;
+    padding: 16px 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.success-alert-content .alert-icon {
+    color: #2e7d32;
+    font-size: 22px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.success-alert-content .alert-title {
+    font-weight: 600;
+    color: #1e3a1e;
+    font-size: 16px;
+}
+
+.success-alert-content .alert-message {
+    color: #2e5b2e;
+    font-size: 14px;
+    margin-top: 2px;
+}
+
+.success-alert-content .alert-message strong {
+    color: #1a3a1a;
+}
+
+.success-alert-content .alert-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.success-alert-content .btn-view-appointments {
+    background: #2e7d32;
+    color: white;
+    padding: 6px 18px;
+    text-decoration: none;
+    font-size: 12px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.3s;
+}
+.success-alert-content .btn-view-appointments:hover {
+    background: #1e5e22;
+}
+
+.success-alert-content .btn-home-alert {
+    background: transparent;
+    color: #2e5b2e;
+    padding: 6px 18px;
+    text-decoration: none;
+    font-size: 12px;
+    border-radius: 4px;
+    border: 1px solid #2e7d32;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s;
+}
+.success-alert-content .btn-home-alert:hover {
+    background: #e8f5e9;
+}
+
+/* ============================================================
+   AVAILABLE DAYS HINT
+   ============================================================ */
+.available-days-hint {
+    padding: 10px 14px;
+    background: #e8f5e9;
+    border-left: 3px solid #2e7d32;
+    margin-top: 8px;
+    border-radius: 0;
+}
+.available-days-hint .days-list {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+.available-days-hint .hint-text {
+    font-size: 11px;
+    color: var(--text-light);
+}
+
+/* ============================================================
+   RESPONSIVE BREAKPOINTS
+   ============================================================ */
+
+/* Tablet */
 @media (max-width: 800px) {
     .booking-wrapper {
         grid-template-columns: 1fr;
+    }
+    .booking-container {
+        margin: 30px auto;
+        padding: 0 15px;
+    }
+    .luxury-panel {
+        padding: 25px;
+    }
+    .form-panel {
+        padding: 25px;
+    }
+    .step-indicator-wrapper {
+        max-width: 100%;
+        margin: 0 auto 20px;
+    }
+    .step-indicator-wrapper .step-title {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    .step-indicator .step .num {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+    .step-indicator .step .step-label {
+        font-size: 10px;
+    }
+    .step-indicator .step-line {
+        max-width: 50px;
+        min-width: 20px;
+        margin: 0 8px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 576px) {
+    .booking-container {
+        margin: 20px auto;
+        padding: 0 12px;
+    }
+    .luxury-panel {
+        padding: 20px;
+    }
+    .form-panel {
+        padding: 20px;
+    }
+    .lawyer-avatar {
+        width: 80px;
+        height: 80px;
+    }
+    .lawyer-avatar i {
+        font-size: 35px;
+    }
+    .lawyer-name-panel h2 {
+        font-size: 20px;
+    }
+    .form-title {
+        font-size: 22px;
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-panel textarea.form-control {
+        min-height: 120px;
+    }
+    .step-indicator-wrapper .step-title {
+        font-size: 18px;
+        margin-bottom: 16px;
+    }
+    .step-indicator .step .num {
+        width: 30px;
+        height: 30px;
+        font-size: 12px;
+    }
+    .step-indicator .step .step-label {
+        display: none;
+    }
+    .step-indicator .step-line {
+        max-width: 30px;
+        min-width: 15px;
+        margin: 0 6px;
+    }
+    .payment-methods {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    .payment-method-card {
+        padding: 12px;
+    }
+    .payment-method-card i {
+        font-size: 22px;
+    }
+    .payment-method-card .method-name {
+        font-size: 11px;
+    }
+    .amount-display .amount {
+        font-size: 22px;
+    }
+    .btn-nav {
+        padding: 10px 20px;
+        font-size: 10px;
+    }
+    .btn-book {
+        font-size: 11px;
+        padding: 10px;
+        letter-spacing: 2px;
+    }
+    .success-alert-content {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .success-alert-content .alert-actions {
+        flex-direction: column;
+    }
+    .success-alert-content .btn-view-appointments,
+    .success-alert-content .btn-home-alert {
+        justify-content: center;
+        text-align: center;
+    }
+}
+
+/* Very Small Mobile */
+@media (max-width: 400px) {
+    .payment-methods {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+    .payment-method-card {
+        padding: 10px 8px;
+    }
+    .payment-method-card i {
+        font-size: 18px;
+    }
+    .payment-method-card .method-name {
+        font-size: 10px;
+    }
+    .payment-details {
+        padding: 14px;
+    }
+    .upload-area {
+        padding: 20px;
+    }
+    .upload-area i {
+        font-size: 28px;
+    }
+    .step-indicator-wrapper .step-title {
+        font-size: 16px;
+        margin-bottom: 12px;
+    }
+    .step-indicator .step .num {
+        width: 26px;
+        height: 26px;
+        font-size: 11px;
+    }
+    .step-indicator .step-line {
+        max-width: 20px;
+        min-width: 10px;
+        margin: 0 4px;
     }
 }

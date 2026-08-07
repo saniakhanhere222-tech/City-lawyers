@@ -119,6 +119,8 @@ body {
     background: var(--secondary-color);
     color: var(--text-dark);
     overflow-x: hidden;
+    /* Add padding-top to prevent content jump when header hides */
+    padding-top: 74px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -168,10 +170,26 @@ img {
    TOP NAVBAR
    ============================================================ */
 .top-navbar {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: 0;
     z-index: 1030;
     background: var(--secondary-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* ===== HEADER AUTO-HIDE - HIDDEN STATE ===== */
+.top-navbar.header-hidden {
+    transform: translateY(-100%);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: none;
+}
+
+/* ===== HEADER AUTO-HIDE - SHOW ON HOVER NEAR TOP ===== */
+.top-navbar.header-hidden:hover {
+    transform: translateY(0);
     box-shadow: 0 4px 15px rgba(0,0,0,.08);
 }
 
@@ -340,6 +358,23 @@ img {
 
 .top-navbar .guest-row .nav-link:nth-child(2) i {
     color: var(--accent-color);
+}
+/* ===== HEADER SHOW ON HOVER NEAR TOP ===== */
+.top-navbar.header-hidden {
+    transform: translateY(-100%);
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: none;
+}
+
+/* Show header when hovering over hidden header area */
+.top-navbar.header-hidden:hover {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+}
+
+/* Smooth transition for showing/hiding */
+.top-navbar {
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 
@@ -686,7 +721,6 @@ footer {
     background: var(--primary-color);
     color: var(--text-gray);
     padding: 40px 0 20px;
-    
 }
 
 footer a {
@@ -739,8 +773,6 @@ footer a:hover {
 
 /* ============================================================
    CUSTOM THEME CURSOR (DEEP FOREST GREEN)
-   File: assets/css/global.css
-   Brand Colors: Primary (#1F2B1F) & Accent (#2F5D3A)
    ============================================================ */
 html, body {
     cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M4 4l9 24 4-9 9-4L4 4z' fill='%231F2B1F' stroke='%23FFFFFF' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M7 8l6 15 2.5-6 6-2.5L7 8z' fill='%232F5D3A'/%3E%3C/svg%3E") 4 4, auto;
