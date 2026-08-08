@@ -4,26 +4,27 @@
 // ============================================================
 // This dashboard provides lawyers with key metrics and quick actions:
 //
-// 1. Statistics: Total, Pending, Confirmed, Today's Earnings
+// 1. Statistics: Total, Pending, Confirmed, Today's Earnings (from payments)
 // 2. Today's Appointments: Full day schedule with actions
 // 3. Upcoming Appointments: Next 10 future appointments
 // 4. Quick Actions: Confirm, Complete, Cancel from dashboard
-// 5. Earnings: SUM of fees from completed appointments today
+// 5. Earnings: SUM of paid payments for today's appointments
 //
 // Features:
 // - Authentication required (lawyer only)
 // - Real-time statistics
 // - Quick action buttons
-// - Earnings tracking
+// - Earnings tracking from payments table using appointment_date
 // - Responsive layout
 //
-// Database Tables: appointments, customers, lawyers
+// Database Tables: appointments, customers, lawyers, payments
 //
 // Related Files:
 // - ../includes/config.php - Database connection
 // - ../includes/dashboard-sidebar.php - Navigation
 // - lawyer/appointments.php - Full appointment management
 // - lawyer/chat.php - Chat with customers
+// - lawyer/receipts.php - Payment receipts management
 // ============================================================
 $page_title = 'Lawyer Dashboard';
 $page_layout = 'fluid';
@@ -42,14 +43,14 @@ $lawyer_id = $_SESSION['lawyer_id'];
 $lawyer_name = $_SESSION['lawyer_name'];
 
 // ============================================================
-// 2. Get lawyer details (optional, can be removed if not used)
+// 2. Get lawyer details (optional)
 // ============================================================
 $lawyerStmt = $conn->prepare("SELECT * FROM lawyers WHERE id = ?");
 $lawyerStmt->execute([$lawyer_id]);
 $lawyer = $lawyerStmt->fetch(PDO::FETCH_ASSOC);
 
 // ============================================================
-// 3. Statistics using PDO
+// 3. Statistics using PDO (FIXED - Using payments table with appointment_date)
 // ============================================================
 // Total appointments
 $totalStmt = $conn->prepare("SELECT COUNT(*) as count FROM appointments WHERE lawyer_id = ?");
@@ -71,17 +72,47 @@ $completedStmt = $conn->prepare("SELECT COUNT(*) as count FROM appointments WHER
 $completedStmt->execute([$lawyer_id]);
 $completed = $completedStmt->fetch(PDO::FETCH_ASSOC)['count'];
 
-// Today's earnings (from completed appointments today)
+// ============================================================
+// TODAY'S EARNINGS - From payments table using appointment_date (FIXED)
+// Uses appointment_date instead of payment_date so payments
+// made in advance count toward the appointment day
+// ============================================================
 $earningsStmt = $conn->prepare("
-    SELECT SUM(l.fees) as total 
-    FROM appointments a 
-    JOIN lawyers l ON a.lawyer_id = l.id 
+    SELECT SUM(p.amount) as total 
+    FROM payments p
+    JOIN appointments a ON p.appointment_id = a.id
     WHERE a.lawyer_id = ? 
-      AND a.status = 'completed' 
+      AND p.status = 'paid' 
       AND a.appointment_date = CURDATE()
 ");
 $earningsStmt->execute([$lawyer_id]);
 $today_earnings = $earningsStmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
+
+// ============================================================
+// TOTAL EARNINGS (All time - from payments table)
+// ============================================================
+$totalEarningsStmt = $conn->prepare("
+    SELECT SUM(p.amount) as total 
+    FROM payments p
+    JOIN appointments a ON p.appointment_id = a.id
+    WHERE a.lawyer_id = ? 
+      AND p.status = 'paid'
+");
+$totalEarningsStmt->execute([$lawyer_id]);
+$total_earnings = $totalEarningsStmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
+
+// ============================================================
+// PENDING PAYMENTS COUNT
+// ============================================================
+$pendingPaymentsStmt = $conn->prepare("
+    SELECT COUNT(*) as count 
+    FROM payments p
+    JOIN appointments a ON p.appointment_id = a.id
+    WHERE a.lawyer_id = ? 
+      AND p.status = 'pending'
+");
+$pendingPaymentsStmt->execute([$lawyer_id]);
+$pending_payments = $pendingPaymentsStmt->fetch(PDO::FETCH_ASSOC)['count'] ?? 0;
 
 // ============================================================
 // 4. Today's appointments
@@ -182,17 +213,19 @@ include '../includes/header.php';
                 </div>
             </div>
 
-            <!-- Today's Earnings -->
+            <!-- Today's Earnings (from payments table - using appointment_date) -->
             <div class="stat-box">
                 <span class="stat-icon"><i class="fas fa-money-bill-wave"></i></span>
                 <h3><?php echo number_format($today_earnings); ?> PKR</h3>
-                <p>Today's Earnings </p>
-                
-                
+                <p>Today's Earnings</p>
+                <?php if ($pending_payments > 0): ?>
+                    <small style="color: var(--text-muted); font-size: 10px; display: block; margin-top: 2px;">
+                        <?php echo $pending_payments; ?> pending payment(s)
+                    </small>
+                <?php endif; ?>
                 <div class="stat-trend up">
                     <i class="fas fa-arrow-up"></i> 15%
                 </div>
-                
             </div>
 
         </div>

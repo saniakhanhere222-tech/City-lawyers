@@ -1,0 +1,510 @@
+
+/* ========================================
+   APPOINTMENT CARDS - Compact Version
+======================================== */
+.appointment-card {
+    background: var(--white);
+    border: 1px solid var(--border-color);
+    padding: 16px 18px;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+}
+.appointment-card:hover {
+    border-color: #c4b8a8;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+}
+.appointment-card-inner {
+    display: grid;
+    grid-template-columns: 80px 1fr 130px;
+    gap: 14px;
+    align-items: flex-start;
+}
+.appointment-img-wrapper {
+    width: 80px;
+    height: 100px;
+    background: #ebe5db;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+.appointment-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    
+}
+.appointment-img-wrapper i {
+    font-size: 32px;
+    color: var(--primary-color);
+}
+.appointment-lawyer-name {
+    font-size: 18px;
+    color: var(--primary-color);
+    margin-bottom: 2px;
+    line-height: 1.2;
+}
+.appointment-lawyer-spec {
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #8a8479;
+}
+.appointment-fee {
+    text-align: right;
+    min-width: 80px;
+}
+.fee-badge {
+    background: var(--light-badge);
+    color: var(--dark-badge);
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 2px;
+}
+.appointment-fee span {
+    font-size: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #8a8479;
+    display: block;
+    text-align: right;
+}
+.appointment-meta {
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    border-top: 2px solid var(--secondary-color);
+    padding-top: 6px;
+}
+.appointment-meta span {
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #7d766b;
+}
+.appointment-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.action-btn {
+    display: block;
+    text-align: center;
+    padding: 6px 10px;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: 0.3s;
+    border-radius: 4px;
+    width: 100%;
+}
+.btn-cancel {
+    border: 1px solid #ddd4c7;
+    background: transparent;
+    color: var(--text-dark);
+}
+.btn-cancel:hover {
+    background: #f2ece3;
+}
+.btn-edit {
+    background: var(--primary-color);
+    color: white;
+}
+.btn-edit:hover {
+    background: #1f291f;
+}
+.btn-delete {
+    background: #7f8c8d;
+    color: white;
+}
+.btn-profile {
+    border: 1px solid #ddd4c7;
+    background: transparent;
+    color: var(--text-dark);
+}
+.btn-profile:hover {
+    background: #f2ece3;
+}
+.btn-review {
+    background: #c6a43f;
+    color: white;
+}
+.btn-review:hover {
+    background: #a8872e;
+}
+.reviewed-badge {
+    color: #2e5b2e;
+    font-size: 8px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 1px 8px;
+    text-align: center;
+    background: #dce9d7;
+    border: none;
+}
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+}
+.empty-state i {
+    font-size: 48px;
+    color: var(--text-light);
+    margin-bottom: 15px;
+}
+.empty-state p {
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+.btn-find {
+    background: var(--primary-color);
+    color: white;
+    padding: 10px 20px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    display: inline-block;
+    text-decoration: none;
+}
+.page-link-custom {
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-dark);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    margin: 0 4px;
+    display: inline-block;
+    text-decoration: none;
+}
+.page-link-custom:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* Chat button */
+.btn-chat {
+    background: var(--accent-color);
+    border-radius: 100px;
+    box-shadow: rgba(105, 206, 47, 0.2) 0 -25px 18px -14px inset,
+                rgba(105, 206, 47, 0.15) 0 1px 2px,
+                rgba(105, 206, 47, 0.15) 0 2px 4px,
+                rgba(105, 206, 47, 0.15) 0 4px 8px,
+                rgba(105, 206, 47, 0.15) 0 8px 16px,
+                rgba(105, 206, 47, 0.15) 0 16px 32px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 6px 12px;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    cursor: pointer;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+}
+.btn-chat:hover {
+    box-shadow: rgba(105, 206, 47, 0.35) 0 -25px 18px -14px inset,
+                rgba(105, 206, 47, 0.25) 0 1px 2px,
+                rgba(105, 206, 47, 0.25) 0 2px 4px,
+                rgba(105, 206, 47, 0.25) 0 4px 8px,
+                rgba(105, 206, 47, 0.25) 0 8px 16px,
+                rgba(105, 206, 47, 0.25) 0 16px 32px;
+    transform: scale(1.02);
+    color: white;
+}
+.btn-chat i {
+    font-size: 12px;
+}
+
+/* ========================================
+   CHECKBOX STYLING
+======================================== */
+.checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 0;
+    border-bottom: 1px solid #f0ebe4;
+    margin-bottom: 4px;
+}
+.checkbox-wrapper .review-checkbox {
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+    accent-color: var(--primary-color);
+    margin: 0;
+}
+.checkbox-wrapper label {
+    font-size: 9px;
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+/* ========================================
+   BULK ACTIONS BAR
+======================================== */
+.bulk-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    background: #f8f6f2;
+    border: 1px solid var(--border-color);
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+.bulk-actions .selected-count {
+    font-size: 13px;
+    color: var(--text-dark);
+    font-weight: 500;
+}
+.bulk-actions .selected-count strong {
+    color: var(--primary-color);
+}
+.btn-bulk-delete {
+    background: #c62828;
+    color: white;
+    border: none;
+    padding: 5px 16px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 4px;
+}
+.btn-bulk-delete:hover {
+    background: #b71c1c;
+}
+.btn-bulk-delete:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+.btn-reset-selection {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-dark);
+    padding: 5px 16px;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
+    text-decoration: none;
+    border-radius: 4px;
+}
+.btn-reset-selection:hover {
+    background: #f0ebe4;
+}
+
+/* Status badge */
+.status {
+    padding: 1px 8px;
+    font-size: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    font-weight: 600;
+}
+.status-pending {
+    background: #f7ecd1;
+    color: #8c650f;
+}
+.status-confirmed {
+    background: #dcecdc;
+    color: #2f6a33;
+}
+.status-completed {
+    background: #dfe9f5;
+    color: #2e5c86;
+}
+.status-cancelled {
+    background: #f3dede;
+    color: #9a3737;
+}
+
+/* ========================================
+   RESPONSIVE - MOBILE (FIXED)
+======================================== */
+@media (max-width: 767px) {
+    .appointment-card-inner {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    .appointment-img-wrapper {
+        width: 100%;
+        height: 160px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background: #ebe5db;
+    }
+    .appointment-img-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;  /* Full image visible */
+        object-position: center;
+    }
+    .appointment-img-wrapper i {
+        font-size: 48px;
+    }
+    .appointment-actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .appointment-actions .action-btn,
+    .appointment-actions .reviewed-badge {
+        flex: 1;
+        min-width: 70px;
+    }
+    .appointment-fee {
+        text-align: left;
+    }
+    .appointment-fee span {
+        text-align: left;
+    }
+    .bulk-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+    .bulk-actions .selected-count {
+        text-align: center;
+    }
+    .checkbox-wrapper {
+        border-bottom: none;
+        margin-bottom: 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .appointment-card {
+        padding: 14px;
+    }
+    .appointment-lawyer-name {
+        font-size: 16px;
+    }
+    .appointment-meta span {
+        font-size: 8px;
+        gap: 8px;
+    }
+    .action-btn {
+        font-size: 8px;
+        padding: 5px 8px;
+        min-width: 60px;
+    }
+    .btn-chat {
+        padding: 5px 10px;
+        font-size: 8px;
+    }
+    .btn-chat i {
+        font-size: 10px;
+    }
+    .appointment-img-wrapper {
+        height: 140px;
+    }
+    .appointment-img-wrapper img {
+        object-fit: contain;
+    }
+}
+
+/* ========================================
+   FIX: 412px and Below - Full Image
+======================================== */
+@media (max-width: 430px) {
+    .appointment-card {
+        padding: 12px;
+    }
+    .appointment-card-inner {
+        gap: 10px;
+    }
+    .appointment-lawyer-name {
+        font-size: 15px;
+    }
+    .appointment-actions .action-btn {
+        font-size: 7px;
+        padding: 4px 6px;
+        min-width: 50px;
+    }
+    .appointment-img-wrapper {
+        height: 120px;
+    }
+    .appointment-img-wrapper img {
+        object-fit: contain;  /* Full image visible */
+        object-position: center;
+    }
+}
+
+/* ========================================
+   FIX: 360px and Below
+======================================== */
+@media (max-width: 380px) {
+    .appointment-card {
+        padding: 10px;
+    }
+    .appointment-lawyer-name {
+        font-size: 14px;
+    }
+    .appointment-img-wrapper {
+        height: 100px;
+    }
+    .appointment-img-wrapper img {
+        object-fit: contain;
+        object-position: center;
+    }
+    .btn-chat {
+        padding: 4px 8px;
+        min-width: 28px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        aspect-ratio: 1/1;
+        justify-content: center;
+        flex: 0 0 28px;
+    }
+    .btn-chat .chat-text {
+        display: none;
+    }
+    .btn-chat i {
+        font-size: 12px;
+        margin: 0;
+    }
+}
+
+/* Bulk actions - mobile */
+@media (max-width: 575px) {
+    .bulk-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        padding: 8px 12px;
+    }
+    .bulk-actions .selected-count {
+        text-align: center;
+        font-size: 12px;
+    }
+    .btn-bulk-delete,
+    .btn-reset-selection {
+        font-size: 9px;
+        padding: 5px 12px;
+        width: 100%;
+        text-align: center;
+    }
+}

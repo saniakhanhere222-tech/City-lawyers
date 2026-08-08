@@ -86,11 +86,11 @@ include '../includes/header.php';
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/lawyer-profile.css">
 
 <!-- Return link (back to search results) -->
-<div class="profile-return-link">
+<div class="profile-return-link " style="padding-top: 40px; margin-bottom: 8px">
     <a href="search.php">← RETURN TO FIND LAWYERS</a>
 </div>
 
-<div class="profile-container">
+<div class="profile-container ">
 
     <!-- ========================================================
          TOP PANEL: Avatar, name, specialization, rating, fee, city, experience, gender

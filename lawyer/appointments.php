@@ -8,6 +8,7 @@
 // 2. Notifications: Auto-sent to customers on each action
 // 3. Review Request: Auto-sent when appointment is completed
 // 4. Chat: Available for all non-cancelled appointments
+// 5. Payment Status: Shows "Paid" badge for appointments with verified payments
 //
 // Status Flow: Pending → Confirmed → Completed
 // Cancellation: Available from Pending or Confirmed
@@ -17,8 +18,9 @@
 // - Ownership verification on all actions
 // - Status-based action buttons
 // - Automatic customer notifications
+// - Payment status indicator
 //
-// Database Tables: appointments, customers, notifications
+// Database Tables: appointments, customers, notifications, payments
 //
 // Related Files:
 // - ../includes/config.php - Database connection
@@ -133,12 +135,16 @@ if (isset($_GET['cancel'])) {
 }
 
 // ============================================================
-// 3. Fetch all appointments for this lawyer
+// 3. Fetch all appointments for this lawyer with payment status
 // ============================================================
 $apptStmt = $conn->prepare("
-    SELECT a.*, c.name as customer_name 
+    SELECT a.*, 
+           c.name as customer_name,
+           p.status as payment_status,
+           p.amount as payment_amount
     FROM appointments a 
     JOIN customers c ON a.customer_id = c.id 
+    LEFT JOIN payments p ON a.id = p.appointment_id AND p.status = 'paid'
     WHERE a.lawyer_id = ? 
     ORDER BY a.appointment_date DESC, a.appointment_time DESC
 ");
@@ -155,6 +161,40 @@ include '../includes/header.php';
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/dashboard.css">
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/tables.css">
 <link rel="stylesheet" href="<?php echo BASE_URL; ?>assets/css/sidebar.css">
+
+<style>
+/* ========================================
+   PAYMENT STATUS BADGE
+======================================== */
+.payment-badge {
+    display: inline-block;
+    padding: 2px 10px;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    border-radius: 12px;
+    font-weight: 600;
+    margin-left: 6px;
+}
+
+.payment-badge.paid {
+    background: #dce9d7;
+    color: #2e5b2e;
+    border: 1px solid #b8d0b3;
+}
+
+.payment-badge.pending {
+    background: #fff3e0;
+    color: #e65100;
+    border: 1px solid #ffcc80;
+}
+
+.payment-badge.unpaid {
+    background: #f5f5f5;
+    color: #9e9e9e;
+    border: 1px solid #e0e0e0;
+}
+</style>
 
 <div class="dashboard-wrapper">
 
@@ -196,6 +236,17 @@ include '../includes/header.php';
                                     <span class="status-badge status-<?php echo $row['status']; ?>">
                                         <?php echo ucfirst($row['status']); ?>
                                     </span>
+                                    
+                                    <!-- Payment Status Badge -->
+                                    <?php if ($row['payment_status'] == 'paid'): ?>
+                                        <span class="payment-badge paid">
+                                            <i class="fas fa-check-circle" style="font-size: 8px;"></i> Paid
+                                        </span>
+                                    <?php elseif ($row['status'] != 'cancelled' && $row['status'] != 'completed'): ?>
+                                        <span class="payment-badge pending">
+                                            <i class="fas fa-clock" style="font-size: 8px;"></i> Payment Pending
+                                        </span>
+                                    <?php endif; ?>
                                 </td>
                                 <td>
                                     <!-- ========================================

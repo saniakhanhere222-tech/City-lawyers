@@ -107,8 +107,8 @@ if ($selected_date) {
             $slot_time = date('H:i:s', $start);
             $display_time = date('h:i A', $start);
 
-            $bookedStmt = $conn->prepare("SELECT COUNT(*) as cnt FROM appointments WHERE lawyer_id = ? AND appointment_date = ? AND appointment_time = ? AND status != 'cancelled'");
-            $bookedStmt->execute([$lawyer_id, $selected_date, $slot_time]);
+            $bookedStmt = $conn->prepare("SELECT COUNT(*) as cnt FROM appointments WHERE lawyer_id = ? AND appointment_date = ? AND appointment_time = ? AND status != 'cancelled' AND id != ?");
+            $bookedStmt->execute([$lawyer_id, $selected_date, $slot_time, $edit_id]);
             $is_booked = $bookedStmt->fetch(PDO::FETCH_ASSOC)['cnt'] > 0;
 
             $disabled = $is_booked ? 'disabled' : '';
@@ -138,8 +138,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['step']) && $_POST['ste
     if (empty($date) || empty($time)) {
         $error = "Please select both date and time.";
     } else {
-        $checkStmt = $conn->prepare("SELECT COUNT(*) as cnt FROM appointments WHERE lawyer_id = ? AND appointment_date = ? AND appointment_time = ? AND status != 'cancelled'");
-        $checkStmt->execute([$lawyer_id, $date, $time]);
+        $checkStmt = $conn->prepare("SELECT COUNT(*) as cnt FROM appointments WHERE lawyer_id = ? AND appointment_date = ? AND appointment_time = ? AND status != 'cancelled' AND id != ?");
+        $checkStmt->execute([$lawyer_id, $date, $time, $edit_post_id]);
         $is_booked = $checkStmt->fetch(PDO::FETCH_ASSOC)['cnt'] > 0;
 
         if ($is_booked) {
@@ -152,13 +152,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['step']) && $_POST['ste
                 'edit_id' => $edit_post_id
             ];
             
-            header("Location: book-appointment.php?id=" . $lawyer_id . "&step=2" . ($edit_post_id > 0 ? "&edit=" . $edit_post_id : ""));
+            // Check if this is a reschedule - if yes, skip payment step
+            if ($edit_post_id > 0) {
+                // Rescheduling - directly process without payment form
+                header("Location: book-appointment.php?id=" . $lawyer_id . "&step=3&edit=" . $edit_post_id);
+            } else {
+                header("Location: book-appointment.php?id=" . $lawyer_id . "&step=2" . ($edit_post_id > 0 ? "&edit=" . $edit_post_id : ""));
+            }
             exit();
         }
     }
 }
 
-// Step 2: Payment Method
+// Step 2: Payment Method (ONLY for new bookings)
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['step']) && $_POST['step'] == '2') {
     $payment_method = $_POST['payment_method'] ?? 'cash';
     $receipt_image = '';
@@ -178,6 +184,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['step']) && $_POST['ste
     $time = $booking_data['time'];
     $message = $booking_data['message'];
     $edit_post_id = $booking_data['edit_id'] ?? 0;
+    
+    // For new bookings only (edit_id should be 0)
+    if ($edit_post_id > 0) {
+        header("Location: search.php");
+        exit();
+    }
     
     if ($payment_method == 'jazzcash' || $payment_method == 'easypaisa') {
         $account_number = trim($_POST['account_number'] ?? '');
@@ -208,66 +220,86 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['step']) && $_POST['ste
     try {
         $conn->beginTransaction();
         
-        if ($edit_post_id > 0) {
-            // Reschedule
-            $updateStmt = $conn->prepare("UPDATE appointments SET appointment_date = ?, appointment_time = ?, booking_message = ?, status = 'pending', reschedule_count = reschedule_count + 1 WHERE id = ? AND customer_id = ?");
-            $updateStmt->execute([$date, $time, $message, $edit_post_id, $customer_id]);
-            $appointment_id = $edit_post_id;
-            
-            $checkPaymentStmt = $conn->prepare("SELECT id FROM payments WHERE appointment_id = ?");
-            $checkPaymentStmt->execute([$appointment_id]);
-            if ($checkPaymentStmt->fetch()) {
-                $payStmt = $conn->prepare("UPDATE payments SET payment_method = ?, status = 'pending', receipt_image = ?, account_details = ?, bank_name = ?, account_number = ?, account_holder_name = ? WHERE appointment_id = ?");
-                $payStmt->execute([$payment_method, $receipt_image, $account_details, $bank_name, $account_number, $account_holder_name, $appointment_id]);
-            } else {
-                $payStmt = $conn->prepare("INSERT INTO payments (appointment_id, customer_id, amount, payment_method, status, receipt_image, account_details, bank_name, account_number, account_holder_name) VALUES (?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?)");
-                $payStmt->execute([$appointment_id, $customer_id, $lawyer['fees'], $payment_method, $receipt_image, $account_details, $bank_name, $account_number, $account_holder_name]);
-            }
-            
-            addNotification(
-                $lawyer_id,
-                'lawyer',
-                'rescheduled',
-                'Appointment Rescheduled',
-                "Customer $customer_name rescheduled to " . date('d M Y', strtotime($date)) . " at " . date('h:i A', strtotime($time)) . " (Payment: $payment_method)",
-                'appointments.php',
-                'fa-calendar-alt'
-            );
-            
-            $show_success = true;
-            $booked_lawyer_name = $lawyer['name'];
-            $success_message = "Your appointment has been rescheduled successfully!";
-            
-        } else {
-            // New appointment
-            $insertStmt = $conn->prepare("INSERT INTO appointments (lawyer_id, customer_id, appointment_date, appointment_time, booking_message, status) VALUES (?, ?, ?, ?, ?, 'pending')");
-            $insertStmt->execute([$lawyer_id, $customer_id, $date, $time, $message]);
-            $appointment_id = $conn->lastInsertId();
-            
-            $payStmt = $conn->prepare("INSERT INTO payments (appointment_id, customer_id, amount, payment_method, status, receipt_image, account_details, bank_name, account_number, account_holder_name) VALUES (?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?)");
-            $payStmt->execute([$appointment_id, $customer_id, $lawyer['fees'], $payment_method, $receipt_image, $account_details, $bank_name, $account_number, $account_holder_name]);
-            
-            addNotification(
-                $lawyer_id,
-                'lawyer',
-                'new_request',
-                'New Appointment Request',
-                "Customer $customer_name requested appointment on " . date('d M Y', strtotime($date)) . " at " . date('h:i A', strtotime($time)) . " (Payment: $payment_method)",
-                'appointments.php',
-                'fa-clock'
-            );
-            
-            $show_success = true;
-            $booked_lawyer_name = $lawyer['name'];
-            $success_message = "Your appointment has been booked successfully!";
-        }
+        // New appointment (not reschedule)
+        $insertStmt = $conn->prepare("INSERT INTO appointments (lawyer_id, customer_id, appointment_date, appointment_time, booking_message, status) VALUES (?, ?, ?, ?, ?, 'pending')");
+        $insertStmt->execute([$lawyer_id, $customer_id, $date, $time, $message]);
+        $appointment_id = $conn->lastInsertId();
+        
+        $payStmt = $conn->prepare("INSERT INTO payments (appointment_id, customer_id, amount, payment_method, status, receipt_image, account_details, bank_name, account_number, account_holder_name) VALUES (?, ?, ?, ?, 'pending', ?, ?, ?, ?, ?)");
+        $payStmt->execute([$appointment_id, $customer_id, $lawyer['fees'], $payment_method, $receipt_image, $account_details, $bank_name, $account_number, $account_holder_name]);
+        
+        addNotification(
+            $lawyer_id,
+            'lawyer',
+            'new_request',
+            'New Appointment Request',
+            "Customer $customer_name requested appointment on " . date('d M Y', strtotime($date)) . " at " . date('h:i A', strtotime($time)) . " (Payment: $payment_method)",
+            'appointments.php',
+            'fa-clock'
+        );
         
         $conn->commit();
         unset($_SESSION['booking_data']);
         
+        $show_success = true;
+        $booked_lawyer_name = $lawyer['name'];
+        $success_message = "Your appointment has been booked successfully!";
+        
     } catch (Exception $e) {
         $conn->rollBack();
         $error = "Booking failed. Please try again. " . $e->getMessage();
+    }
+}
+
+// Step 3: Process Reschedule (NO PAYMENT FORM)
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['step']) && $_POST['step'] == '3') {
+    $booking_data = $_SESSION['booking_data'] ?? null;
+    
+    if (!$booking_data) {
+        header("Location: search.php");
+        exit();
+    }
+    
+    $date = $booking_data['date'];
+    $time = $booking_data['time'];
+    $message = $booking_data['message'];
+    $edit_post_id = $booking_data['edit_id'] ?? 0;
+    
+    if ($edit_post_id <= 0) {
+        header("Location: search.php");
+        exit();
+    }
+    
+    try {
+        $conn->beginTransaction();
+        
+        // Update appointment (reschedule)
+        $updateStmt = $conn->prepare("UPDATE appointments SET appointment_date = ?, appointment_time = ?, booking_message = ?, status = 'pending', reschedule_count = reschedule_count + 1 WHERE id = ? AND customer_id = ?");
+        $updateStmt->execute([$date, $time, $message, $edit_post_id, $customer_id]);
+        $appointment_id = $edit_post_id;
+        
+        // Keep existing payment record - don't create new one
+        
+        addNotification(
+            $lawyer_id,
+            'lawyer',
+            'rescheduled',
+            'Appointment Rescheduled',
+            "Customer $customer_name rescheduled to " . date('d M Y', strtotime($date)) . " at " . date('h:i A', strtotime($time)),
+            'appointments.php',
+            'fa-calendar-alt'
+        );
+        
+        $conn->commit();
+        unset($_SESSION['booking_data']);
+        
+        $show_success = true;
+        $booked_lawyer_name = $lawyer['name'];
+        $success_message = "Your appointment has been rescheduled successfully!";
+        
+    } catch (Exception $e) {
+        $conn->rollBack();
+        $error = "Rescheduling failed. Please try again. " . $e->getMessage();
     }
 }
 
@@ -276,8 +308,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['step']) && $_POST['ste
 // ============================================================
 $current_step = isset($_GET['step']) ? (int)$_GET['step'] : 1;
 $is_step2 = ($current_step == 2);
+$is_step3 = ($current_step == 3);
 
-if ($is_step2 && !isset($_SESSION['booking_data']) && !$show_success) {
+// For reschedule, skip step 2 and go directly to step 3
+if ($is_edit && $current_step == 1 && isset($_SESSION['booking_data'])) {
+    // Already have booking data, go to step 3
+    header("Location: book-appointment.php?id=" . $lawyer_id . "&step=3&edit=" . $edit_id);
+    exit();
+}
+
+if ($is_step3 && !isset($_SESSION['booking_data']) && !$show_success) {
     header("Location: book-appointment.php?id=" . $lawyer_id);
     exit();
 }
@@ -333,14 +373,14 @@ include '../includes/header.php';
 ============================================================ -->
 <div class="step-indicator-wrapper">
     <div class="step-indicator">
-        <div class="step <?php echo $current_step == 1 ? 'active' : 'completed'; ?>">
-            <span class="num"><?php echo $current_step == 1 ? '1' : '✓'; ?></span>
+        <div class="step <?php echo ($current_step == 1 || $current_step == 3) ? 'active' : 'completed'; ?>">
+            <span class="num"><?php echo ($current_step == 3) ? '✓' : '1'; ?></span>
             <span class="step-label">Appointment</span>
         </div>
-        <div class="step-line <?php echo $current_step == 2 ? 'completed' : ''; ?>"></div>
-        <div class="step <?php echo $current_step == 2 ? 'active' : ''; ?>">
-            <span class="num">2</span>
-            <span class="step-label">Payment</span>
+        <div class="step-line <?php echo ($current_step == 2 || $current_step == 3) ? 'completed' : ''; ?>"></div>
+        <div class="step <?php echo ($is_edit && $current_step == 3) ? '' : ($current_step == 2 ? 'active' : ''); ?>">
+            <span class="num"><?php echo ($is_edit) ? '✓' : '2'; ?></span>
+            <span class="step-label"><?php echo $is_edit ? 'Reschedule' : 'Payment'; ?></span>
         </div>
     </div>
 </div>
@@ -371,7 +411,7 @@ include '../includes/header.php';
                 <span class="info-label">Selected Date</span>
                 <span class="info-value" id="displayDate">
                     <?php 
-                    if ($is_step2 && $booking_data) {
+                    if (($is_step2 || $is_step3) && $booking_data) {
                         echo date('l, d M Y', strtotime($booking_data['date']));
                     } elseif ($selected_date) {
                         echo date('l, d M Y', strtotime($selected_date));
@@ -385,7 +425,7 @@ include '../includes/header.php';
                 <span class="info-label">Selected Time</span>
                 <span class="info-value" id="displayTime">
                     <?php 
-                    if ($is_step2 && $booking_data) {
+                    if (($is_step2 || $is_step3) && $booking_data) {
                         echo date('h:i A', strtotime($booking_data['time']));
                     } elseif ($is_edit && $appointment_data['appointment_time']) {
                         echo date('h:i A', strtotime($appointment_data['appointment_time']));
@@ -474,14 +514,14 @@ include '../includes/header.php';
 
                 <div style="display: flex; justify-content: flex-end;">
                     <button type="submit" class="btn-next" id="step1Submit">
-                        NEXT <i class="fas fa-arrow-right"></i>
+                        <?php echo $is_edit ? 'RESCHEDULE <i class="fas fa-arrow-right"></i>' : 'NEXT <i class="fas fa-arrow-right"></i>'; ?>
                     </button>
                 </div>
             </form>
 
-            <?php else: ?>
+            <?php elseif ($is_step2 && !$is_edit): ?>
             
-            <!-- Step 2: Payment Method -->
+            <!-- Step 2: Payment Method (ONLY for new bookings) -->
             <h2 class="form-title">Payment Method</h2>
 
             <?php if ($error): ?>
@@ -579,6 +619,64 @@ include '../includes/header.php';
                 </div>
             </form>
 
+            <?php elseif ($is_step3 && $is_edit): ?>
+            
+            <!-- Step 3: Reschedule Confirmation (NO PAYMENT) -->
+            <h2 class="form-title">Reschedule Appointment</h2>
+
+            <?php if ($error): ?>
+                <div class="alert-danger"><?php echo htmlspecialchars($error); ?></div>
+            <?php endif; ?>
+
+            <div style="background: #f0f7f0; border: 1px solid #c8dcc8; border-radius: 8px; padding: 16px 20px; margin-bottom: 20px;">
+                <p style="margin: 0; color: #1e3a1e; font-size: 14px;">
+                    <i class="fas fa-info-circle" style="color: #2e7d32;"></i>
+                    You are rescheduling your appointment with <strong>Adv. <?php echo htmlspecialchars($lawyer['name']); ?></strong>.
+                    No payment is required for rescheduling.
+                </p>
+            </div>
+
+            <?php if ($booking_data): ?>
+            <div style="background: #f5f0eb; padding: 16px 20px; border-radius: 8px; margin-bottom: 24px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                    <div>
+                        <div style="font-size: 11px; color: #8a8479; text-transform: uppercase; letter-spacing: 1px;">New Date</div>
+                        <div style="font-weight: 500;"><?php echo date('l, d M Y', strtotime($booking_data['date'])); ?></div>
+                    </div>
+                    <div>
+                        <div style="font-size: 11px; color: #8a8479; text-transform: uppercase; letter-spacing: 1px;">New Time</div>
+                        <div style="font-weight: 500;"><?php echo date('h:i A', strtotime($booking_data['time'])); ?></div>
+                    </div>
+                </div>
+                <?php if (!empty($booking_data['message'])): ?>
+                <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #ddd4c7;">
+                    <div style="font-size: 11px; color: #8a8479; text-transform: uppercase; letter-spacing: 1px;">Message</div>
+                    <div style="font-size: 14px;"><?php echo htmlspecialchars($booking_data['message']); ?></div>
+                </div>
+                <?php endif; ?>
+            </div>
+            <?php endif; ?>
+
+            <form method="POST" id="step3Form">
+                <input type="hidden" name="step" value="3">
+
+                <div style="background: #fff3e0; border-left: 4px solid #e65100; padding: 12px 16px; margin-bottom: 20px; border-radius: 4px;">
+                    <p style="margin: 0; font-size: 13px; color: #bf360c;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Your existing payment record will be kept. The lawyer will be notified of the reschedule.
+                    </p>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; gap: 12px; margin-top: 20px;">
+                    <a href="book-appointment.php?id=<?php echo $lawyer_id; ?>" class="btn-nav btn-back">
+                        <i class="fas fa-arrow-left"></i> BACK
+                    </a>
+                    <button type="submit" class="btn-book" id="step3Submit" style="background: #c6a43f;">
+                        <i class="fas fa-calendar-alt"></i> CONFIRM RESCHEDULE
+                    </button>
+                </div>
+            </form>
+
             <?php endif; ?>
 
         </div>
@@ -657,6 +755,16 @@ if (step1Form) {
 const step2Form = document.getElementById('step2Form');
 if (step2Form) {
     step2Form.addEventListener('submit', function() {
+        document.getElementById('loaderOverlay').classList.add('active');
+    });
+}
+
+// ============================================================
+// STEP 3 - Show loader on submit
+// ============================================================
+const step3Form = document.getElementById('step3Form');
+if (step3Form) {
+    step3Form.addEventListener('submit', function() {
         document.getElementById('loaderOverlay').classList.add('active');
     });
 }
